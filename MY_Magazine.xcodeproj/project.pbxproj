@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BE195F95183F516F00162B24 /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE195F90183F516F00162B24 /* EGORefreshTableHeaderView.m */; };
+		BE195F96183F516F00162B24 /* PullToRefreshViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE195F92183F516F00162B24 /* PullToRefreshViewController.m */; };
+		BE195F97183F516F00162B24 /* RefreshArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = BE195F93183F516F00162B24 /* RefreshArrow.png */; };
+		BE195F98183F516F00162B24 /* RefreshArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE195F94183F516F00162B24 /* RefreshArrow@2x.png */; };
+		BE195F9C183F51C000162B24 /* CCContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE195F9A183F51C000162B24 /* CCContentViewController.m */; };
+		BE195F9D183F51C000162B24 /* CCContentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE195F9B183F51C000162B24 /* CCContentViewController.xib */; };
 		BE26F454183DFCCC006E39D0 /* CCSuggestionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE26F453183DFCCC006E39D0 /* CCSuggestionViewController.m */; };
 		BE8AFEBA183C612C00323213 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE8AFEB9183C612C00323213 /* Foundation.framework */; };
 		BE8AFEBC183C612C00323213 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE8AFEBB183C612C00323213 /* CoreGraphics.framework */; };
@@ -64,6 +70,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BE195F8F183F516F00162B24 /* EGORefreshTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGORefreshTableHeaderView.h; sourceTree = "<group>"; };
+		BE195F90183F516F00162B24 /* EGORefreshTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGORefreshTableHeaderView.m; sourceTree = "<group>"; };
+		BE195F91183F516F00162B24 /* PullToRefreshViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PullToRefreshViewController.h; sourceTree = "<group>"; };
+		BE195F92183F516F00162B24 /* PullToRefreshViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PullToRefreshViewController.m; sourceTree = "<group>"; };
+		BE195F93183F516F00162B24 /* RefreshArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RefreshArrow.png; sourceTree = "<group>"; };
+		BE195F94183F516F00162B24 /* RefreshArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RefreshArrow@2x.png"; sourceTree = "<group>"; };
+		BE195F99183F51C000162B24 /* CCContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCContentViewController.h; sourceTree = "<group>"; };
+		BE195F9A183F51C000162B24 /* CCContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCContentViewController.m; sourceTree = "<group>"; };
+		BE195F9B183F51C000162B24 /* CCContentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CCContentViewController.xib; sourceTree = "<group>"; };
 		BE26F452183DFCCC006E39D0 /* CCSuggestionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCSuggestionViewController.h; sourceTree = "<group>"; };
 		BE26F453183DFCCC006E39D0 /* CCSuggestionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCSuggestionViewController.m; sourceTree = "<group>"; };
 		BE8AFEB6183C612C00323213 /* MY_Magazine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MY_Magazine.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -297,6 +312,9 @@
 				BEA8DF77183C6B1500809C98 /* DEMOSecondViewController.m */,
 				BE26F452183DFCCC006E39D0 /* CCSuggestionViewController.h */,
 				BE26F453183DFCCC006E39D0 /* CCSuggestionViewController.m */,
+				BE195F99183F51C000162B24 /* CCContentViewController.h */,
+				BE195F9A183F51C000162B24 /* CCContentViewController.m */,
+				BE195F9B183F51C000162B24 /* CCContentViewController.xib */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -304,6 +322,12 @@
 		BE8AFEEF183C61BD00323213 /* Others */ = {
 			isa = PBXGroup;
 			children = (
+				BE195F8F183F516F00162B24 /* EGORefreshTableHeaderView.h */,
+				BE195F90183F516F00162B24 /* EGORefreshTableHeaderView.m */,
+				BE195F91183F516F00162B24 /* PullToRefreshViewController.h */,
+				BE195F92183F516F00162B24 /* PullToRefreshViewController.m */,
+				BE195F93183F516F00162B24 /* RefreshArrow.png */,
+				BE195F94183F516F00162B24 /* RefreshArrow@2x.png */,
 				BEA8DF71183C695B00809C98 /* RESide */,
 				BE8AFF07183C64C500323213 /* GdataXMLNode */,
 			);
@@ -408,9 +432,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE195F98183F516F00162B24 /* RefreshArrow@2x.png in Resources */,
 				BEA8DFA7183CAB9A00809C98 /* Default@2x.png in Resources */,
 				BEA8DF9C183CAB7000809C98 /* loading_flip_book3.png in Resources */,
 				BEA8DFA5183CAB9A00809C98 /* Default-568h@2x.png in Resources */,
+				BE195F9D183F51C000162B24 /* CCContentViewController.xib in Resources */,
 				BEA8DFA4183CAB9A00809C98 /* Cover_126@2x.png in Resources */,
 				BEA8DF8D183CA40500809C98 /* z.png in Resources */,
 				BE8AFEC4183C612C00323213 /* InfoPlist.strings in Resources */,
@@ -428,6 +454,7 @@
 				BEA8DF8C183CA40500809C98 /* f.png in Resources */,
 				BEA8DFA6183CAB9A00809C98 /* default.png in Resources */,
 				BEA8DF9A183CAB7000809C98 /* loading_flip_book1.png in Resources */,
+				BE195F97183F516F00162B24 /* RefreshArrow.png in Resources */,
 				BEA8DF7E183C6D3300809C98 /* MenuBackground@2x.png in Resources */,
 				BEA8DF98183CAB7000809C98 /* Icon.png in Resources */,
 				BEA8DF90183CA65700809C98 /* btn_setting.png in Resources */,
@@ -455,10 +482,13 @@
 				BE26F454183DFCCC006E39D0 /* CCSuggestionViewController.m in Sources */,
 				BE8AFF06183C64BE00323213 /* GDataXMLNode.m in Sources */,
 				BEA8DF6F183C695300809C98 /* RESideMenu.m in Sources */,
+				BE195F9C183F51C000162B24 /* CCContentViewController.m in Sources */,
 				BEA8DF79183C6B1500809C98 /* DEMOMenuViewController.m in Sources */,
 				BEA8DF7A183C6B1500809C98 /* DEMOSecondViewController.m in Sources */,
+				BE195F95183F516F00162B24 /* EGORefreshTableHeaderView.m in Sources */,
 				BEA8DF6E183C695300809C98 /* RECommonFunctions.m in Sources */,
 				BEA8DF78183C6B1500809C98 /* DEMOFirstViewController.m in Sources */,
+				BE195F96183F516F00162B24 /* PullToRefreshViewController.m in Sources */,
 				BEA8DF70183C695300809C98 /* UIViewController+RESideMenu.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

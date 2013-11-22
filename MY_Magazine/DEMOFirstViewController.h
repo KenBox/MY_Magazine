@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "RESideMenu.h"
+#import "PullToRefreshViewController.h"
+@interface DEMOFirstViewController : PullToRefreshViewController
 
-@interface DEMOFirstViewController : UIViewController <UITableViewDataSource,UITableViewDelegate>
-
-@property (nonatomic,retain) UITableView * myTable;
+//@property (nonatomic,retain) UITableView * myTable;
 
 @end

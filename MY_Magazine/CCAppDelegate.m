@@ -22,7 +22,7 @@
     DEMOMenuViewController *menuViewController = [[DEMOMenuViewController alloc] init];
     
     RESideMenu *sideMenuViewController = [[RESideMenu alloc] initWithContentViewController:navigationController menuViewController:menuViewController];
-    sideMenuViewController.backgroundImage = [UIImage imageNamed:@"stars"];
+    sideMenuViewController.backgroundImage = [UIImage imageNamed:@"bg_carpet"];
     sideMenuViewController.delegate = self;
     self.window.rootViewController = sideMenuViewController;
     self.window.backgroundColor = [UIColor whiteColor];
