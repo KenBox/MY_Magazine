@@ -14,11 +14,12 @@
 @end
 
 @implementation DEMOFirstViewController
-@synthesize MyIndexPath;
+@synthesize MyIndexPath,ContentViewController;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    ContentViewController = [[CCContentViewController alloc]initWithNibName:@"CCContentViewController" bundle:Nil];
     
     //	self.title = @"Magazine Dock";
     [self.view setBackgroundColor:[UIColor clearColor]];
@@ -71,6 +72,12 @@
 - (void)showMenu
 {
     [self.sideMenuViewController presentMenuViewController];
+}
+
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleDefault;
 }
 
 -(void) doRefresh {
@@ -127,10 +134,6 @@
     return 5;
 }
 
-//-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-//    [[tableView headerViewForSection:section] setBackgroundColor:[UIColor clearColor]];
-//    return tableView.tableHeaderView;
-//}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -189,23 +192,20 @@
 
 
 
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    return UIStatusBarStyleLightContent;
-}
-
-//手势方法
+#pragma mark - Gesture Methods
 -(void)pageSelected:(UITapGestureRecognizer*)gesture{
     CGPoint point = [gesture locationInView:self.tableView];
     NSIndexPath *selectedIndexPath = [self.tableView indexPathForRowAtPoint:point];
-    NSLog(@"%@",selectedIndexPath);
-//    NSInteger row = selectedIndexPath;
+    NSInteger row = selectedIndexPath.row;
+    NSInteger section = selectedIndexPath.section;
+
     if (point.x<160) {
-        NSLog(@"点击了左边 point.x = %f,point.y = %f",point.x,point.y);
+        NSLog(@"点击了左边section = %d row = %d point.x = %f,point.y = %f",section,row,point.x,point.y);
         
     }else{
-        NSLog(@"点击了右边 point.x = %f,point.y = %f",point.x,point.y);
+        NSLog(@"点击了右边section = %d row = %d point.x = %f,point.y = %f",section,row,point.x,point.y);
     }
+    [self presentViewController:ContentViewController animated:YES completion:Nil];
 }
 
 

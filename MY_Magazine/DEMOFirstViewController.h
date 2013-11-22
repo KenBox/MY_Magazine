@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "RESideMenu.h"
 #import "PullToRefreshViewController.h"
+@class CCContentViewController;
 @interface DEMOFirstViewController : PullToRefreshViewController
 
 //@property (nonatomic,retain) UITableView * myTable;
-
+@property (nonatomic,strong) CCContentViewController * ContentViewController;
 @end

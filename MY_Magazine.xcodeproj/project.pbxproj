@@ -163,6 +163,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BE195F9E183F7D5300162B24 /* PullToRefresh */ = {
+			isa = PBXGroup;
+			children = (
+				BE195F8F183F516F00162B24 /* EGORefreshTableHeaderView.h */,
+				BE195F90183F516F00162B24 /* EGORefreshTableHeaderView.m */,
+				BE195F91183F516F00162B24 /* PullToRefreshViewController.h */,
+				BE195F92183F516F00162B24 /* PullToRefreshViewController.m */,
+				BE195F93183F516F00162B24 /* RefreshArrow.png */,
+				BE195F94183F516F00162B24 /* RefreshArrow@2x.png */,
+			);
+			name = PullToRefresh;
+			sourceTree = "<group>";
+		};
 		BE8AFEAD183C612C00323213 = {
 			isa = PBXGroup;
 			children = (
@@ -297,6 +310,7 @@
 		BE8AFEED183C618600323213 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				BE195F9B183F51C000162B24 /* CCContentViewController.xib */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -314,7 +328,6 @@
 				BE26F453183DFCCC006E39D0 /* CCSuggestionViewController.m */,
 				BE195F99183F51C000162B24 /* CCContentViewController.h */,
 				BE195F9A183F51C000162B24 /* CCContentViewController.m */,
-				BE195F9B183F51C000162B24 /* CCContentViewController.xib */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -322,12 +335,7 @@
 		BE8AFEEF183C61BD00323213 /* Others */ = {
 			isa = PBXGroup;
 			children = (
-				BE195F8F183F516F00162B24 /* EGORefreshTableHeaderView.h */,
-				BE195F90183F516F00162B24 /* EGORefreshTableHeaderView.m */,
-				BE195F91183F516F00162B24 /* PullToRefreshViewController.h */,
-				BE195F92183F516F00162B24 /* PullToRefreshViewController.m */,
-				BE195F93183F516F00162B24 /* RefreshArrow.png */,
-				BE195F94183F516F00162B24 /* RefreshArrow@2x.png */,
+				BE195F9E183F7D5300162B24 /* PullToRefresh */,
 				BEA8DF71183C695B00809C98 /* RESide */,
 				BE8AFF07183C64C500323213 /* GdataXMLNode */,
 			);

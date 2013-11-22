@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface CCContentViewController : UIViewController
+@property (nonatomic,strong) UIButton * back;
 
 @end
