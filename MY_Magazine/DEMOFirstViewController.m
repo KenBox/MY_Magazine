@@ -8,17 +8,28 @@
 
 #import "DEMOFirstViewController.h"
 #import "CCContentViewController.h"
+#define _SECTIONNUM 2
 
 @interface DEMOFirstViewController ()
-@property (nonatomic,retain)NSIndexPath * MyIndexPath;
+@property (nonatomic,retain) NSMutableArray * ArrayForSectionHeader;
+
 @end
 
 @implementation DEMOFirstViewController
-@synthesize MyIndexPath,ContentViewController;
+@synthesize ContentViewController,ArrayForSectionHeader;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    //SectionHeader Data
+    ArrayForSectionHeader = [NSMutableArray arrayWithCapacity:_SECTIONNUM];
+    for (int i = _SECTIONNUM ; i>0; i--) {
+        NSString * str = [NSString stringWithFormat:@"bg_bookself_year_201%d",i+1];
+        [ArrayForSectionHeader addObject:str];
+    }
+
+    
     ContentViewController = [[CCContentViewController alloc]initWithNibName:@"CCContentViewController" bundle:Nil];
     self.view.layer.borderWidth = 0.5;
     self.view.layer.borderColor = [UIColor colorWithWhite:0.750 alpha:1.000].CGColor;
@@ -44,8 +55,6 @@
     [bgImg setImage:[UIImage imageNamed:@"navbar_logo"]];
     self.navigationItem.titleView = bgImg;
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"bg_wood"] forBarMetrics:UIBarMetricsDefault];
-    
-    
     
     
     /*
@@ -116,7 +125,9 @@
 
 #pragma mark -
 #pragma mark UITableView Datasource
-
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 26;
+}
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
     return 0;
@@ -129,7 +140,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return _SECTIONNUM;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)sectionIndex
@@ -157,24 +168,24 @@
     UITapGestureRecognizer * tap2 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(pageSelected:)];
     
     //左侧视窗
-    CGRect leftFrame = CGRectMake(cell.bounds.origin.x+20, cell.bounds.origin.y+10, 128, 192);
+    CGRect leftFrame = CGRectMake(cell.bounds.origin.x+30, cell.bounds.origin.y+20, 108, 172);
     UIImageView * left = [[UIImageView alloc]initWithFrame:leftFrame];
     [left setImage:[UIImage imageNamed:@"Cover_126"]];
     [left setUserInteractionEnabled:YES];
     [left addGestureRecognizer:tap1];
     //左侧label
-    CGRect leftLabelFrame = CGRectMake(cell.bounds.origin.x+20, cell.bounds.origin.y+10+202, 128, 20);
+    CGRect leftLabelFrame = CGRectMake(cell.bounds.origin.x+30, cell.bounds.origin.y+10+202, 128, 20);
     UILabel * leftLabel = [[UILabel alloc]initWithFrame:leftLabelFrame];
     leftLabel.text = @"12月期刊";
     
     //右侧视窗
-    CGRect rightFrame = CGRectMake(cell.bounds.size.width-20-128, cell.bounds.origin.y+10, 128, 192);
+    CGRect rightFrame = CGRectMake(cell.bounds.size.width-10-128, cell.bounds.origin.y+20, 108, 172);
     UIImageView * right = [[UIImageView alloc]initWithFrame:rightFrame];
     [right setImage:[UIImage imageNamed:@"Cover_126"]];
     [right setUserInteractionEnabled:YES];
     [right addGestureRecognizer:tap2];
     //右侧label
-    CGRect rightLabelFrame = CGRectMake(cell.bounds.size.width-20-128,cell.bounds.origin.y+10+202, 128, 20);
+    CGRect rightLabelFrame = CGRectMake(cell.bounds.size.width-10-128,cell.bounds.origin.y+10+202, 128, 20);
     UILabel * rightLabel = [[UILabel alloc]initWithFrame:rightLabelFrame];
     rightLabel.text = @"11月期刊";
     
@@ -189,11 +200,28 @@
     return cell;
 }
 
--(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-    return @"2011年";
+//通过这个方法设置section的各项属性
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView * sectionView = [[UIView alloc]init];
+    
+    UIImageView * background = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"bg_carpet"]];
+    [background setFrame:CGRectMake(0, 0, 320, 25)];
+    [sectionView addSubview:background];
+    [sectionView setAutoresizesSubviews:YES];
+    UIImageView * sepImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"bg_bookself_sep"]];
+//    UIImage * sectionImage = [UIImage imageNamed:@"bg_bookself_year_2011"];
+    NSString * str = [ArrayForSectionHeader objectAtIndex:section];
+    UIImage * sectionImage1 = [UIImage imageNamed:str];
+    UIImageView * sectionImageView = [[UIImageView alloc]initWithImage:sectionImage1];
+    
+    [sectionImageView setFrame:CGRectMake(15, 5, 50, 20)];
+    [sepImageView setFrame:CGRectMake(70, 10, 230, 11)];
+    
+    [sectionView addSubview:sectionImageView];
+    [sectionView addSubview:sepImageView];
+    return sectionView;
 }
-
-
 
 #pragma mark - Gesture Methods
 -(void)pageSelected:(UITapGestureRecognizer*)gesture{

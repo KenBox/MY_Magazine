@@ -13,7 +13,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self preferredStatusBarStyle];
+
 	self.title = @"About us";
     //导航栏设置
     UIButton * setupBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -30,11 +30,11 @@
     
     //插入背景图片
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
-    imageView.contentMode = UIViewContentModeScaleAspectFill;
-    imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+//    imageView.contentMode = UIViewContentModeScaleAspectFill;
+//    imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     imageView.image = [UIImage imageNamed:@"ver-0.jpg"];
     //ScrollView设置
-    UIScrollView * scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 320, 508)];
+    UIScrollView * scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 320, 504)];
     scrollView.pagingEnabled = YES;
     scrollView.contentSize = CGSizeMake(320,528);
     scrollView.showsHorizontalScrollIndicator = NO;

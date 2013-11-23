@@ -18,6 +18,20 @@
 		BE5A76E618407118006CA6A8 /* CCThumbViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE5A76E418407118006CA6A8 /* CCThumbViewController.xib */; };
 		BE5A76E918407491006CA6A8 /* bg_reader_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = BE5A76E718407491006CA6A8 /* bg_reader_logo.png */; };
 		BE5A76EA18407491006CA6A8 /* bg_reader_logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE5A76E818407491006CA6A8 /* bg_reader_logo@2x.png */; };
+		BE5A76ED18407AAB006CA6A8 /* btn_cmt_compose.png in Resources */ = {isa = PBXBuildFile; fileRef = BE5A76EB18407AAB006CA6A8 /* btn_cmt_compose.png */; };
+		BE5A76EE18407AAB006CA6A8 /* btn_cmt_compose@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE5A76EC18407AAB006CA6A8 /* btn_cmt_compose@2x.png */; };
+		BE5A76FB1840914E006CA6A8 /* bg_bookself_sep.png in Resources */ = {isa = PBXBuildFile; fileRef = BE5A76EF1840914E006CA6A8 /* bg_bookself_sep.png */; };
+		BE5A76FC1840914F006CA6A8 /* bg_bookself_sep@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE5A76F01840914E006CA6A8 /* bg_bookself_sep@2x.png */; };
+		BE5A76FD1840914F006CA6A8 /* bg_bookself_year_2011.png in Resources */ = {isa = PBXBuildFile; fileRef = BE5A76F11840914E006CA6A8 /* bg_bookself_year_2011.png */; };
+		BE5A76FE1840914F006CA6A8 /* bg_bookself_year_2011@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE5A76F21840914E006CA6A8 /* bg_bookself_year_2011@2x.png */; };
+		BE5A76FF1840914F006CA6A8 /* bg_bookself_year_2012.png in Resources */ = {isa = PBXBuildFile; fileRef = BE5A76F31840914E006CA6A8 /* bg_bookself_year_2012.png */; };
+		BE5A77001840914F006CA6A8 /* bg_bookself_year_2012@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE5A76F41840914E006CA6A8 /* bg_bookself_year_2012@2x.png */; };
+		BE5A77011840914F006CA6A8 /* bg_bookself_year_2013.png in Resources */ = {isa = PBXBuildFile; fileRef = BE5A76F51840914E006CA6A8 /* bg_bookself_year_2013.png */; };
+		BE5A77021840914F006CA6A8 /* bg_bookself_year_2013@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE5A76F61840914E006CA6A8 /* bg_bookself_year_2013@2x.png */; };
+		BE5A77031840914F006CA6A8 /* bg_bookself_year_2014.png in Resources */ = {isa = PBXBuildFile; fileRef = BE5A76F71840914E006CA6A8 /* bg_bookself_year_2014.png */; };
+		BE5A77041840914F006CA6A8 /* bg_bookself_year_2014@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE5A76F81840914E006CA6A8 /* bg_bookself_year_2014@2x.png */; };
+		BE5A77051840914F006CA6A8 /* bg_bookself_year_2015.png in Resources */ = {isa = PBXBuildFile; fileRef = BE5A76F91840914E006CA6A8 /* bg_bookself_year_2015.png */; };
+		BE5A77061840914F006CA6A8 /* bg_bookself_year_2015@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE5A76FA1840914E006CA6A8 /* bg_bookself_year_2015@2x.png */; };
 		BE8AFEBA183C612C00323213 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE8AFEB9183C612C00323213 /* Foundation.framework */; };
 		BE8AFEBC183C612C00323213 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE8AFEBB183C612C00323213 /* CoreGraphics.framework */; };
 		BE8AFEBE183C612C00323213 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE8AFEBD183C612C00323213 /* UIKit.framework */; };
@@ -97,6 +111,20 @@
 		BE5A76E418407118006CA6A8 /* CCThumbViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CCThumbViewController.xib; sourceTree = "<group>"; };
 		BE5A76E718407491006CA6A8 /* bg_reader_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_reader_logo.png; sourceTree = "<group>"; };
 		BE5A76E818407491006CA6A8 /* bg_reader_logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_reader_logo@2x.png"; sourceTree = "<group>"; };
+		BE5A76EB18407AAB006CA6A8 /* btn_cmt_compose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_cmt_compose.png; sourceTree = "<group>"; };
+		BE5A76EC18407AAB006CA6A8 /* btn_cmt_compose@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_cmt_compose@2x.png"; sourceTree = "<group>"; };
+		BE5A76EF1840914E006CA6A8 /* bg_bookself_sep.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_bookself_sep.png; sourceTree = "<group>"; };
+		BE5A76F01840914E006CA6A8 /* bg_bookself_sep@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_bookself_sep@2x.png"; sourceTree = "<group>"; };
+		BE5A76F11840914E006CA6A8 /* bg_bookself_year_2011.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_bookself_year_2011.png; sourceTree = "<group>"; };
+		BE5A76F21840914E006CA6A8 /* bg_bookself_year_2011@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_bookself_year_2011@2x.png"; sourceTree = "<group>"; };
+		BE5A76F31840914E006CA6A8 /* bg_bookself_year_2012.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_bookself_year_2012.png; sourceTree = "<group>"; };
+		BE5A76F41840914E006CA6A8 /* bg_bookself_year_2012@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_bookself_year_2012@2x.png"; sourceTree = "<group>"; };
+		BE5A76F51840914E006CA6A8 /* bg_bookself_year_2013.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_bookself_year_2013.png; sourceTree = "<group>"; };
+		BE5A76F61840914E006CA6A8 /* bg_bookself_year_2013@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_bookself_year_2013@2x.png"; sourceTree = "<group>"; };
+		BE5A76F71840914E006CA6A8 /* bg_bookself_year_2014.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_bookself_year_2014.png; sourceTree = "<group>"; };
+		BE5A76F81840914E006CA6A8 /* bg_bookself_year_2014@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_bookself_year_2014@2x.png"; sourceTree = "<group>"; };
+		BE5A76F91840914E006CA6A8 /* bg_bookself_year_2015.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_bookself_year_2015.png; sourceTree = "<group>"; };
+		BE5A76FA1840914E006CA6A8 /* bg_bookself_year_2015@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_bookself_year_2015@2x.png"; sourceTree = "<group>"; };
 		BE8AFEB6183C612C00323213 /* MY_Magazine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MY_Magazine.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE8AFEB9183C612C00323213 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		BE8AFEBB183C612C00323213 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -293,6 +321,20 @@
 		BE8AFEE9183C614A00323213 /* Src */ = {
 			isa = PBXGroup;
 			children = (
+				BE5A76EF1840914E006CA6A8 /* bg_bookself_sep.png */,
+				BE5A76F01840914E006CA6A8 /* bg_bookself_sep@2x.png */,
+				BE5A76F11840914E006CA6A8 /* bg_bookself_year_2011.png */,
+				BE5A76F21840914E006CA6A8 /* bg_bookself_year_2011@2x.png */,
+				BE5A76F31840914E006CA6A8 /* bg_bookself_year_2012.png */,
+				BE5A76F41840914E006CA6A8 /* bg_bookself_year_2012@2x.png */,
+				BE5A76F51840914E006CA6A8 /* bg_bookself_year_2013.png */,
+				BE5A76F61840914E006CA6A8 /* bg_bookself_year_2013@2x.png */,
+				BE5A76F71840914E006CA6A8 /* bg_bookself_year_2014.png */,
+				BE5A76F81840914E006CA6A8 /* bg_bookself_year_2014@2x.png */,
+				BE5A76F91840914E006CA6A8 /* bg_bookself_year_2015.png */,
+				BE5A76FA1840914E006CA6A8 /* bg_bookself_year_2015@2x.png */,
+				BE5A76EB18407AAB006CA6A8 /* btn_cmt_compose.png */,
+				BE5A76EC18407AAB006CA6A8 /* btn_cmt_compose@2x.png */,
 				BEBE913618406D6E00A01A76 /* common_back_button.png */,
 				BEBE913718406D6E00A01A76 /* common_back_button@2x.png */,
 				BEA8DF9E183CAB9A00809C98 /* Cover_126.png */,
@@ -500,30 +542,44 @@
 				BE195F9D183F51C000162B24 /* CCContentViewController.xib in Resources */,
 				BEA8DFA4183CAB9A00809C98 /* Cover_126@2x.png in Resources */,
 				BEBE913918406D6E00A01A76 /* common_back_button@2x.png in Resources */,
+				BE5A77001840914F006CA6A8 /* bg_bookself_year_2012@2x.png in Resources */,
 				BEA8DF8D183CA40500809C98 /* z.png in Resources */,
+				BE5A76FC1840914F006CA6A8 /* bg_bookself_sep@2x.png in Resources */,
+				BE5A77031840914F006CA6A8 /* bg_bookself_year_2014.png in Resources */,
 				BE8AFEC4183C612C00323213 /* InfoPlist.strings in Resources */,
 				BEA8DFA3183CAB9A00809C98 /* Cover_126.png in Resources */,
 				BE8AFECC183C612C00323213 /* Images.xcassets in Resources */,
+				BE5A76FF1840914F006CA6A8 /* bg_bookself_year_2012.png in Resources */,
+				BE5A77021840914F006CA6A8 /* bg_bookself_year_2013@2x.png in Resources */,
 				BEA8DF91183CA65700809C98 /* btn_setting@2x.png in Resources */,
+				BE5A77051840914F006CA6A8 /* bg_bookself_year_2015.png in Resources */,
 				BEA8DF99183CAB7000809C98 /* Icon@2x.png in Resources */,
+				BE5A77061840914F006CA6A8 /* bg_bookself_year_2015@2x.png in Resources */,
+				BE5A77041840914F006CA6A8 /* bg_bookself_year_2014@2x.png in Resources */,
 				BEA8DF80183C6D4C00809C98 /* Stars@2x.png in Resources */,
+				BE5A77011840914F006CA6A8 /* bg_bookself_year_2013.png in Resources */,
 				BEA8DF9B183CAB7000809C98 /* loading_flip_book2.png in Resources */,
 				BE5A76E918407491006CA6A8 /* bg_reader_logo.png in Resources */,
+				BE5A76EE18407AAB006CA6A8 /* btn_cmt_compose@2x.png in Resources */,
 				BEA8DF7C183C6CED00809C98 /* Balloon@2x.png in Resources */,
 				BEA8DF87183C894700809C98 /* bg_wood@2x.png in Resources */,
 				BEA8DF82183C748500809C98 /* bg_carpet@2x.png in Resources */,
+				BE5A76FD1840914F006CA6A8 /* bg_bookself_year_2011.png in Resources */,
 				BEA8DF85183C87D600809C98 /* navbar_logo@2x.png in Resources */,
 				BEA8DF89183C8E1500809C98 /* navbar_logo.png in Resources */,
 				BEA8DF8C183CA40500809C98 /* f.png in Resources */,
 				BEA8DFA6183CAB9A00809C98 /* default.png in Resources */,
 				BEA8DF9A183CAB7000809C98 /* loading_flip_book1.png in Resources */,
 				BE195F97183F516F00162B24 /* RefreshArrow.png in Resources */,
+				BE5A76FE1840914F006CA6A8 /* bg_bookself_year_2011@2x.png in Resources */,
 				BEA8DF7E183C6D3300809C98 /* MenuBackground@2x.png in Resources */,
 				BEBE912C184063DD00A01A76 /* CCCommentViewController.xib in Resources */,
 				BEA8DF98183CAB7000809C98 /* Icon.png in Resources */,
 				BE5A76EA18407491006CA6A8 /* bg_reader_logo@2x.png in Resources */,
+				BE5A76ED18407AAB006CA6A8 /* btn_cmt_compose.png in Resources */,
 				BEA8DF90183CA65700809C98 /* btn_setting.png in Resources */,
 				BEA8DF9D183CAB7000809C98 /* loading_flip_book4.png in Resources */,
+				BE5A76FB1840914E006CA6A8 /* bg_bookself_sep.png in Resources */,
 				BEBE913818406D6E00A01A76 /* common_back_button.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

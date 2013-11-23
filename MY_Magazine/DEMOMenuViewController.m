@@ -48,7 +48,7 @@
     switch (indexPath.row) {
             //操作帮助
         case 0:
-            self.sideMenuViewController.contentViewController = [[UINavigationController alloc] initWithRootViewController:[[DEMOFirstViewController alloc] init]];
+
             [self.sideMenuViewController hideMenuViewController];
             break;
             //清理杂志
@@ -72,6 +72,7 @@
             break;
             //退出设置
         case 4:
+            self.sideMenuViewController.contentViewController = [[UINavigationController alloc] initWithRootViewController:[[DEMOFirstViewController alloc] init]];
             [self.sideMenuViewController hideMenuViewController];
             break;
         default:
@@ -112,7 +113,7 @@
         cell.selectedBackgroundView = [[UIView alloc] init];
     }
     
-    NSArray *titles = @[@"操作帮助", @"清理杂志", @"关于我们", @"意见反馈", @"退出设置"];
+    NSArray *titles = @[@"操作帮助", @"清理杂志", @"关于我们", @"意见反馈", @"返回"];
     NSArray *images = @[@"IconHome", @"IconCalendar", @"IconProfile", @"IconSettings", @"IconEmpty"];
     cell.textLabel.text = titles[indexPath.row];
     cell.imageView.image = [UIImage imageNamed:images[indexPath.row]];

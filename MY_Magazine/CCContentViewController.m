@@ -108,12 +108,12 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    [self preferredStatusBarStyle];
+
     //scrollView显示期刊内容
     CGRect scrollViewFrame = CGRectMake(0, 20, 320, 548);
     scrollView = [[UIScrollView alloc]initWithFrame:scrollViewFrame];
     scrollView.backgroundColor = [UIColor grayColor];
-
+    //Tap手势显示及隐藏Toolbar
     UITapGestureRecognizer * tap1 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(pageSelected:)];
     [scrollView addGestureRecognizer:tap1];
     
@@ -147,6 +147,6 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return UIStatusBarStyleDefault;
+    return UIStatusBarStyleLightContent;
 }
 @end

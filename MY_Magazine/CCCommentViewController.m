@@ -22,6 +22,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        [self setModalTransitionStyle:UIModalTransitionStyleFlipHorizontal];
     }
     return self;
 }
@@ -40,7 +41,7 @@
 }
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return UIStatusBarStyleDefault;
+    return UIStatusBarStyleLightContent;
 }
 
 @end
