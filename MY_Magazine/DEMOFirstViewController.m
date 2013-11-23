@@ -20,7 +20,10 @@
 {
     [super viewDidLoad];
     ContentViewController = [[CCContentViewController alloc]initWithNibName:@"CCContentViewController" bundle:Nil];
-    
+    self.view.layer.borderWidth = 0.5;
+    self.view.layer.borderColor = [UIColor colorWithWhite:0.750 alpha:1.000].CGColor;
+    [self.tableView.tableHeaderView setBackgroundColor:[UIColor clearColor]];
+ 
     //	self.title = @"Magazine Dock";
     [self.view setBackgroundColor:[UIColor clearColor]];
     
@@ -148,7 +151,7 @@
         cell.textLabel.textColor = [UIColor blackColor];
         cell.textLabel.highlightedTextColor = [UIColor lightGrayColor];
     }
-    
+
     //创建手势对象
     UITapGestureRecognizer * tap1 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(pageSelected:)];
     UITapGestureRecognizer * tap2 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(pageSelected:)];

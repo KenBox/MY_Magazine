@@ -10,5 +10,5 @@
 
 @interface CCContentViewController : UIViewController
 @property (nonatomic,strong) UIButton * back;
-
+@property (nonatomic,strong) UIScrollView * scrollView;
 @end
