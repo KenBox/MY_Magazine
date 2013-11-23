@@ -27,6 +27,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    [self preferredStatusBarStyle];
     //导航栏设置
     UIButton * setupBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [setupBtn setImage:[UIImage imageNamed:@"btn_setting"] forState:UIControlStateNormal];
@@ -64,6 +65,10 @@
     [self.sideMenuViewController presentMenuViewController];
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleDefault;
+}
 
 - (void)didReceiveMemoryWarning
 {

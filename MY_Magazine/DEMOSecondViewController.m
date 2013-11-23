@@ -13,6 +13,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self preferredStatusBarStyle];
 	self.title = @"About us";
     //导航栏设置
     UIButton * setupBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -48,5 +49,11 @@
 {
     [self.sideMenuViewController presentMenuViewController];
 }
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleDefault;
+}
+
 
 @end

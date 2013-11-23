@@ -7,8 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface CCContentViewController : UIViewController
+#import "PRPViewTransition.h"
+@class CCCommentViewController,CCThumbViewController;
+@interface CCContentViewController :UIViewController{
+    int loop;
+}
 @property (nonatomic,strong) UIButton * back;
 @property (nonatomic,strong) UIScrollView * scrollView;
+@property (nonatomic, retain)  UIView *currentView;
+@property (nonatomic,strong) CCCommentViewController * CommentViewController;
+@property (nonatomic,strong) CCThumbViewController * ThumbViewController;
 @end

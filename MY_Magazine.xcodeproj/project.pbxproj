@@ -14,6 +14,10 @@
 		BE195F9C183F51C000162B24 /* CCContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE195F9A183F51C000162B24 /* CCContentViewController.m */; };
 		BE195F9D183F51C000162B24 /* CCContentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE195F9B183F51C000162B24 /* CCContentViewController.xib */; };
 		BE26F454183DFCCC006E39D0 /* CCSuggestionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE26F453183DFCCC006E39D0 /* CCSuggestionViewController.m */; };
+		BE5A76E518407118006CA6A8 /* CCThumbViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5A76E318407118006CA6A8 /* CCThumbViewController.m */; };
+		BE5A76E618407118006CA6A8 /* CCThumbViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE5A76E418407118006CA6A8 /* CCThumbViewController.xib */; };
+		BE5A76E918407491006CA6A8 /* bg_reader_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = BE5A76E718407491006CA6A8 /* bg_reader_logo.png */; };
+		BE5A76EA18407491006CA6A8 /* bg_reader_logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE5A76E818407491006CA6A8 /* bg_reader_logo@2x.png */; };
 		BE8AFEBA183C612C00323213 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE8AFEB9183C612C00323213 /* Foundation.framework */; };
 		BE8AFEBC183C612C00323213 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE8AFEBB183C612C00323213 /* CoreGraphics.framework */; };
 		BE8AFEBE183C612C00323213 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE8AFEBD183C612C00323213 /* UIKit.framework */; };
@@ -57,6 +61,13 @@
 		BEA8DFA5183CAB9A00809C98 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEA8DFA0183CAB9A00809C98 /* Default-568h@2x.png */; };
 		BEA8DFA6183CAB9A00809C98 /* default.png in Resources */ = {isa = PBXBuildFile; fileRef = BEA8DFA1183CAB9A00809C98 /* default.png */; };
 		BEA8DFA7183CAB9A00809C98 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEA8DFA2183CAB9A00809C98 /* Default@2x.png */; };
+		BEBE91271840567000A01A76 /* DDScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBE91251840567000A01A76 /* DDScrollViewController.m */; };
+		BEBE912B184063DD00A01A76 /* CCCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBE9129184063DD00A01A76 /* CCCommentViewController.m */; };
+		BEBE912C184063DD00A01A76 /* CCCommentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BEBE912A184063DD00A01A76 /* CCCommentViewController.xib */; };
+		BEBE91331840698000A01A76 /* PRPViewTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBE91301840698000A01A76 /* PRPViewTransition.m */; };
+		BEBE91341840698000A01A76 /* UIView+PRPCompositedView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBE91321840698000A01A76 /* UIView+PRPCompositedView.m */; };
+		BEBE913818406D6E00A01A76 /* common_back_button.png in Resources */ = {isa = PBXBuildFile; fileRef = BEBE913618406D6E00A01A76 /* common_back_button.png */; };
+		BEBE913918406D6E00A01A76 /* common_back_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEBE913718406D6E00A01A76 /* common_back_button@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +92,11 @@
 		BE195F9B183F51C000162B24 /* CCContentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CCContentViewController.xib; sourceTree = "<group>"; };
 		BE26F452183DFCCC006E39D0 /* CCSuggestionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCSuggestionViewController.h; sourceTree = "<group>"; };
 		BE26F453183DFCCC006E39D0 /* CCSuggestionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCSuggestionViewController.m; sourceTree = "<group>"; };
+		BE5A76E218407118006CA6A8 /* CCThumbViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCThumbViewController.h; sourceTree = "<group>"; };
+		BE5A76E318407118006CA6A8 /* CCThumbViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCThumbViewController.m; sourceTree = "<group>"; };
+		BE5A76E418407118006CA6A8 /* CCThumbViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CCThumbViewController.xib; sourceTree = "<group>"; };
+		BE5A76E718407491006CA6A8 /* bg_reader_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_reader_logo.png; sourceTree = "<group>"; };
+		BE5A76E818407491006CA6A8 /* bg_reader_logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_reader_logo@2x.png"; sourceTree = "<group>"; };
 		BE8AFEB6183C612C00323213 /* MY_Magazine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MY_Magazine.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE8AFEB9183C612C00323213 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		BE8AFEBB183C612C00323213 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -135,6 +151,17 @@
 		BEA8DFA0183CAB9A00809C98 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		BEA8DFA1183CAB9A00809C98 /* default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default.png; sourceTree = "<group>"; };
 		BEA8DFA2183CAB9A00809C98 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		BEBE91251840567000A01A76 /* DDScrollViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDScrollViewController.m; sourceTree = "<group>"; };
+		BEBE91261840567000A01A76 /* DDScrollViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDScrollViewController.h; sourceTree = "<group>"; };
+		BEBE9128184063DD00A01A76 /* CCCommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCCommentViewController.h; sourceTree = "<group>"; };
+		BEBE9129184063DD00A01A76 /* CCCommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCCommentViewController.m; sourceTree = "<group>"; };
+		BEBE912A184063DD00A01A76 /* CCCommentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CCCommentViewController.xib; sourceTree = "<group>"; };
+		BEBE912F1840698000A01A76 /* PRPViewTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PRPViewTransition.h; sourceTree = "<group>"; };
+		BEBE91301840698000A01A76 /* PRPViewTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PRPViewTransition.m; sourceTree = "<group>"; };
+		BEBE91311840698000A01A76 /* UIView+PRPCompositedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+PRPCompositedView.h"; sourceTree = "<group>"; };
+		BEBE91321840698000A01A76 /* UIView+PRPCompositedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+PRPCompositedView.m"; sourceTree = "<group>"; };
+		BEBE913618406D6E00A01A76 /* common_back_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = common_back_button.png; sourceTree = "<group>"; };
+		BEBE913718406D6E00A01A76 /* common_back_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "common_back_button@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -266,6 +293,8 @@
 		BE8AFEE9183C614A00323213 /* Src */ = {
 			isa = PBXGroup;
 			children = (
+				BEBE913618406D6E00A01A76 /* common_back_button.png */,
+				BEBE913718406D6E00A01A76 /* common_back_button@2x.png */,
 				BEA8DF9E183CAB9A00809C98 /* Cover_126.png */,
 				BEA8DF9F183CAB9A00809C98 /* Cover_126@2x.png */,
 				BEA8DFA0183CAB9A00809C98 /* Default-568h@2x.png */,
@@ -281,6 +310,8 @@
 				BEA8DF8F183CA65700809C98 /* btn_setting@2x.png */,
 				BEA8DF8A183CA40500809C98 /* f.png */,
 				BEA8DF8B183CA40500809C98 /* z.png */,
+				BE5A76E718407491006CA6A8 /* bg_reader_logo.png */,
+				BE5A76E818407491006CA6A8 /* bg_reader_logo@2x.png */,
 				BEA8DF88183C8E1500809C98 /* navbar_logo.png */,
 				BEA8DF86183C894700809C98 /* bg_wood@2x.png */,
 				BEA8DF84183C87D600809C98 /* navbar_logo@2x.png */,
@@ -311,6 +342,8 @@
 			isa = PBXGroup;
 			children = (
 				BE195F9B183F51C000162B24 /* CCContentViewController.xib */,
+				BEBE912A184063DD00A01A76 /* CCCommentViewController.xib */,
+				BE5A76E418407118006CA6A8 /* CCThumbViewController.xib */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -328,6 +361,10 @@
 				BE26F453183DFCCC006E39D0 /* CCSuggestionViewController.m */,
 				BE195F99183F51C000162B24 /* CCContentViewController.h */,
 				BE195F9A183F51C000162B24 /* CCContentViewController.m */,
+				BEBE9128184063DD00A01A76 /* CCCommentViewController.h */,
+				BEBE9129184063DD00A01A76 /* CCCommentViewController.m */,
+				BE5A76E218407118006CA6A8 /* CCThumbViewController.h */,
+				BE5A76E318407118006CA6A8 /* CCThumbViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -335,6 +372,9 @@
 		BE8AFEEF183C61BD00323213 /* Others */ = {
 			isa = PBXGroup;
 			children = (
+				BEBE91351840698900A01A76 /* ScrollViewTransition */,
+				BEBE91251840567000A01A76 /* DDScrollViewController.m */,
+				BEBE91261840567000A01A76 /* DDScrollViewController.h */,
 				BE195F9E183F7D5300162B24 /* PullToRefresh */,
 				BEA8DF71183C695B00809C98 /* RESide */,
 				BE8AFF07183C64C500323213 /* GdataXMLNode */,
@@ -362,6 +402,18 @@
 				BEA8DF6D183C695300809C98 /* UIViewController+RESideMenu.m */,
 			);
 			name = RESide;
+			sourceTree = "<group>";
+		};
+		BEBE91351840698900A01A76 /* ScrollViewTransition */ = {
+			isa = PBXGroup;
+			children = (
+				BEBE912F1840698000A01A76 /* PRPViewTransition.h */,
+				BEBE91301840698000A01A76 /* PRPViewTransition.m */,
+				BEBE91311840698000A01A76 /* UIView+PRPCompositedView.h */,
+				BEBE91321840698000A01A76 /* UIView+PRPCompositedView.m */,
+			);
+			name = ScrollViewTransition;
+			path = MY_Magazine;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -443,9 +495,11 @@
 				BE195F98183F516F00162B24 /* RefreshArrow@2x.png in Resources */,
 				BEA8DFA7183CAB9A00809C98 /* Default@2x.png in Resources */,
 				BEA8DF9C183CAB7000809C98 /* loading_flip_book3.png in Resources */,
+				BE5A76E618407118006CA6A8 /* CCThumbViewController.xib in Resources */,
 				BEA8DFA5183CAB9A00809C98 /* Default-568h@2x.png in Resources */,
 				BE195F9D183F51C000162B24 /* CCContentViewController.xib in Resources */,
 				BEA8DFA4183CAB9A00809C98 /* Cover_126@2x.png in Resources */,
+				BEBE913918406D6E00A01A76 /* common_back_button@2x.png in Resources */,
 				BEA8DF8D183CA40500809C98 /* z.png in Resources */,
 				BE8AFEC4183C612C00323213 /* InfoPlist.strings in Resources */,
 				BEA8DFA3183CAB9A00809C98 /* Cover_126.png in Resources */,
@@ -454,6 +508,7 @@
 				BEA8DF99183CAB7000809C98 /* Icon@2x.png in Resources */,
 				BEA8DF80183C6D4C00809C98 /* Stars@2x.png in Resources */,
 				BEA8DF9B183CAB7000809C98 /* loading_flip_book2.png in Resources */,
+				BE5A76E918407491006CA6A8 /* bg_reader_logo.png in Resources */,
 				BEA8DF7C183C6CED00809C98 /* Balloon@2x.png in Resources */,
 				BEA8DF87183C894700809C98 /* bg_wood@2x.png in Resources */,
 				BEA8DF82183C748500809C98 /* bg_carpet@2x.png in Resources */,
@@ -464,9 +519,12 @@
 				BEA8DF9A183CAB7000809C98 /* loading_flip_book1.png in Resources */,
 				BE195F97183F516F00162B24 /* RefreshArrow.png in Resources */,
 				BEA8DF7E183C6D3300809C98 /* MenuBackground@2x.png in Resources */,
+				BEBE912C184063DD00A01A76 /* CCCommentViewController.xib in Resources */,
 				BEA8DF98183CAB7000809C98 /* Icon.png in Resources */,
+				BE5A76EA18407491006CA6A8 /* bg_reader_logo@2x.png in Resources */,
 				BEA8DF90183CA65700809C98 /* btn_setting.png in Resources */,
 				BEA8DF9D183CAB7000809C98 /* loading_flip_book4.png in Resources */,
+				BEBE913818406D6E00A01A76 /* common_back_button.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -488,16 +546,21 @@
 				BE8AFF09183C650C00323213 /* main.m in Sources */,
 				BE8AFF08183C650700323213 /* CCAppDelegate.m in Sources */,
 				BE26F454183DFCCC006E39D0 /* CCSuggestionViewController.m in Sources */,
+				BEBE91271840567000A01A76 /* DDScrollViewController.m in Sources */,
 				BE8AFF06183C64BE00323213 /* GDataXMLNode.m in Sources */,
 				BEA8DF6F183C695300809C98 /* RESideMenu.m in Sources */,
+				BEBE91331840698000A01A76 /* PRPViewTransition.m in Sources */,
 				BE195F9C183F51C000162B24 /* CCContentViewController.m in Sources */,
 				BEA8DF79183C6B1500809C98 /* DEMOMenuViewController.m in Sources */,
 				BEA8DF7A183C6B1500809C98 /* DEMOSecondViewController.m in Sources */,
+				BEBE91341840698000A01A76 /* UIView+PRPCompositedView.m in Sources */,
 				BE195F95183F516F00162B24 /* EGORefreshTableHeaderView.m in Sources */,
 				BEA8DF6E183C695300809C98 /* RECommonFunctions.m in Sources */,
 				BEA8DF78183C6B1500809C98 /* DEMOFirstViewController.m in Sources */,
 				BE195F96183F516F00162B24 /* PullToRefreshViewController.m in Sources */,
+				BE5A76E518407118006CA6A8 /* CCThumbViewController.m in Sources */,
 				BEA8DF70183C695300809C98 /* UIViewController+RESideMenu.m in Sources */,
+				BEBE912B184063DD00A01A76 /* CCCommentViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
