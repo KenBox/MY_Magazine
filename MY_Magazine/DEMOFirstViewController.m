@@ -45,40 +45,13 @@
     setupBtn.frame = CGRectMake(0, 0, 25, 25);
     UIBarButtonItem * btn = [[UIBarButtonItem alloc]initWithCustomView:setupBtn];
     self.navigationItem.leftBarButtonItem = btn;
-    //    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
-    //                                                                             style:UIBarButtonItemStylePlain
-    //                                                                            target:self
-    //                                                                            action:@selector(showMenu)];
-    
+
     //导航栏的图片设置
     UIImageView * bgImg = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 140, 30)];
     [bgImg setImage:[UIImage imageNamed:@"navbar_logo"]];
     self.navigationItem.titleView = bgImg;
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"bg_wood"] forBarMetrics:UIBarMetricsDefault];
     
-    
-    /*
-     //背景图片设置
-     UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
-     //    UIImageView * imageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"bg_carpet"]];
-     imageView.contentMode = UIViewContentModeScaleAspectFill;
-     imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-     imageView.image = [UIImage imageNamed:@"bg_carpet"];
-     [self.view insertSubview:imageView atIndex:0];
-     
-     //添加TableView
-     CGFloat navHeight =  self.navigationController.navigationBar.frame.size.height;
-     //    CGRect tableFrame = CGRectMake(0, (navHeight/2+30), 320,( 1116-navHeight/2));
-     CGRect tableFrame = CGRectMake(0, navHeight/2-20 , 320, 528);
-     myTable = [[UITableView alloc]initWithFrame:tableFrame style:UITableViewStyleGrouped];
-     [myTable setBackgroundColor:[UIColor clearColor]];
-     myTable.delegate = self;
-     myTable.dataSource =self;
-     
-     
-     myTable.backgroundColor = [UIColor clearColor];
-     [self.view addSubview:myTable];
-     */
 }
 
 - (void)showMenu
@@ -189,9 +162,6 @@
     UILabel * rightLabel = [[UILabel alloc]initWithFrame:rightLabelFrame];
     rightLabel.text = @"11月期刊";
     
-    
-    //    NSArray *titles = @[@"操作帮助", @"清理杂志", @"关于我们", @"意见反馈", @"退出设置"];
-    //    cell.textLabel.text = titles[indexPath.row];
     [cell.contentView addSubview:left];
     [cell.contentView addSubview:right];
     [cell.contentView addSubview:leftLabel];

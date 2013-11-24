@@ -12,6 +12,5 @@
 @class CCContentViewController;
 @interface DEMOFirstViewController : PullToRefreshViewController
 
-//@property (nonatomic,retain) UITableView * myTable;
 @property (nonatomic,strong) CCContentViewController * ContentViewController;
 @end
