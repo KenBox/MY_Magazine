@@ -83,13 +83,26 @@
 }
 
 #pragma mark - Gesture Methods
+
 -(void)pageSelected:(UITapGestureRecognizer *)sender{
+    //增加隐藏toolbar动画
+    CATransition *trans=[CATransition animation];
+    trans.type=kCATransitionPush;
+    
+    trans.duration=0.5;
+
     if (isToolbarHidden) {
         isToolbarHidden = NO;
+        trans.subtype=kCATransitionFromTop;
+        [Toolbar.layer addAnimation:trans forKey:@"transition"];
+        [Toolbar setHidden:isToolbarHidden];
     }else if(!isToolbarHidden){
         isToolbarHidden = YES;
+        trans.subtype=kCATransitionFromBottom;
+        [Toolbar.layer addAnimation:trans forKey:@"transition"];
+        [Toolbar setHidden:isToolbarHidden];
     }
-    [Toolbar setHidden:isToolbarHidden];
+
 }
 
 #pragma mark - LifeCycle Methods
