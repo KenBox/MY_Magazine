@@ -11,56 +11,110 @@
 #import "CCMagazineDock.h"
 #import "CCNetworking.h"
 
-//#define _SECTIONNUM 2
-//#define _ROWINSECTION 5
+#define _HOSTURL @"http://localhost:8080/naill/upload/"
 
 @interface DEMOFirstViewController ()
 @property (nonatomic,retain) CCNetworking * netManager;
-@property (nonatomic,retain) NSMutableArray * ArrayForSectionHeader;
+@property (nonatomic,retain) NSMutableArray * ArrayForSectionHeader;//封装了2011-2015年的SectionHeader图片
 @property (nonatomic,retain) NSMutableArray * DockArray;
-//@property (nonatomic,retain) NSArray * sectionArr;
+
 @end
 
 @implementation DEMOFirstViewController
 @synthesize ContentViewController,ArrayForSectionHeader,DockArray,netManager;
 
+
+
+#pragma mark - 按年份封装xml数据
+//重新封装数据，一年的数据为一个Section，请配合加载图片至ArrayForSectionHeader集合中
 -(void)analyseSrc:(NSArray *)array{
     if ([DockArray count]) {
         [DockArray removeAllObjects];
     }
 
     //每年的数据
+    NSMutableArray * year2014Data = [[NSMutableArray alloc]init];
     NSMutableArray * year2013Data = [[NSMutableArray alloc]init];
     NSMutableArray * year2012Data = [[NSMutableArray alloc]init];
+    NSMutableArray * year2015Data = [[NSMutableArray alloc]init];
     for (CCMagazineDock * obj in array) {
         //封装2013年的所有数据
         if([obj.Ppath hasPrefix:@"2013"]){
             [year2013Data addObject:obj];
-            NSLog(@"ppath hasprefix 2013");
+            NSLog(@"Ppath hasprefix 2013");
         }else if([obj.Ppath hasPrefix:@"2012"]){
             [year2012Data addObject:obj];
-            NSLog(@"ppath hasprefix 2012");
+            NSLog(@"Ppath hasprefix 2012");
+        }else if ([obj.Ppath hasPrefix:@"2014"]){
+            [year2014Data addObject:obj];
+            NSLog(@"Ppath hasprefix 2014");
+        }else if ([obj.Ppath hasPrefix:@"2015"]){
+            [year2015Data addObject:obj];
+            NSLog(@"Ppath hasprefix 2015");
         }
     }
     
-    [DockArray addObject:year2013Data];
-    [DockArray addObject:year2012Data];
-    NSLog(@"dockArray count = %d",[DockArray count]);
+
+    //若year201xData数组非空则加入集合中
+    if ([year2015Data count]) {
+        [self sortArrayByMonth:year2015Data];
+        [DockArray addObject:year2015Data];
+    }
+    if ([year2014Data count]) {
+        [self sortArrayByMonth:year2014Data];
+        [DockArray addObject:year2014Data];
+    }
+    if ([year2012Data count]) {
+        [self sortArrayByMonth:year2013Data];
+        [DockArray addObject:year2013Data];
+    }
+    if ([year2013Data count]) {
+        [self sortArrayByMonth:year2012Data];
+        [DockArray addObject:year2012Data];
+    }
+    NSLog(@"DockArray count = %d",[DockArray count]);
 }
+//对期刊月份经行排序
+-(void)sortArrayByMonth:(NSMutableArray *)Array{
+    for (CCMagazineDock * obj in Array) {
+        NSString * path = [NSString stringWithString:obj.Ppath];
+        NSArray * pathArray = [path componentsSeparatedByString:@"/"];
+        NSString * version = [pathArray objectAtIndex:2];
+        NSArray * arr = [version componentsSeparatedByString:@"_"];
+        NSString * res = [arr componentsJoinedByString:@"."];
+        obj.MonthVersion = [NSString stringWithString:res];
+//        NSLog(@"%@",obj.MonthVersion);
+    }
+    //对Data数据按月及期刊号进行排序
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"MonthVersion" ascending:NO];//其中，MonthVersion为数组中的对象的属性，这个针对数组中存放对象比较更简洁方便
+    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:&sortDescriptor count:1];
+    [Array sortUsingDescriptors:sortDescriptors];
+    
+}
+
+
+#pragma mark - LifeCycle
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    //	self.title = @"Magazine Dock";
+    [self.view setBackgroundColor:[UIColor clearColor]];
+    self.view.layer.borderWidth = 0.5;
+    self.view.layer.borderColor = [UIColor colorWithWhite:0.750 alpha:1.000].CGColor;
+    
+
     NSLog(@"view did load");
     netManager = [[CCNetworking alloc]init];
     DockArray = [[NSMutableArray alloc]init];
-
+    [netManager checkNetwork];
     //获得解析完毕的数据
     NSArray * array = [[NSMutableArray alloc]initWithArray:[netManager useDOMXMLParser]];
-    //再封装到自己的DockArray中
+    //封装到自己的DockArray中
     [self analyseSrc:array];
+    
+    //取消TableView的点击效果
     [self.tableView setAllowsSelection:NO];
-    
-    
+    [self.tableView.tableHeaderView setBackgroundColor:[UIColor clearColor]];
     //SectionHeader Data
     ArrayForSectionHeader = [NSMutableArray arrayWithCapacity:[DockArray count]];
     for (int i = [DockArray count] ; i>0; i--) {
@@ -70,14 +124,8 @@
 
     
     ContentViewController = [[CCContentViewController alloc]initWithNibName:@"CCContentViewController" bundle:Nil];
-    self.view.layer.borderWidth = 0.5;
-    self.view.layer.borderColor = [UIColor colorWithWhite:0.750 alpha:1.000].CGColor;
-    [self.tableView.tableHeaderView setBackgroundColor:[UIColor clearColor]];
- 
-    //	self.title = @"Magazine Dock";
-    [self.view setBackgroundColor:[UIColor clearColor]];
     
-    
+    //添加设置按钮的图片及点击事件
     UIButton * setupBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [setupBtn setImage:[UIImage imageNamed:@"btn_setting"] forState:UIControlStateNormal];
     [setupBtn addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
@@ -107,7 +155,6 @@
 
 #pragma mark - 下拉更新table数据
 -(void) doRefresh {
-    
     double delayInSeconds = 2.0;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -168,6 +215,7 @@
     return [DockArray count];
 }
 
+//通过计算得出Section需要分配的行数
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)sectionIndex
 {
 
@@ -178,40 +226,29 @@
     }else if([arr count]%2 ==1){
         RowNumber = [arr count]/2 + 1;
     }
-    
-//    NSLog(@"RowNumber = %ld",(long)RowNumber);
     return RowNumber;
-
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"生成一个CELL");
     static NSString *cellIdentifier = @"Cell";
     
-    NSInteger Section = indexPath.section;
-    NSInteger Row = indexPath.row;
-    NSLog(@"Section = %d ,Row = %d",Section,Row);
-    
-    
-
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-        cell.backgroundColor = [UIColor clearColor];
-        cell.textLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:16];
-        cell.textLabel.textColor = [UIColor blackColor];
-        cell.textLabel.highlightedTextColor = [UIColor lightGrayColor];
     }
-    //从DockArray中获取ThumbImage地址
-    //左侧视图的FontCoverURL
-    //创建临时变量用来取出URL
-//    sectionArr = [NSArray arrayWithArray:[DockArray objectAtIndex:Section]];
-    int _row =[[DockArray objectAtIndex:Section] count];
+    cell.backgroundColor = [UIColor clearColor];
+    //每次取出队列都需要清空子视图
+    for (UIView* view in [cell.contentView subviews]) {
+        [view removeFromSuperview];
+    }
+    NSInteger Section = indexPath.section;
+    NSInteger Row = indexPath.row;
+    int _row =[[DockArray objectAtIndex:Section] count];//_row = numberOfRowsInSection
+    //当indexPath.row * 2 < 总行号时，从左侧开始创建imageView和期刊号Label
     if (Row*2 < _row) {
-        NSLog(@"生成左侧视图");
         CCMagazineDock * dock = [[DockArray objectAtIndex:Section] objectAtIndex:Row*2];
         //获得本地图片地址
         NSString * path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
@@ -225,6 +262,7 @@
         //左侧视窗
         CGRect leftFrame = CGRectMake(cell.bounds.origin.x+30, cell.bounds.origin.y+20, 108, 172);
         UIImageView * left = [[UIImageView alloc]initWithFrame:leftFrame];
+        [left setClipsToBounds:YES];
         [left setImage:leftimg];
         [left setUserInteractionEnabled:YES];
         [left addGestureRecognizer:tap1];
@@ -239,13 +277,12 @@
         leftLabel.text = [NSString stringWithFormat:@"期刊号:%@",substr];
         [cell.contentView addSubview:left];
         [cell.contentView addSubview:leftLabel];
-        
+        //根据每年数据需要创建右侧视图
+        //当indexPath.row * 2+1 < 总行号时，创建右侧imageView和期刊号Label视图
         if(Row*2+1 < _row){
-            NSLog(@"生成右侧视图");
             UITapGestureRecognizer * tap2 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(pageSelected:)];
             //获得右侧视图的本地URL
             CCMagazineDock * dock2 = [[DockArray objectAtIndex:Section] objectAtIndex:Row*2+1];
-            
             NSString * path2 = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
             path2 = [path2 stringByAppendingPathComponent:dock2.FrontCover];
             NSData * imgdata2 = [NSData dataWithContentsOfFile:path2];
@@ -269,15 +306,11 @@
         }
     }
 
-
-//    NSLog(@"FrontCoverURL = %@",dock.FrontCoverURL);
-    
-    
     return cell;
 }
 
-//通过这个方法设置section的各项属性
 
+//通过这个方法设置sectionHeader的各项属性(背景图片,显示图片).
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UIView * sectionView = [[UIView alloc]init];
@@ -302,20 +335,46 @@
  
 
 #pragma mark - Gesture Methods
+//Tap手势跳转至期刊内容页
 -(void)pageSelected:(UITapGestureRecognizer*)gesture{
     CGPoint point = [gesture locationInView:self.tableView];
     NSIndexPath *selectedIndexPath = [self.tableView indexPathForRowAtPoint:point];
     NSInteger row = selectedIndexPath.row;
     NSInteger section = selectedIndexPath.section;
 
+    //通过CGPoint.x坐标分辨点击的期刊在左侧还是右侧
     if (point.x<160) {
         NSLog(@"点击了左边section = %d row = %d point.x = %f,point.y = %f",section,row,point.x,point.y);
-        
+        NSInteger indexInDockArray = row * 2;//在DockArray/Year201xData中的位置,用来获得内容页面的xml地址
+        //生成ContentXML下载路径
+        NSString * leftXMLPath = [self getContentXMLPathWith:section And:indexInDockArray];
+        NSURL * url = [NSURL URLWithString:leftXMLPath];
+        //1.得到沙箱中的Documents目录路径
+        NSString * path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        //2.指定下载到沙箱中的文件名称ContentList.xml
+        path = [path stringByAppendingPathComponent:@"ContentList.xml"];
+        [netManager downloadByURL:url WithPath:path];
     }else{
         NSLog(@"点击了右边section = %d row = %d point.x = %f,point.y = %f",section,row,point.x,point.y);
+        NSInteger indexInDockArray = row * 2 + 1 ;//在DockArray/Year201xData中的位置
+        //生成ContentXML下载路径
+        NSString * rightXMLPath = [self getContentXMLPathWith:section And:indexInDockArray];
+        NSURL * url = [NSURL URLWithString:rightXMLPath];
+        //1.得到沙箱中的Documents目录路径
+        NSString * path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        //2.指定下载到沙箱中的文件名称ContentList.xml
+        path = [path stringByAppendingPathComponent:@"ContentList.xml"];
+        [netManager downloadByURL:url WithPath:path];
     }
     [self presentViewController:ContentViewController animated:YES completion:Nil];
 }
+//拼接xml下载路径
+-(NSString *)getContentXMLPathWith:(NSInteger)section And:(NSInteger)indexInDockArray{
+    CCMagazineDock * obj =[[DockArray objectAtIndex:section] objectAtIndex:indexInDockArray];
+    NSString * str = _HOSTURL;
+    NSString * ContentXMLPath = [NSString stringWithFormat:@"%@%@",str,obj.Ppath];
+    return ContentXMLPath;
 
+}
 
 @end

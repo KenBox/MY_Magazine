@@ -13,15 +13,14 @@
 @property (nonatomic,strong) NSString * RequestXMLPath;
 @property (nonatomic,strong) CCMagazineDock * magazineDock;
 @property (nonatomic,strong) NSMutableArray * magazineDockArr;
-//书店Info
-@property (nonatomic, strong) NSMutableArray *storeMap;
-@property (nonatomic, strong) NSMutableArray *selectedYears; //解析出来的年份（切换年份用）
-@property (strong, nonatomic) NSMutableArray *magazinesInfoArr;
-@property (strong, nonatomic) NSMutableDictionary *magazinesDic;
+@property (nonatomic,retain) NSURL * ListURL;//存放List.xml服务器URL
+@property (nonatomic,retain) NSString * LocalListPath;//存放List.xml本地路径
 
 -(void)checkNetwork;
--(void)checkListXMLexist;
+-(BOOL)checkListXMLexist;
+-(BOOL)checkLocalImagesExist:(NSString *)imageName;
 -(void)downloadXMLList;
+-(void)downloadByURL:(NSURL *)url WithPath:(NSString *)path;//根据url下载文件
 -(NSMutableArray *)useDOMXMLParser;
 
 @end

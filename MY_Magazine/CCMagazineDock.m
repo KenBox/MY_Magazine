@@ -9,5 +9,5 @@
 #import "CCMagazineDock.h"
 
 @implementation CCMagazineDock
-@synthesize Periodical,WholePeriodical,Synopsis,Title,FrontCover,Ppath,FrontCoverURL,PpathXMLURL;
+@synthesize Periodical,WholePeriodical,Synopsis,Title,FrontCover,Ppath,FrontCoverURL,PpathXMLURL,MonthVersion;
 @end

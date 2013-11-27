@@ -17,7 +17,6 @@
 @property (nonatomic,retain) NSString * FrontCover;
 @property (nonatomic,retain) NSString * Ppath;
 @property (nonatomic,retain) NSString * FrontCoverURL;
-@property (nonatomic,retain) NSString * PpathXMLURL;
-
-
+@property (nonatomic,retain) NSString * PpathXMLURL;//存放内容页xml地址
+@property (nonatomic,retain) NSString * MonthVersion;//存放当月刊号
 @end

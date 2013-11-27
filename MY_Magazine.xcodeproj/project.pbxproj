@@ -43,8 +43,6 @@
 		BE49D2471844B82F009037E2 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE49D2461844B82F009037E2 /* MobileCoreServices.framework */; };
 		BE49D2491844B83B009037E2 /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BE49D2481844B83B009037E2 /* libz.1.2.5.dylib */; };
 		BE49D24C1844BB08009037E2 /* CCNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = BE49D24B1844BB08009037E2 /* CCNetworking.m */; };
-		BE49D24F1844C96D009037E2 /* XMLData.m in Sources */ = {isa = PBXBuildFile; fileRef = BE49D24E1844C96D009037E2 /* XMLData.m */; };
-		BE49D2531845874F009037E2 /* CCXMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = BE49D2521845874F009037E2 /* CCXMLParser.m */; };
 		BE49D25C1845997B009037E2 /* FileOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = BE49D2551845997B009037E2 /* FileOperation.m */; };
 		BE49D25D1845997B009037E2 /* GSAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = BE49D2571845997B009037E2 /* GSAlert.m */; };
 		BE49D25E1845997B009037E2 /* GSBaseResource.m in Sources */ = {isa = PBXBuildFile; fileRef = BE49D2591845997B009037E2 /* GSBaseResource.m */; };
@@ -209,10 +207,6 @@
 		BE49D2481844B83B009037E2 /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = usr/lib/libz.1.2.5.dylib; sourceTree = SDKROOT; };
 		BE49D24A1844BB08009037E2 /* CCNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCNetworking.h; sourceTree = "<group>"; };
 		BE49D24B1844BB08009037E2 /* CCNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCNetworking.m; sourceTree = "<group>"; };
-		BE49D24D1844C96D009037E2 /* XMLData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLData.h; sourceTree = "<group>"; };
-		BE49D24E1844C96D009037E2 /* XMLData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLData.m; sourceTree = "<group>"; };
-		BE49D2511845874F009037E2 /* CCXMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCXMLParser.h; sourceTree = "<group>"; };
-		BE49D2521845874F009037E2 /* CCXMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCXMLParser.m; sourceTree = "<group>"; };
 		BE49D2541845997B009037E2 /* FileOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileOperation.h; sourceTree = "<group>"; };
 		BE49D2551845997B009037E2 /* FileOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileOperation.m; sourceTree = "<group>"; };
 		BE49D2561845997B009037E2 /* GSAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSAlert.h; sourceTree = "<group>"; };
@@ -612,8 +606,6 @@
 				BE49D25B1845997B009037E2 /* GSResourcePath.m */,
 				BE49D24A1844BB08009037E2 /* CCNetworking.h */,
 				BE49D24B1844BB08009037E2 /* CCNetworking.m */,
-				BE49D2511845874F009037E2 /* CCXMLParser.h */,
-				BE49D2521845874F009037E2 /* CCXMLParser.m */,
 			);
 			name = CustomerBaseClass;
 			sourceTree = "<group>";
@@ -623,8 +615,6 @@
 			children = (
 				BE49D1ED18448C81009037E2 /* CCMagazineDock.h */,
 				BE49D1EE18448C81009037E2 /* CCMagazineDock.m */,
-				BE49D24D1844C96D009037E2 /* XMLData.h */,
-				BE49D24E1844C96D009037E2 /* XMLData.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -868,14 +858,12 @@
 				BEF367F518419896006D0FBF /* LeavesCache.m in Sources */,
 				BE49D2401844B624009037E2 /* ASIS3Request.m in Sources */,
 				BE26F454183DFCCC006E39D0 /* CCSuggestionViewController.m in Sources */,
-				BE49D2531845874F009037E2 /* CCXMLParser.m in Sources */,
 				BE49D23F1844B624009037E2 /* ASIS3ObjectRequest.m in Sources */,
 				BE49D2341844B624009037E2 /* ASICloudFilesCDNRequest.m in Sources */,
 				BE8AFF06183C64BE00323213 /* GDataXMLNode.m in Sources */,
 				BE49D23B1844B624009037E2 /* Reachability.m in Sources */,
 				BE49D22D1844B624009037E2 /* ASIDataDecompressor.m in Sources */,
 				BEF367FA18419980006D0FBF /* Utilities.m in Sources */,
-				BE49D24F1844C96D009037E2 /* XMLData.m in Sources */,
 				BE49D2381844B624009037E2 /* ASICloudFilesObject.m in Sources */,
 				BE49D23D1844B624009037E2 /* ASIS3BucketObject.m in Sources */,
 				BEA8DF6F183C695300809C98 /* RESideMenu.m in Sources */,
