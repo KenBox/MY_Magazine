@@ -13,4 +13,6 @@
 @interface DEMOFirstViewController : PullToRefreshViewController
 
 @property (nonatomic,strong) CCContentViewController * ContentViewController;
+
+-(void)analyseSrc:(NSArray *)array;
 @end

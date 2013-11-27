@@ -75,7 +75,6 @@
 #pragma mark - Gesture Methods
 
 -(void)pageSelected:(UITapGestureRecognizer *)sender{
-    NSLog(@"%@",sender.class);
     //增加隐藏toolbar动画
     CATransition *trans=[CATransition animation];
     trans.type=kCATransitionPush;
@@ -84,7 +83,7 @@
 
     if (isToolbarHidden) {
         isToolbarHidden = NO;
-        [Toolbar isUserInteractionEnabled];
+//        [Toolbar isUserInteractionEnabled];
         trans.subtype=kCATransitionFromTop;
         [Toolbar.layer addAnimation:trans forKey:@"transition"];
         [Toolbar setHidden:isToolbarHidden];
@@ -94,7 +93,6 @@
         [Toolbar.layer addAnimation:trans forKey:@"transition"];
         [Toolbar setHidden:isToolbarHidden];
     }
-
 }
 
 #pragma mark - LifeCycle Methods
@@ -109,7 +107,6 @@
                    [UIImage imageNamed:@"Balloon"],
                    [UIImage imageNamed:@"bg_carpet"],
                    nil];
-
     }
     return self;
 }
@@ -117,12 +114,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    
     // Do any additional setup after loading the view from its nib.
-    UIApplication * app = [UIApplication sharedApplication];
-    [app setStatusBarHidden:YES];
-    
-    
-    Toolbar=[[UIToolbar alloc]initWithFrame:CGRectMake(0, 520, 320, 50)];
+    Toolbar=[[UIToolbar alloc]initWithFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height-40, [UIScreen mainScreen].bounds.size.width, 40)];
+    [Toolbar sizeToFit];
+
     //设置toolbar风格
     [Toolbar setBarStyle:UIBarStyleBlackTranslucent];
     
@@ -165,9 +162,9 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    return UIStatusBarStyleDefault;
+//设置隐藏状态栏
+-(BOOL)prefersStatusBarHidden{
+    return YES;
 }
 
 @end

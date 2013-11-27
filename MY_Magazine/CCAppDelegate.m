@@ -10,12 +10,19 @@
 #import "DEMOMenuViewController.h"
 #import "DEMOFirstViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "CCNetworking.h"
 
 @implementation CCAppDelegate
+@synthesize networkingMananger;
 
-
+#pragma mark - Networking#pragma mark - LifeCycle
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+
+    //检查网络状况及List.xml是否存在，如果不存在则到服务器下载一个
+    networkingMananger = [[CCNetworking alloc]init];
+    [networkingMananger checkNetwork];
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:[[DEMOFirstViewController alloc] init]];
@@ -30,7 +37,8 @@
     
     //开场动画
     UIImageView* campFireView = [[UIImageView alloc] initWithFrame:CGRectMake(60, 240, 200, 180)];
-    
+    CGPoint screenCenter = CGPointMake([UIScreen mainScreen].bounds.size.width/2,[UIScreen mainScreen].bounds.size.height/2+45);
+    campFireView.center = screenCenter;
     // load all the frames of our animation
     campFireView.animationImages = [NSArray arrayWithObjects:
                                     [UIImage imageNamed:@"loading_flip_book1"],
@@ -64,7 +72,6 @@
     [self.window addSubview:rView];//add 到window
     
     [self performSelector:@selector(TheAnimation) withObject:nil afterDelay:1];//2秒后执行TheAnimation
-    
     
     
     return YES;

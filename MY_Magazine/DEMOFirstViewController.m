@@ -8,23 +8,62 @@
 
 #import "DEMOFirstViewController.h"
 #import "CCContentViewController.h"
-#define _SECTIONNUM 2
+#import "CCMagazineDock.h"
+#import "CCNetworking.h"
+
+//#define _SECTIONNUM 2
+//#define _ROWINSECTION 5
 
 @interface DEMOFirstViewController ()
+@property (nonatomic,retain) CCNetworking * netManager;
 @property (nonatomic,retain) NSMutableArray * ArrayForSectionHeader;
-
+@property (nonatomic,retain) NSMutableArray * DockArray;
+//@property (nonatomic,retain) NSArray * sectionArr;
 @end
 
 @implementation DEMOFirstViewController
-@synthesize ContentViewController,ArrayForSectionHeader;
+@synthesize ContentViewController,ArrayForSectionHeader,DockArray,netManager;
 
+-(void)analyseSrc:(NSArray *)array{
+    if ([DockArray count]) {
+        [DockArray removeAllObjects];
+    }
+
+    //每年的数据
+    NSMutableArray * year2013Data = [[NSMutableArray alloc]init];
+    NSMutableArray * year2012Data = [[NSMutableArray alloc]init];
+    for (CCMagazineDock * obj in array) {
+        //封装2013年的所有数据
+        if([obj.Ppath hasPrefix:@"2013"]){
+            [year2013Data addObject:obj];
+            NSLog(@"ppath hasprefix 2013");
+        }else if([obj.Ppath hasPrefix:@"2012"]){
+            [year2012Data addObject:obj];
+            NSLog(@"ppath hasprefix 2012");
+        }
+    }
+    
+    [DockArray addObject:year2013Data];
+    [DockArray addObject:year2012Data];
+    NSLog(@"dockArray count = %d",[DockArray count]);
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    NSLog(@"view did load");
+    netManager = [[CCNetworking alloc]init];
+    DockArray = [[NSMutableArray alloc]init];
 
+    //获得解析完毕的数据
+    NSArray * array = [[NSMutableArray alloc]initWithArray:[netManager useDOMXMLParser]];
+    //再封装到自己的DockArray中
+    [self analyseSrc:array];
+    [self.tableView setAllowsSelection:NO];
+    
+    
     //SectionHeader Data
-    ArrayForSectionHeader = [NSMutableArray arrayWithCapacity:_SECTIONNUM];
-    for (int i = _SECTIONNUM ; i>0; i--) {
+    ArrayForSectionHeader = [NSMutableArray arrayWithCapacity:[DockArray count]];
+    for (int i = [DockArray count] ; i>0; i--) {
         NSString * str = [NSString stringWithFormat:@"bg_bookself_year_201%d",i+1];
         [ArrayForSectionHeader addObject:str];
     }
@@ -65,6 +104,8 @@
     return UIStatusBarStyleDefault;
 }
 
+
+#pragma mark - 下拉更新table数据
 -(void) doRefresh {
     
     double delayInSeconds = 2.0;
@@ -72,7 +113,18 @@
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         self.loading = NO;
         //更新表格界面中的 DataSource 数据
-        
+        NSLog(@"刷新数据中.........");
+        //1.检测网络
+        [netManager checkNetwork];
+        //2.重新下载xml文件
+        [netManager downloadXMLList];
+        //3.重新解析xml数据
+        //获得解析完毕的数据
+        NSArray * array = [[NSMutableArray alloc]initWithArray:[netManager useDOMXMLParser]];
+        //再封装到自己的DockArray中
+        [self analyseSrc:array];
+        [self loadView];
+        [self viewDidLoad];
     });
 }
 
@@ -113,19 +165,37 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return _SECTIONNUM;
+    return [DockArray count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)sectionIndex
 {
-    return 5;
+
+    NSArray * arr = [DockArray objectAtIndex:sectionIndex];
+    NSInteger RowNumber = 0;
+    if ([arr count]%2==0) {
+        RowNumber = [arr count]/2;
+    }else if([arr count]%2 ==1){
+        RowNumber = [arr count]/2 + 1;
+    }
+    
+//    NSLog(@"RowNumber = %ld",(long)RowNumber);
+    return RowNumber;
+
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSLog(@"生成一个CELL");
     static NSString *cellIdentifier = @"Cell";
     
+    NSInteger Section = indexPath.section;
+    NSInteger Row = indexPath.row;
+    NSLog(@"Section = %d ,Row = %d",Section,Row);
+    
+    
+
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
     if (cell == nil) {
@@ -135,42 +205,79 @@
         cell.textLabel.textColor = [UIColor blackColor];
         cell.textLabel.highlightedTextColor = [UIColor lightGrayColor];
     }
+    //从DockArray中获取ThumbImage地址
+    //左侧视图的FontCoverURL
+    //创建临时变量用来取出URL
+//    sectionArr = [NSArray arrayWithArray:[DockArray objectAtIndex:Section]];
+    int _row =[[DockArray objectAtIndex:Section] count];
+    if (Row*2 < _row) {
+        NSLog(@"生成左侧视图");
+        CCMagazineDock * dock = [[DockArray objectAtIndex:Section] objectAtIndex:Row*2];
+        //获得本地图片地址
+        NSString * path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        path = [path stringByAppendingPathComponent:dock.FrontCover];
+        NSData * imgdata = [NSData dataWithContentsOfFile:path];
+        UIImage * leftimg = [UIImage imageWithData:imgdata];
+        
 
-    //创建手势对象
-    UITapGestureRecognizer * tap1 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(pageSelected:)];
-    UITapGestureRecognizer * tap2 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(pageSelected:)];
+        //创建手势对象
+        UITapGestureRecognizer * tap1 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(pageSelected:)];
+        //左侧视窗
+        CGRect leftFrame = CGRectMake(cell.bounds.origin.x+30, cell.bounds.origin.y+20, 108, 172);
+        UIImageView * left = [[UIImageView alloc]initWithFrame:leftFrame];
+        [left setImage:leftimg];
+        [left setUserInteractionEnabled:YES];
+        [left addGestureRecognizer:tap1];
+        
+        
+        //左侧label
+        CGRect leftLabelFrame = CGRectMake(cell.bounds.origin.x+30, cell.bounds.origin.y+10+202, 128, 20);
+        UILabel * leftLabel = [[UILabel alloc]initWithFrame:leftLabelFrame];
+        //获得月号及期刊号
+        NSString * month = [dock.Ppath substringWithRange:NSMakeRange(12, 8)];
+        NSString * substr = [month substringFromIndex:4];
+        leftLabel.text = [NSString stringWithFormat:@"期刊号:%@",substr];
+        [cell.contentView addSubview:left];
+        [cell.contentView addSubview:leftLabel];
+        
+        if(Row*2+1 < _row){
+            NSLog(@"生成右侧视图");
+            UITapGestureRecognizer * tap2 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(pageSelected:)];
+            //获得右侧视图的本地URL
+            CCMagazineDock * dock2 = [[DockArray objectAtIndex:Section] objectAtIndex:Row*2+1];
+            
+            NSString * path2 = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+            path2 = [path2 stringByAppendingPathComponent:dock2.FrontCover];
+            NSData * imgdata2 = [NSData dataWithContentsOfFile:path2];
+            UIImage * rightimg2 = [UIImage imageWithData:imgdata2];
+            //右侧视窗
+            CGRect rightFrame = CGRectMake(cell.bounds.size.width-10-128, cell.bounds.origin.y+20, 108, 172);
+            UIImageView * right = [[UIImageView alloc]initWithFrame:rightFrame];
+            //    [right setImage:[UIImage imageNamed:@"Cover_126"]];
+            [right setImage:rightimg2];
+            [right setUserInteractionEnabled:YES];
+            [right addGestureRecognizer:tap2];
+            //右侧label
+            CGRect rightLabelFrame = CGRectMake(cell.bounds.size.width-10-128,cell.bounds.origin.y+10+202, 128, 20);
+            UILabel * rightLabel = [[UILabel alloc]initWithFrame:rightLabelFrame];
+            NSString * month = [dock2.Ppath substringWithRange:NSMakeRange(12, 8)];
+            NSString * substr = [month substringFromIndex:4];
+            rightLabel.text = [NSString stringWithFormat:@"期刊号:%@",substr];
+            
+            [cell.contentView addSubview:right];
+            [cell.contentView addSubview:rightLabel];
+        }
+    }
+
+
+//    NSLog(@"FrontCoverURL = %@",dock.FrontCoverURL);
     
-    //左侧视窗
-    CGRect leftFrame = CGRectMake(cell.bounds.origin.x+30, cell.bounds.origin.y+20, 108, 172);
-    UIImageView * left = [[UIImageView alloc]initWithFrame:leftFrame];
-    [left setImage:[UIImage imageNamed:@"Cover_126"]];
-    [left setUserInteractionEnabled:YES];
-    [left addGestureRecognizer:tap1];
-    //左侧label
-    CGRect leftLabelFrame = CGRectMake(cell.bounds.origin.x+30, cell.bounds.origin.y+10+202, 128, 20);
-    UILabel * leftLabel = [[UILabel alloc]initWithFrame:leftLabelFrame];
-    leftLabel.text = @"12月期刊";
-    
-    //右侧视窗
-    CGRect rightFrame = CGRectMake(cell.bounds.size.width-10-128, cell.bounds.origin.y+20, 108, 172);
-    UIImageView * right = [[UIImageView alloc]initWithFrame:rightFrame];
-    [right setImage:[UIImage imageNamed:@"Cover_126"]];
-    [right setUserInteractionEnabled:YES];
-    [right addGestureRecognizer:tap2];
-    //右侧label
-    CGRect rightLabelFrame = CGRectMake(cell.bounds.size.width-10-128,cell.bounds.origin.y+10+202, 128, 20);
-    UILabel * rightLabel = [[UILabel alloc]initWithFrame:rightLabelFrame];
-    rightLabel.text = @"11月期刊";
-    
-    [cell.contentView addSubview:left];
-    [cell.contentView addSubview:right];
-    [cell.contentView addSubview:leftLabel];
-    [cell.contentView addSubview:rightLabel];
     
     return cell;
 }
 
 //通过这个方法设置section的各项属性
+
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UIView * sectionView = [[UIView alloc]init];
@@ -192,6 +299,7 @@
     [sectionView addSubview:sepImageView];
     return sectionView;
 }
+ 
 
 #pragma mark - Gesture Methods
 -(void)pageSelected:(UITapGestureRecognizer*)gesture{

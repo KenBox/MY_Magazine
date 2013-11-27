@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "RESideMenu.h"
-
+@class CCNetworking;
 @interface CCAppDelegate : UIResponder  <UIApplicationDelegate, RESideMenuDelegate>{
     
     UIImageView *zView;//Z图片ImageView
@@ -16,9 +16,10 @@
     
     
     UIView *rView;//图片的UIView
+    
 }
 
 @property (strong, nonatomic) UIWindow *window;
-
+@property (strong, nonatomic) CCNetworking * networkingMananger;
 
 @end
