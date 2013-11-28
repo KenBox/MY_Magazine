@@ -19,10 +19,10 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 
-    //检查网络状况及List.xml是否存在，如果不存在则到服务器下载一个
-    networkingMananger = [[CCNetworking alloc]init];
-    [networkingMananger checkNetwork];
-    
+//    //检查网络状况及List.xml是否存在，如果不存在则到服务器下载一个
+//    networkingMananger = [[CCNetworking alloc]init];
+//    [networkingMananger checkNetwork];
+//    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:[[DEMOFirstViewController alloc] init]];

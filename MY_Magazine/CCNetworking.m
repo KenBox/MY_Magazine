@@ -7,14 +7,17 @@
 //
 
 #import "CCNetworking.h"
-#import "Reachability.h"
 #import "ASIHTTPRequest.h"
 #import "GDataXMLNode.h"
 #import "CCMagazineDock.h"
 #import "FileOperation.h"
 #import "GSAlert.h"
-#define _HOSTURL @"http://localhost:8080/naill/upload/"
-#define _LISTURL @"http://localhost:8080/naill/upload/List.xml"
+#define _HOSTURL @"http://218.4.19.242:8089/naill/upload/"
+#define _LISTURL @"http://218.4.19.242:8089/naill/upload/List.xml"
+
+//#define _HOSTURL @"http://192.168.2.133:8080/naill/upload/"
+//#define _LISTURL @"http://192.168.2.133:8080/naill/upload/List.xml"
+
 
 @interface CCNetworking ()
 
@@ -24,43 +27,40 @@
 @implementation CCNetworking
 
 @synthesize RequestXMLPath,magazineDock,magazineDockArr,ListURL,LocalListPath;
+
 //检查网络状况
--(void)checkNetwork{
+-(NetworkStatus)checkNetwork{
     Reachability * reach = [Reachability reachabilityWithHostName:@"www.baidu.com"];
     switch ([reach currentReachabilityStatus]) {
         case ReachableViaWiFi:
-            NSLog(@"wifi连接");
-            //使用Wifi更新XML数据
-            [self downloadXMLList];
-            break;
+            NSLog(@"checkNetwork >>> wifi连接");
+            return ReachableViaWiFi;
         case ReachableViaWWAN:
-            NSLog(@"3G连接");
+            NSLog(@"checkNetwork >>> 3G连接");
             //使用3G更新XML数据
-            [self downloadXMLList];
-            break;
+            return ReachableViaWWAN;
         case NotReachable:
-            NSLog(@"无连接");
+            NSLog(@"checkNetwork >>> 无连接");
             //无网络则检查本地xml是否存在
             //不存在需要提示用户无法显示信息
             if ([self checkListXMLexist]==NO) {
-                [GSAlert showAlertWithTitle:@"没有网络连接，无法正常显示图片"];
+                [GSAlert showAlertWithTitle:@"没有网络连接,可能无法正常显示图片"];
+                return NotReachable;
             }else{
-                //若存在本地list文件则解析数据
-                [self useDOMXMLParser];
+                //若存在本地list文件则解析本地数据
+//                [self useDOMXMLParser];
+                return NotReachable;
             }
-            break;
-        default:
-            break;
     }
+    return -1;
 }
+
 //检查本地List.xml文件是否存在，若不存在需要下载
 -(BOOL)checkListXMLexist{
     if(![FileOperation fileExistsAtPath:LocalListPath]) //如果不存在
     {
         NSLog(@"List.xml is not exist!");
-        [self downloadXMLList];
         return NO;
-        NSLog(@"更新xml数据成功!");
     }else{
         NSLog(@"List.xml is exist!");
         return YES;
@@ -71,8 +71,6 @@
 -(BOOL)checkLocalImagesExist:(NSString *)imageName{
     return [FileOperation fileExistsAtPath:imageName];
 }
-
-
 
 
 //下载XML文件和XML地址中的图片
@@ -107,7 +105,7 @@
         case 0://本地服务器会返回0
             NSLog(@"服务器响应成功");
             if ([FileOperation fileExistsAtPath:path]) {
-                NSLog(@"文件已存在");
+                NSLog(@"%@文件已存在",path);
                 break;
             }else{
                 [request setDownloadDestinationPath:path];
@@ -117,7 +115,7 @@
             break;
         case 200:
             if ([FileOperation fileExistsAtPath:path]) {
-                NSLog(@"文件已存在");
+                NSLog(@"%@文件已存在",path);
                 break;
             }else{
                 //4.设置下载参数
@@ -143,7 +141,7 @@
 //返回解析的结果，保存在一个集合对象中
 -(NSMutableArray *)useDOMXMLParser
 {
-    
+    NSLog(@">>>>>>>>>>XML解析开始>>>>>>>>>>>>>");
     NSMutableArray * mutArr = [[NSMutableArray alloc]init];
     //把文件中的内容读取到 NSData 中
     NSString *docXML =[NSString stringWithContentsOfFile:LocalListPath encoding:NSUTF8StringEncoding error:Nil];
@@ -161,7 +159,7 @@
     //解析xml文件
     //    GDataXMLElement *xmlEle = [xmlDoc rootElement];
     NSArray *array = [root children];
-    NSLog(@"count : %d", [array count]);
+//    NSLog(@"count : %lu", (unsigned long)[array count]);
     
     //List.xml为3层树状结构
     for (int i = 0; i < [array count]; i++) {
@@ -212,18 +210,21 @@
             [mutArr addObject:magazineDock];
         }
     }
+    
+    NSLog(@">>>>>>>>>>XML解析结束>>>>>>>>>>>>");
     return  mutArr;
 }
 
 //拼接FrontCover字符串
 -(NSString *)getFrontCoverURLString:(CCMagazineDock *)obj{
-    NSMutableString * str = [NSMutableString stringWithFormat:_HOSTURL];
-    [str appendString:obj.Ppath];
-    NSString * newstr = [str substringToIndex:(str.length-12)];
+    NSString * str = [NSString stringWithFormat:_HOSTURL];
+    NSArray * subPpath = [obj.Ppath componentsSeparatedByString:@"/"];
+    NSMutableArray * temp = [NSMutableArray arrayWithObjects:[subPpath objectAtIndex:0],[subPpath objectAtIndex:1],[subPpath objectAtIndex:2], nil];
+    NSString * joinStr = [temp componentsJoinedByString:@"/"];
     NSString * path = [NSString stringWithFormat:@"/ThumbPackage/"];
-    NSMutableString * resault = [NSMutableString stringWithString:newstr];
-    [resault appendString:path];
-    [resault appendString:obj.FrontCover];
+    NSString * combineStr = [NSString stringWithFormat:@"%@%@%@%@",str,joinStr,path,obj.FrontCover];
+    NSMutableString * resault = [NSMutableString stringWithString:combineStr];
+//    NSLog(@"FrontCoverURLString = %@",resault);
     return resault;
 }
 
@@ -232,6 +233,7 @@
 -(id)init{
     self = [super init];
     if (self) {
+        NSLog(@"NetworkingManager init...");
         magazineDockArr = [[NSMutableArray alloc]init];
         //1.得到沙箱中的Documents目录路径
         NSString * path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];

@@ -4,7 +4,7 @@
 //
 //  Created by Roman Efimov on 10/10/13.
 //  Copyright (c) 2013 Roman Efimov. All rights reserved.
-//  关于我们页面
+//  <<<<<<<<<<<关于我们页面>>>>>>>>>>>>>>
 
 #import "DEMOSecondViewController.h"
 

@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Reachability.h"
 @class CCMagazineDock;
 @interface CCNetworking : NSObject
 
@@ -16,7 +17,7 @@
 @property (nonatomic,retain) NSURL * ListURL;//存放List.xml服务器URL
 @property (nonatomic,retain) NSString * LocalListPath;//存放List.xml本地路径
 
--(void)checkNetwork;
+-(NetworkStatus)checkNetwork;
 -(BOOL)checkListXMLexist;
 -(BOOL)checkLocalImagesExist:(NSString *)imageName;
 -(void)downloadXMLList;

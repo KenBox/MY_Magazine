@@ -14,5 +14,5 @@
 
 @property (nonatomic,strong) CCContentViewController * ContentViewController;
 
--(void)analyseSrc:(NSArray *)array;
+-(NSMutableArray *)analyseSrc:(NSArray *)array;
 @end

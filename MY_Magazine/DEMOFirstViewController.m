@@ -11,71 +11,97 @@
 #import "CCMagazineDock.h"
 #import "CCNetworking.h"
 
-#define _HOSTURL @"http://localhost:8080/naill/upload/"
-
+#define _HOSTURL @"http://218.4.19.242:8089/naill/upload/"
+//#define _HOSTURL @"http://192.168.2.133:8080/naill/upload/"
 @interface DEMOFirstViewController ()
 @property (nonatomic,retain) CCNetworking * netManager;
 @property (nonatomic,retain) NSMutableArray * ArrayForSectionHeader;//封装了2011-2015年的SectionHeader图片
 @property (nonatomic,retain) NSMutableArray * DockArray;
-
+@property (nonatomic,retain) NSMutableArray * year2012Data;
+@property (nonatomic,retain) NSMutableArray * year2013Data;
+@property (nonatomic,retain) NSMutableArray * year2014Data;
+@property (nonatomic,retain) NSMutableArray * year2015Data;
+@property (nonatomic,retain) NSMutableArray * year2011Data;
+@property (nonatomic,retain) CCMagazineDock * DockObj;
 @end
 
 @implementation DEMOFirstViewController
 @synthesize ContentViewController,ArrayForSectionHeader,DockArray,netManager;
-
+@synthesize year2011Data,year2012Data,year2013Data,year2014Data,year2015Data,DockObj;
 
 
 #pragma mark - 按年份封装xml数据
 //重新封装数据，一年的数据为一个Section，请配合加载图片至ArrayForSectionHeader集合中
--(void)analyseSrc:(NSArray *)array{
+-(NSMutableArray *)analyseSrc:(NSArray *)array{
+    NSLog(@">>>>>>>>>>>Analyse Src>>>>>>>>>>>");
+    NSMutableArray * resaultArr = [[NSMutableArray alloc]initWithCapacity:0];
     if ([DockArray count]) {
         [DockArray removeAllObjects];
     }
-
-    //每年的数据
-    NSMutableArray * year2014Data = [[NSMutableArray alloc]init];
-    NSMutableArray * year2013Data = [[NSMutableArray alloc]init];
-    NSMutableArray * year2012Data = [[NSMutableArray alloc]init];
-    NSMutableArray * year2015Data = [[NSMutableArray alloc]init];
+    [year2011Data removeAllObjects];
+    [year2012Data removeAllObjects];
+    [year2013Data removeAllObjects];
+    [year2014Data removeAllObjects];
+    [year2015Data removeAllObjects];
+//    NSLog(@"array count = %lu",(unsigned long)[array count]);
     for (CCMagazineDock * obj in array) {
         //封装2013年的所有数据
         if([obj.Ppath hasPrefix:@"2013"]){
+            NSLog(@"%@",[obj description]);
             [year2013Data addObject:obj];
-            NSLog(@"Ppath hasprefix 2013");
+//            NSLog(@"year2013Data count = %lu",(unsigned long)[year2012Data count]);
+//            NSLog(@"Ppath hasprefix 2013,Ppath = %@",obj.Ppath);
         }else if([obj.Ppath hasPrefix:@"2012"]){
             [year2012Data addObject:obj];
-            NSLog(@"Ppath hasprefix 2012");
+//            NSLog(@"Ppath hasprefix 2012,Ppath = %@",obj.Ppath);
         }else if ([obj.Ppath hasPrefix:@"2014"]){
             [year2014Data addObject:obj];
-            NSLog(@"Ppath hasprefix 2014");
+//            NSLog(@"Ppath hasprefix 2014,Ppath = %@",obj.Ppath);
         }else if ([obj.Ppath hasPrefix:@"2015"]){
             [year2015Data addObject:obj];
-            NSLog(@"Ppath hasprefix 2015");
+//            NSLog(@"Ppath hasprefix 2015,Ppath = %@",obj.Ppath);
+        }else if ([obj.Ppath hasPrefix:@"2011"]){
+            [year2011Data addObject:obj];
+//            NSLog(@"Ppath hasprefix 2011,Ppath = %@",obj.Ppath);
         }
     }
-    
 
     //若year201xData数组非空则加入集合中
     if ([year2015Data count]) {
         [self sortArrayByMonth:year2015Data];
-        [DockArray addObject:year2015Data];
+        NSArray * arr = [NSArray arrayWithArray:year2015Data];
+        [resaultArr addObject:arr];
     }
     if ([year2014Data count]) {
         [self sortArrayByMonth:year2014Data];
-        [DockArray addObject:year2014Data];
+        NSArray * arr = [NSArray arrayWithArray:year2014Data];
+        [resaultArr addObject:arr];
     }
     if ([year2012Data count]) {
         [self sortArrayByMonth:year2013Data];
-        [DockArray addObject:year2013Data];
+        NSArray * arr = [NSArray arrayWithArray:year2012Data];
+        [resaultArr addObject:arr];
     }
     if ([year2013Data count]) {
         [self sortArrayByMonth:year2012Data];
-        [DockArray addObject:year2012Data];
+        NSArray * arr = [NSArray arrayWithArray:year2013Data];
+        [resaultArr addObject:arr];
     }
-    NSLog(@"DockArray count = %d",[DockArray count]);
+    if ([year2011Data count]) {
+        [self sortArrayByMonth:year2011Data];
+        NSArray * arr = [NSArray arrayWithArray:year2011Data];
+        [resaultArr addObject:arr];
+    }
+    
+//    NSLog(@"DockArray count = %lu",(unsigned long)[DockArray count]);
+    NSArray * arr = [resaultArr objectAtIndex:0];
+    NSLog(@"arr count = %lu",(unsigned long)[arr count]);
+    NSLog(@">>>>>>>>>>>Analyse Src End>>>>>>>>>>>");
+    return resaultArr;
 }
 //对期刊月份经行排序
 -(void)sortArrayByMonth:(NSMutableArray *)Array{
+    NSLog(@"sortArrayByMonth...");
     for (CCMagazineDock * obj in Array) {
         NSString * path = [NSString stringWithString:obj.Ppath];
         NSArray * pathArray = [path componentsSeparatedByString:@"/"];
@@ -94,31 +120,78 @@
 
 
 #pragma mark - LifeCycle
+-(id)init{
+    self = [super init];
+    if (self) {
+        NSLog(@">>>>>>>>FirstViewInit>>>>>>>>>>");
+        netManager = [[CCNetworking alloc]init];
+        DockArray = [[NSMutableArray alloc]init];
+        //每年的数据
+        year2011Data = [[NSMutableArray alloc]init];
+        year2014Data = [[NSMutableArray alloc]init];
+        year2013Data = [[NSMutableArray alloc]init];
+        year2012Data = [[NSMutableArray alloc]init];
+        year2015Data = [[NSMutableArray alloc]init];
+    }
+    return self;
+}
+-(void)viewDidAppear:(BOOL)animated{
+//    NSLog(@"View did appear! DockArray count = %lu",(unsigned long)[DockArray count]);
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+//    NSLog(@"View will appear! DockArray count = %lu",(unsigned long)[DockArray count]);
+}
+
+-(void)updateData{
+    NetworkStatus netStatus = [netManager checkNetwork];
+    //检测网络
+    if (netStatus == ReachableViaWiFi || netStatus == ReachableViaWWAN ) {
+        //如果使用wifi或者3g则更新xml数据
+        NSLog(@"正在检测网络状况");
+        [netManager downloadXMLList];
+        NSLog(@"更新List.xml文件成功,开始解析数据......");
+        //获得解析完毕的数据
+        NSArray * array = [[NSMutableArray alloc]initWithArray:[netManager useDOMXMLParser]];
+        //封装到自己的DockArray中
+        DockArray = [self analyseSrc:array];
+        NSLog(@"解析List.xml文件成功");
+    }else if (netStatus == NotReachable){
+        //如果存在本地List.xml则进行数据解析
+        if ([netManager checkListXMLexist]) {
+            NSLog(@"List.xml文件已存在,开始解析数据......");
+            [DockArray removeAllObjects];
+            //获得解析完毕的数据
+            NSArray * array = [[NSMutableArray alloc]initWithArray:[netManager useDOMXMLParser]];
+            //封装到自己的DockArray中
+            DockArray = [self analyseSrc:array];
+            NSLog(@"解析List.xml文件成功");
+        }
+    }
+
+}
+
 - (void)viewDidLoad
 {
+    NSLog(@">>>>>>>>>FirstView did load>>>>>>>>>>");
     [super viewDidLoad];
-    //	self.title = @"Magazine Dock";
+    [self updateData];
+    NSLog(@"dockArray count = %lu",(unsigned long)[DockArray count]);
+    
+    [self.tableView setBackgroundColor:[UIColor clearColor]];
     [self.view setBackgroundColor:[UIColor clearColor]];
     self.view.layer.borderWidth = 0.5;
     self.view.layer.borderColor = [UIColor colorWithWhite:0.750 alpha:1.000].CGColor;
     
 
-    NSLog(@"view did load");
-    netManager = [[CCNetworking alloc]init];
-    DockArray = [[NSMutableArray alloc]init];
-    [netManager checkNetwork];
-    //获得解析完毕的数据
-    NSArray * array = [[NSMutableArray alloc]initWithArray:[netManager useDOMXMLParser]];
-    //封装到自己的DockArray中
-    [self analyseSrc:array];
     
     //取消TableView的点击效果
     [self.tableView setAllowsSelection:NO];
     [self.tableView.tableHeaderView setBackgroundColor:[UIColor clearColor]];
     //SectionHeader Data
     ArrayForSectionHeader = [NSMutableArray arrayWithCapacity:[DockArray count]];
-    for (int i = [DockArray count] ; i>0; i--) {
-        NSString * str = [NSString stringWithFormat:@"bg_bookself_year_201%d",i+1];
+    for (unsigned long int i = [DockArray count] ; i>0; i--) {
+        NSString * str = [NSString stringWithFormat:@"bg_bookself_year_201%lu",i+1];
         [ArrayForSectionHeader addObject:str];
     }
 
@@ -160,18 +233,15 @@
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         self.loading = NO;
         //更新表格界面中的 DataSource 数据
-        NSLog(@"刷新数据中.........");
-        //1.检测网络
-        [netManager checkNetwork];
-        //2.重新下载xml文件
-        [netManager downloadXMLList];
-        //3.重新解析xml数据
-        //获得解析完毕的数据
-        NSArray * array = [[NSMutableArray alloc]initWithArray:[netManager useDOMXMLParser]];
-        //再封装到自己的DockArray中
-        [self analyseSrc:array];
-        [self loadView];
-        [self viewDidLoad];
+        NSLog(@">>>>>>>>>>>>>>>>>>>>>刷新数据中>>>>>>>>>>>>>>>>>>>>>>>");
+
+//        for (UIView * view in self.view.subviews) {
+//            [view removeFromSuperview];
+//        }
+        
+//        [self viewDidLoad];
+        [self updateData];
+        [self viewDidAppear:YES];
     });
 }
 
@@ -218,14 +288,14 @@
 //通过计算得出Section需要分配的行数
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)sectionIndex
 {
-
-    NSArray * arr = [DockArray objectAtIndex:sectionIndex];
+    NSArray * arr = [NSArray arrayWithArray:[DockArray objectAtIndex:sectionIndex]];
     NSInteger RowNumber = 0;
     if ([arr count]%2==0) {
         RowNumber = [arr count]/2;
-    }else if([arr count]%2 ==1){
+    }else if([arr count]%2 == 1){
         RowNumber = [arr count]/2 + 1;
     }
+    NSLog(@"RowNumber = %ld",(long)RowNumber);
     return RowNumber;
 }
 
@@ -235,24 +305,24 @@
     static NSString *cellIdentifier = @"Cell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-    }
-    cell.backgroundColor = [UIColor clearColor];
     //每次取出队列都需要清空子视图
     for (UIView* view in [cell.contentView subviews]) {
         [view removeFromSuperview];
     }
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+    }
+    cell.backgroundColor = [UIColor clearColor];
     NSInteger Section = indexPath.section;
     NSInteger Row = indexPath.row;
-    int _row =[[DockArray objectAtIndex:Section] count];//_row = numberOfRowsInSection
+    unsigned long int _row =[[DockArray objectAtIndex:Section] count];//_row = numberOfRowsInSection
     //当indexPath.row * 2 < 总行号时，从左侧开始创建imageView和期刊号Label
     if (Row*2 < _row) {
         CCMagazineDock * dock = [[DockArray objectAtIndex:Section] objectAtIndex:Row*2];
         //获得本地图片地址
         NSString * path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
         path = [path stringByAppendingPathComponent:dock.FrontCover];
+//        NSLog(@"FrontCover = %@",dock.FrontCover);
         NSData * imgdata = [NSData dataWithContentsOfFile:path];
         UIImage * leftimg = [UIImage imageWithData:imgdata];
         
@@ -262,6 +332,9 @@
         //左侧视窗
         CGRect leftFrame = CGRectMake(cell.bounds.origin.x+30, cell.bounds.origin.y+20, 108, 172);
         UIImageView * left = [[UIImageView alloc]initWithFrame:leftFrame];
+        [left setAutoresizesSubviews:YES];
+        [left setContentMode:UIViewContentModeScaleToFill];
+        [left setOpaque:YES];
         [left setClipsToBounds:YES];
         [left setImage:leftimg];
         [left setUserInteractionEnabled:YES];
@@ -285,12 +358,15 @@
             CCMagazineDock * dock2 = [[DockArray objectAtIndex:Section] objectAtIndex:Row*2+1];
             NSString * path2 = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
             path2 = [path2 stringByAppendingPathComponent:dock2.FrontCover];
+//            NSLog(@"FrontCover2 = %@",dock2.FrontCover);
             NSData * imgdata2 = [NSData dataWithContentsOfFile:path2];
             UIImage * rightimg2 = [UIImage imageWithData:imgdata2];
+            
             //右侧视窗
             CGRect rightFrame = CGRectMake(cell.bounds.size.width-10-128, cell.bounds.origin.y+20, 108, 172);
             UIImageView * right = [[UIImageView alloc]initWithFrame:rightFrame];
             //    [right setImage:[UIImage imageNamed:@"Cover_126"]];
+            [right setAutoresizesSubviews:YES];
             [right setImage:rightimg2];
             [right setUserInteractionEnabled:YES];
             [right addGestureRecognizer:tap2];
@@ -344,7 +420,7 @@
 
     //通过CGPoint.x坐标分辨点击的期刊在左侧还是右侧
     if (point.x<160) {
-        NSLog(@"点击了左边section = %d row = %d point.x = %f,point.y = %f",section,row,point.x,point.y);
+//        NSLog(@"点击了左边section = %d row = %d point.x = %f,point.y = %f",section,row,point.x,point.y);
         NSInteger indexInDockArray = row * 2;//在DockArray/Year201xData中的位置,用来获得内容页面的xml地址
         //生成ContentXML下载路径
         NSString * leftXMLPath = [self getContentXMLPathWith:section And:indexInDockArray];
@@ -355,7 +431,7 @@
         path = [path stringByAppendingPathComponent:@"ContentList.xml"];
         [netManager downloadByURL:url WithPath:path];
     }else{
-        NSLog(@"点击了右边section = %d row = %d point.x = %f,point.y = %f",section,row,point.x,point.y);
+//        NSLog(@"点击了右边section = %d row = %d point.x = %f,point.y = %f",section,row,point.x,point.y);
         NSInteger indexInDockArray = row * 2 + 1 ;//在DockArray/Year201xData中的位置
         //生成ContentXML下载路径
         NSString * rightXMLPath = [self getContentXMLPathWith:section And:indexInDockArray];
@@ -368,6 +444,7 @@
     }
     [self presentViewController:ContentViewController animated:YES completion:Nil];
 }
+
 //拼接xml下载路径
 -(NSString *)getContentXMLPathWith:(NSInteger)section And:(NSInteger)indexInDockArray{
     CCMagazineDock * obj =[[DockArray objectAtIndex:section] objectAtIndex:indexInDockArray];
