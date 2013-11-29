@@ -78,12 +78,12 @@
         [resaultArr addObject:arr];
     }
     if ([year2012Data count]) {
-        [self sortArrayByMonth:year2013Data];
+        [self sortArrayByMonth:year2012Data];
         NSArray * arr = [NSArray arrayWithArray:year2012Data];
         [resaultArr addObject:arr];
     }
     if ([year2013Data count]) {
-        [self sortArrayByMonth:year2012Data];
+        [self sortArrayByMonth:year2013Data];
         NSArray * arr = [NSArray arrayWithArray:year2013Data];
         [resaultArr addObject:arr];
     }
@@ -101,54 +101,29 @@
 }
 //对期刊月份经行排序
 -(void)sortArrayByMonth:(NSMutableArray *)Array{
-    NSLog(@"sortArrayByMonth...");
     for (CCMagazineDock * obj in Array) {
+        NSLog(@"sortArrayByMonth...");
         NSString * path = [NSString stringWithString:obj.Ppath];
         NSArray * pathArray = [path componentsSeparatedByString:@"/"];
-        NSString * version = [pathArray objectAtIndex:2];
-        NSArray * arr = [version componentsSeparatedByString:@"_"];
-        NSString * res = [arr componentsJoinedByString:@"."];
+        NSString * res = [pathArray objectAtIndex:2];
+//        NSLog(@"res = %@",res);
         obj.MonthVersion = [NSString stringWithString:res];
 //        NSLog(@"%@",obj.MonthVersion);
     }
     //对Data数据按月及期刊号进行排序
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"MonthVersion" ascending:NO];//其中，MonthVersion为数组中的对象的属性，这个针对数组中存放对象比较更简洁方便
+    //其中，MonthVersion为数组中的对象的属性，这个针对数组中存放对象比较更简洁方便
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"MonthVersion" ascending:NO];
     NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:&sortDescriptor count:1];
     [Array sortUsingDescriptors:sortDescriptors];
     
 }
 
-
-#pragma mark - LifeCycle
--(id)init{
-    self = [super init];
-    if (self) {
-        NSLog(@">>>>>>>>FirstViewInit>>>>>>>>>>");
-        netManager = [[CCNetworking alloc]init];
-        DockArray = [[NSMutableArray alloc]init];
-        //每年的数据
-        year2011Data = [[NSMutableArray alloc]init];
-        year2014Data = [[NSMutableArray alloc]init];
-        year2013Data = [[NSMutableArray alloc]init];
-        year2012Data = [[NSMutableArray alloc]init];
-        year2015Data = [[NSMutableArray alloc]init];
-    }
-    return self;
-}
--(void)viewDidAppear:(BOOL)animated{
-//    NSLog(@"View did appear! DockArray count = %lu",(unsigned long)[DockArray count]);
-}
-
--(void)viewWillAppear:(BOOL)animated{
-//    NSLog(@"View will appear! DockArray count = %lu",(unsigned long)[DockArray count]);
-}
-
 -(void)updateData{
+    NSLog(@"检测网络状况完毕");
     NetworkStatus netStatus = [netManager checkNetwork];
     //检测网络
     if (netStatus == ReachableViaWiFi || netStatus == ReachableViaWWAN ) {
         //如果使用wifi或者3g则更新xml数据
-        NSLog(@"正在检测网络状况");
         [netManager downloadXMLList];
         NSLog(@"更新List.xml文件成功,开始解析数据......");
         //获得解析完毕的数据
@@ -169,6 +144,23 @@
         }
     }
 
+}
+
+#pragma mark - LifeCycle
+-(id)init{
+    self = [super init];
+    if (self) {
+        NSLog(@">>>>>>>>FirstViewInit>>>>>>>>>>");
+        netManager = [[CCNetworking alloc]init];
+        DockArray = [[NSMutableArray alloc]init];
+        //每年的数据
+        year2011Data = [[NSMutableArray alloc]init];
+        year2014Data = [[NSMutableArray alloc]init];
+        year2013Data = [[NSMutableArray alloc]init];
+        year2012Data = [[NSMutableArray alloc]init];
+        year2015Data = [[NSMutableArray alloc]init];
+    }
+    return self;
 }
 
 - (void)viewDidLoad
