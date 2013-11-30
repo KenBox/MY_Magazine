@@ -24,4 +24,13 @@
     }
     return self;
 }
+
+-(id)initWithObject:(CCMagazineTopic *)topic{
+    self = [super init];
+    if(self){
+        CoverPath = topic.CoverPath;
+        ContectImages = [[NSMutableArray alloc]initWithArray:topic.ContectImages];
+    }
+    return self;
+}
 @end

@@ -14,9 +14,7 @@
 @property (nonatomic,strong) CCCommentViewController * CommentViewController;
 @property (nonatomic,strong) CCThumbViewController * ThumbViewController;
 @property (nonatomic,strong) CCMagazineTopic * ContentTopic;
-
-@property (nonatomic,strong) NSString * ContentXMLPath;//存放期刊内容页的本地路径
-@property (nonatomic,strong) NSMutableArray * ContentViewImages;//存放解压后的期刊内容页图片
-
+@property (nonatomic,strong) NSMutableArray * imagesArray;
+//Leaves框架
 @property (nonatomic,strong) NSMutableArray *images;
 @end

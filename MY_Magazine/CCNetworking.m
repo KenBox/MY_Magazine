@@ -9,7 +9,6 @@
 #import "AllDefineHeader.h"
 #import "CCNetworking.h"
 #import "ASIHTTPRequest.h"
-#import "ASIDownloadCache.h"
 #import "GDataXMLNode.h"
 #import "CCMagazineDock.h"
 #import "FileOperation.h"
@@ -18,11 +17,11 @@
 #import "GSBaseResource.h"
 #import "ZipArchive.h"
 
-//#define _HOSTURL @"http://218.4.19.242:8089/naill/upload/"
-//#define _LISTURL @"http://218.4.19.242:8089/naill/upload/List.xml"
+#define _HOSTURL @"http://218.4.19.242:8089/naill/upload/"
+#define _LISTURL @"http://218.4.19.242:8089/naill/upload/List.xml"
 
-#define _HOSTURL @"http://192.168.1.4:8080/naill/upload/"
-#define _LISTURL @"http://192.168.1.4:8080/naill/upload/List.xml"
+//#define _HOSTURL @"http://192.168.1.4:8080/naill/upload/"
+//#define _LISTURL @"http://192.168.1.4:8080/naill/upload/List.xml"
 
 
 @interface CCNetworking ()
@@ -86,7 +85,6 @@
 -(void)downloadXMLList{
     if ([self checkNetwork]==ReachableViaWiFi||ReachableViaWWAN) {
         ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:ListURL];
-        [request setDownloadCache:[ASIDownloadCache sharedCache]];
         [request setDownloadDestinationPath:LocalListPath];
         [request startSynchronous];
     }
@@ -183,7 +181,6 @@
  */
 -(void)downloadFileFrom:(NSURL *)URL intoPath:(NSString * )path{
     ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:URL];
-    [request setDownloadCache:[ASIDownloadCache sharedCache]];
     [request setDownloadDestinationPath:path];
     NSLog(@"文件下载中...");
     [request startSynchronous];
@@ -344,7 +341,7 @@
             }
         }
     }
-    NSLog(@"resourcePath = %@",self.resourcePath);
+//    NSLog(@"resourcePath = %@",self.resourcePath);
     NSLog(@">>>>>>>>>>ContentListXML解析结束>>>>>>>>>>>>");
     return Content;
 }
@@ -356,7 +353,9 @@
 -(NSString *)getLocalFolderName:(NSString *)CoverPath{
     NSArray * aaa = [CoverPath componentsSeparatedByString:@"/"];
     NSString * temp = [NSString stringWithString:[aaa objectAtIndex:2]];
+    self.resourcePath = Nil;
     resourcePath = [NSString stringWithFormat:@"%@/%@",KDocumentFolderPath,temp];
+//    NSLog(@"获得resourcePath = %@",resourcePath);
     return temp;
 }
 //拼接ThumbNameURL地址
@@ -400,9 +399,9 @@
         //2.指定下载到沙箱中的文件名称
         path = [path stringByAppendingPathComponent:@"List.xml"];
         ListURL = [NSURL URLWithString:_LISTURL];
-        NSLog(@"ListURL = %@",ListURL);
+//        NSLog(@"ListURL = %@",ListURL);
         LocalListPath = [NSString stringWithString:path];
-        NSLog(@"LocalListPath = %@",LocalListPath);
+//        NSLog(@"LocalListPath = %@",LocalListPath);
     }
     return self;
 }

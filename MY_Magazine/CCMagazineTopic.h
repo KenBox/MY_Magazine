@@ -19,4 +19,6 @@
 @property (nonatomic,strong) NSString * resourcePath;//图片资源存放的路径
 @property (nonatomic,strong) NSMutableArray * ThumbImages;//存放目录页图片的集合
 @property (nonatomic,strong) NSMutableArray * ContectImages;//存放内容页图片的集合
+-(id)initWithObject:(CCMagazineTopic *)topic;
+
 @end

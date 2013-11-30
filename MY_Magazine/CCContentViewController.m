@@ -31,7 +31,7 @@
 
 @implementation CCContentViewController
 
-@synthesize shareActionSheet,CommentViewController,ThumbViewController,ContentTopic,ContentViewImages;
+@synthesize shareActionSheet,CommentViewController,ThumbViewController,imagesArray;
 @synthesize BarItems,Toolbar,HomeBtn,CommentBtn,ShareBtn,ThumbBtn,isToolbarHidden;
 
 #pragma mark LeavesViewDataSource
@@ -60,6 +60,8 @@
 - (IBAction)HomeBtnPressed:(UIBarButtonItem *)sender {
     NSLog(@"点击了Home");
     [self dismissViewControllerAnimated:YES completion:Nil];
+//    [self.leavesView removeFromSuperview];
+
 }
 - (IBAction)CommentBtnPressed:(UIBarButtonItem *)sender {
     NSLog(@"点击了评论");
@@ -105,42 +107,49 @@
     if (self) {
         // Custom initialization
         [self setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
-        ContentTopic = [[CCMagazineTopic alloc]init];
-        ContentViewImages = [[NSMutableArray alloc]init];
-//		_images = [[NSArray alloc] initWithObjects:
-//                   [UIImage imageNamed:@"Stars"],
-//                   [UIImage imageNamed:@"Balloon"],
-//                   [UIImage imageNamed:@"bg_carpet"],
-//                   nil];
-        _images = [[NSMutableArray alloc]initWithArray:self.ContentViewImages];
-        if (!IS_4_INCH) {
-            [Toolbar setFrame:CGRectMake(0, APP_SCREEN_CONTENT_HEIGHT/2-44, APP_SCREEN_WIDTH, APP_SCREEN_HEIGHT/2)];
-        }
+        imagesArray = [[NSMutableArray alloc]init];
+        _images = [[NSMutableArray alloc]init];
+        
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(getInfo:) name:@"topic" object:Nil];
+
     }
     return self;
+}
+
+-(void)getInfo:(NSNotification *)info{
+    NSLog(@"接收通知.....");
+    if (imagesArray) {
+        [imagesArray removeAllObjects];
+        [_images removeAllObjects];
+    }
+    for (UIImage * img in [info object]) {
+        [imagesArray addObject:img];
+        [_images addObject:img];
+    }
 }
 -(void)viewDidDisappear:(BOOL)animated{
     
 }
 - (void)viewDidLoad
 {
+    
     NSLog(@"ContentView did load......");
-    NSLog(@"images = %@",self.images);
     [super viewDidLoad];
-    for (UIView * view in self.view.subviews) {
-        if ([self.view.subviews.class isKindOfClass:self.leavesView.class]) {
-            [view removeFromSuperview];
-        }
-    }
-    [self.leavesView reloadData];
+    
+//    for (UIView * view in self.view.subviews) {
+//        if ([self.view.subviews.class isKindOfClass:self.leavesView.class]) {
+//            [view removeFromSuperview];
+//        }
+//    }
+//    [self.leavesView reloadData];
 
-    [self.leavesView reloadInputViews];
-//    [self.images removeAllObjects];
-    [self.images addObject:self.ContentViewImages];
+
+  
+
  
     
     [Toolbar setFrame:CGRectMake(0.0, self.view.frame.size.height - Toolbar.frame.size.height - 44.0, self.view.frame.size.width, 44.0)];
-    [Toolbar setBarStyle:UIBarStyleDefault];
+    [Toolbar setBarStyle:UIBarStyleBlackTranslucent];
     Toolbar.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
 //    NSLog(@"currentDevice = %@",[UIDevice currentDevice].model);
     [Toolbar setHidden:YES];
@@ -155,7 +164,6 @@
     [self.leavesView addGestureRecognizer:tap1];
     [self.view addSubview:Toolbar];
     [self.view insertSubview:self.leavesView atIndex:0];
-
 }
 
 

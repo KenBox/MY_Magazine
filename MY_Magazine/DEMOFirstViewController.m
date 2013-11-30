@@ -9,10 +9,11 @@
 #import "DEMOFirstViewController.h"
 #import "CCContentViewController.h"
 #import "CCMagazineDock.h"
+#import "CCMagazineTopic.h"
 #import "CCNetworking.h"
 
-//#define _HOSTURL @"http://218.4.19.242:8089/naill/upload/"
-#define _HOSTURL @"http://192.168.1.4:8080/naill/upload/"
+#define _HOSTURL @"http://218.4.19.242:8089/naill/upload/"
+//#define _HOSTURL @"http://192.168.1.4:8080/naill/upload/"
 @interface DEMOFirstViewController ()
 @property (nonatomic,retain) CCNetworking * netManager;
 @property (nonatomic,retain) NSMutableArray * ArrayForSectionHeader;//封装了2011-2015年的SectionHeader图片
@@ -179,8 +180,6 @@
     [self.view setBackgroundColor:[UIColor clearColor]];
     self.view.layer.borderWidth = 0.5;
     self.view.layer.borderColor = [UIColor colorWithWhite:0.750 alpha:1.000].CGColor;
-    
-
     
     //取消TableView的点击效果
     [self.tableView setAllowsSelection:NO];
@@ -412,30 +411,35 @@
     
     ContentViewController = [[CCContentViewController alloc]initWithNibName:@"CCContentViewController" bundle:Nil];
     
-
     //通过CGPoint.x坐标分辨点击的期刊在左侧还是右侧
     if (point.x<160) {
 //        NSLog(@"点击了左边section = %d row = %d point.x = %f,point.y = %f",section,row,point.x,point.y);
         NSInteger indexInDockArray = row * 2;//在DockArray/Year201xData中的位置,用来获得内容页面的xml地址
         //生成ContentXML下载路径
         NSString * leftXMLPath = [self getContentXMLPathWith:section And:indexInDockArray];
-        [self updateContentViewControllerData:leftXMLPath];
-        
+        CCMagazineTopic * leftTopic = [[CCMagazineTopic alloc ]initWithObject:[self updateContentViewControllerData:leftXMLPath]];
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"topic" object:leftTopic.ContectImages];
+        NSLog(@"发送通知......");
     }else{
 //        NSLog(@"点击了右边section = %d row = %d point.x = %f,point.y = %f",section,row,point.x,point.y);
         NSInteger indexInDockArray = row * 2 + 1 ;//在DockArray/Year201xData中的位置
         //生成ContentXML下载路径
         NSString * rightXMLPath = [self getContentXMLPathWith:section And:indexInDockArray];
-        [self updateContentViewControllerData:rightXMLPath];
+        CCMagazineTopic * rightTopic = [[CCMagazineTopic alloc ]initWithObject:[self updateContentViewControllerData:rightXMLPath]];
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"topic" object:rightTopic.ContectImages];
+        NSLog(@"发送通知......");
     }
+    
     
     
     [self presentViewController:ContentViewController animated:YES completion:Nil];
 }
 
 
+
 //根据所下载的xml文件更新下一级视图所需加载的资源
--(void)updateContentViewControllerData:(NSString *)_xmlPath{
+-(CCMagazineTopic *)updateContentViewControllerData:(NSString *)_xmlPath{
+    CCMagazineTopic * Topic = [[CCMagazineTopic alloc]init];
     NSLog(@">>>>>>>>>>>加载内容页数据中>>>>>>>>>>>>>");
     NSURL * url = [NSURL URLWithString:_xmlPath];
     //1.得到沙箱中的Documents目录路径
@@ -443,31 +447,23 @@
     //2.指定下载到沙箱中的文件名称ContentList.xml
     path = [path stringByAppendingPathComponent:@"ContentList.xml"];
     
-    //---------------------这里下载右侧视图xml文件---------------------//
+    //---------------------这里下载视图xml文件---------------------//
     [netManager downloadFileFrom:url intoPath:path];
     //拼接下载路径
     ContentXMLPath = [NSString stringWithString:path];
-    
-    ContentViewController.ContentTopic = [netManager ParserContentListXMLWithPath:ContentXMLPath];
+    Topic = [netManager ParserContentListXMLWithPath:ContentXMLPath];
+    Topic.resourcePath = netManager.resourcePath;
+    NSLog(@"topic.path = %@",Topic.resourcePath);
     //**************下载目录图片到指定文件夹****************//
-    [netManager downloadThumbPackageImages:ContentViewController.ContentTopic.ThumbName WithPath:ContentViewController.ContentTopic.LocalFolderName And:ContentViewController.ContentTopic.ThumbName];
-    
+    [netManager downloadThumbPackageImages:Topic.ThumbName WithPath:Topic.LocalFolderName And:Topic.ThumbName];
     //**************下载图片zip包到指定文件夹***************//
-    [netManager downloadImageZipIntoPath:ContentViewController.ContentTopic.LocalFolderName WithURL:ContentViewController.ContentTopic.TopicPath And:Nil];
-    
+    [netManager downloadImageZipIntoPath:Topic.LocalFolderName WithURL:Topic.TopicPath And:Nil];
     //解析下载并解压完毕后设置资源路径获取图片数据
-    ContentViewController.ContentTopic.resourcePath = netManager.resourcePath;
-    
-    //封装图片时需要先将集合内原有内容清空
-    NSLog(@"清空所有数据.........");
-    [ContentViewController.ContentViewImages removeAllObjects];
-    [ContentViewController.images removeAllObjects];
-    NSLog(@"重新加载数据中.........");
-    [ContentViewController.ContentViewImages addObjectsFromArray:[self updateResource:ContentViewController.ContentTopic.resourcePath WithThumbName:ContentViewController.ContentTopic.ThumbName]];
-    
-    ContentViewController.images = [[NSMutableArray alloc]initWithArray:ContentViewController.ContentViewImages];
+    NSMutableArray * imgArr = [[NSMutableArray alloc]initWithArray:[self updateResource:Topic.resourcePath WithThumbName:Topic.ThumbName]];
+    Topic.ContectImages = [[NSMutableArray alloc]initWithArray:imgArr];
     
     NSLog(@">>>>>>>>>>>>加载内容页数据完成>>>>>>>>>>>>>");
+    return Topic;
 }
 
 //拼接xml下载路径
@@ -475,14 +471,13 @@
     CCMagazineDock * obj =[[DockArray objectAtIndex:section] objectAtIndex:indexInDockArray];
     NSString * str = _HOSTURL;
     NSString * _ContentXMLPath = [NSString stringWithFormat:@"%@%@",str,obj.Ppath];
-//    NSLog(@"path = %@",_ContentXMLPath);
     return _ContentXMLPath;
 
 }
 //将resource文件夹中的图片存放到视图对象中
 -(NSMutableArray *)updateResource:(NSString *)resourcePath WithThumbName:(NSMutableArray *)ThumbName{
     NSMutableArray * mutArr = [[NSMutableArray alloc]init];
-    for (NSString * obj in ContentViewController.ContentTopic.ThumbName) {
+    for (NSString * obj in ThumbName) {
         NSArray * arr = [obj componentsSeparatedByString:@"/"];
         NSString * str = [NSString stringWithFormat:@"%@/resource/%@",resourcePath,[arr lastObject]];
         UIImage * imageData = [UIImage imageWithContentsOfFile:str];

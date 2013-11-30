@@ -10,9 +10,7 @@
 #import "DEMOMenuViewController.h"
 #import "DEMOFirstViewController.h"
 #import <QuartzCore/QuartzCore.h>
-//#import "CCNetworking.h"
 #import "ASIHTTPRequest.h"
-#import "ASIDownloadCache.h"
 @implementation CCAppDelegate
 @synthesize networkingMananger;
 
@@ -20,10 +18,6 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 
-//    //检查网络状况及List.xml是否存在，如果不存在则到服务器下载一个
-//    networkingMananger = [[CCNetworking alloc]init];
-//    [networkingMananger checkNetwork];
-    [ASIHTTPRequest setDefaultCache:[ASIDownloadCache sharedCache]];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
