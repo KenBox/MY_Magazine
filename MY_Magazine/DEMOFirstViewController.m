@@ -11,8 +11,8 @@
 #import "CCMagazineDock.h"
 #import "CCNetworking.h"
 
-#define _HOSTURL @"http://218.4.19.242:8089/naill/upload/"
-//#define _HOSTURL @"http://192.168.2.133:8080/naill/upload/"
+//#define _HOSTURL @"http://218.4.19.242:8089/naill/upload/"
+#define _HOSTURL @"http://192.168.1.4:8080/naill/upload/"
 @interface DEMOFirstViewController ()
 @property (nonatomic,retain) CCNetworking * netManager;
 @property (nonatomic,retain) NSMutableArray * ArrayForSectionHeader;//封装了2011-2015年的SectionHeader图片
@@ -22,12 +22,13 @@
 @property (nonatomic,retain) NSMutableArray * year2014Data;
 @property (nonatomic,retain) NSMutableArray * year2015Data;
 @property (nonatomic,retain) NSMutableArray * year2011Data;
-@property (nonatomic,retain) CCMagazineDock * DockObj;
+
+@property (nonatomic,retain) NSString * ContentXMLPath;//这个属性存储了内容页的XML本地路径
 @end
 
 @implementation DEMOFirstViewController
 @synthesize ContentViewController,ArrayForSectionHeader,DockArray,netManager;
-@synthesize year2011Data,year2012Data,year2013Data,year2014Data,year2015Data,DockObj;
+@synthesize year2011Data,year2012Data,year2013Data,year2014Data,year2015Data,ContentXMLPath;
 
 
 #pragma mark - 按年份封装xml数据
@@ -47,7 +48,7 @@
     for (CCMagazineDock * obj in array) {
         //封装2013年的所有数据
         if([obj.Ppath hasPrefix:@"2013"]){
-            NSLog(@"%@",[obj description]);
+//            NSLog(@"%@",[obj description]);
             [year2013Data addObject:obj];
 //            NSLog(@"year2013Data count = %lu",(unsigned long)[year2012Data count]);
 //            NSLog(@"Ppath hasprefix 2013,Ppath = %@",obj.Ppath);
@@ -77,14 +78,14 @@
         NSArray * arr = [NSArray arrayWithArray:year2014Data];
         [resaultArr addObject:arr];
     }
-    if ([year2012Data count]) {
-        [self sortArrayByMonth:year2012Data];
-        NSArray * arr = [NSArray arrayWithArray:year2012Data];
-        [resaultArr addObject:arr];
-    }
     if ([year2013Data count]) {
         [self sortArrayByMonth:year2013Data];
         NSArray * arr = [NSArray arrayWithArray:year2013Data];
+        [resaultArr addObject:arr];
+    }
+    if ([year2012Data count]) {
+        [self sortArrayByMonth:year2012Data];
+        NSArray * arr = [NSArray arrayWithArray:year2012Data];
         [resaultArr addObject:arr];
     }
     if ([year2011Data count]) {
@@ -101,11 +102,13 @@
 }
 //对期刊月份经行排序
 -(void)sortArrayByMonth:(NSMutableArray *)Array{
+    NSLog(@"sortArrayByMonth...");
     for (CCMagazineDock * obj in Array) {
-        NSLog(@"sortArrayByMonth...");
         NSString * path = [NSString stringWithString:obj.Ppath];
         NSArray * pathArray = [path componentsSeparatedByString:@"/"];
-        NSString * res = [pathArray objectAtIndex:2];
+        NSString * res1 = [pathArray objectAtIndex:2];
+        NSArray * temp = [res1 componentsSeparatedByString:@"_"];
+        NSString * res = [temp componentsJoinedByString:@"月 Vol:"];
 //        NSLog(@"res = %@",res);
         obj.MonthVersion = [NSString stringWithString:res];
 //        NSLog(@"%@",obj.MonthVersion);
@@ -129,16 +132,17 @@
         //获得解析完毕的数据
         NSArray * array = [[NSMutableArray alloc]initWithArray:[netManager useDOMXMLParser]];
         //封装到自己的DockArray中
+        [DockArray removeAllObjects];
         DockArray = [self analyseSrc:array];
         NSLog(@"解析List.xml文件成功");
     }else if (netStatus == NotReachable){
         //如果存在本地List.xml则进行数据解析
         if ([netManager checkListXMLexist]) {
             NSLog(@"List.xml文件已存在,开始解析数据......");
-            [DockArray removeAllObjects];
             //获得解析完毕的数据
             NSArray * array = [[NSMutableArray alloc]initWithArray:[netManager useDOMXMLParser]];
             //封装到自己的DockArray中
+            [DockArray removeAllObjects];
             DockArray = [self analyseSrc:array];
             NSLog(@"解析List.xml文件成功");
         }
@@ -159,6 +163,7 @@
         year2013Data = [[NSMutableArray alloc]init];
         year2012Data = [[NSMutableArray alloc]init];
         year2015Data = [[NSMutableArray alloc]init];
+        ContentXMLPath = [[NSString alloc]init];
     }
     return self;
 }
@@ -226,14 +231,8 @@
         self.loading = NO;
         //更新表格界面中的 DataSource 数据
         NSLog(@">>>>>>>>>>>>>>>>>>>>>刷新数据中>>>>>>>>>>>>>>>>>>>>>>>");
-
-//        for (UIView * view in self.view.subviews) {
-//            [view removeFromSuperview];
-//        }
-        
-//        [self viewDidLoad];
         [self updateData];
-        [self viewDidAppear:YES];
+        [self.tableView reloadData];
     });
 }
 
@@ -274,6 +273,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    NSLog(@"SectionNumber = %lu",(unsigned long)[DockArray count]);
     return [DockArray count];
 }
 
@@ -337,9 +337,11 @@
         CGRect leftLabelFrame = CGRectMake(cell.bounds.origin.x+30, cell.bounds.origin.y+10+202, 128, 20);
         UILabel * leftLabel = [[UILabel alloc]initWithFrame:leftLabelFrame];
         //获得月号及期刊号
-        NSString * month = [dock.Ppath substringWithRange:NSMakeRange(12, 8)];
-        NSString * substr = [month substringFromIndex:4];
-        leftLabel.text = [NSString stringWithFormat:@"期刊号:%@",substr];
+        NSString * month = [NSString stringWithString:dock.MonthVersion];
+        NSString * subStr = [month substringFromIndex:4];
+        leftLabel.text = [NSString stringWithFormat:@"%@",subStr];//显示期刊号的字符串
+        [leftLabel setBackgroundColor:[UIColor clearColor]];
+        
         [cell.contentView addSubview:left];
         [cell.contentView addSubview:leftLabel];
         //根据每年数据需要创建右侧视图
@@ -365,9 +367,10 @@
             //右侧label
             CGRect rightLabelFrame = CGRectMake(cell.bounds.size.width-10-128,cell.bounds.origin.y+10+202, 128, 20);
             UILabel * rightLabel = [[UILabel alloc]initWithFrame:rightLabelFrame];
-            NSString * month = [dock2.Ppath substringWithRange:NSMakeRange(12, 8)];
-            NSString * substr = [month substringFromIndex:4];
-            rightLabel.text = [NSString stringWithFormat:@"期刊号:%@",substr];
+            NSString * month = [NSString stringWithString:dock2.MonthVersion];
+            NSString * subStr = [month substringFromIndex:4];
+            rightLabel.text = [NSString stringWithFormat:@"%@",subStr];//显示期刊号的字符串
+            [rightLabel setBackgroundColor:[UIColor clearColor]];
             
             [cell.contentView addSubview:right];
             [cell.contentView addSubview:rightLabel];
@@ -384,7 +387,7 @@
     UIView * sectionView = [[UIView alloc]init];
     
     UIImageView * background = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"bg_carpet"]];
-    [background setFrame:CGRectMake(0, 0, 320, 25)];
+    [background setFrame:CGRectMake(0, 0, 320, 40)];
     [sectionView addSubview:background];
     [sectionView setAutoresizesSubviews:YES];
     UIImageView * sepImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"bg_bookself_sep"]];
@@ -393,8 +396,8 @@
     UIImage * sectionImage1 = [UIImage imageNamed:str];
     UIImageView * sectionImageView = [[UIImageView alloc]initWithImage:sectionImage1];
     
-    [sectionImageView setFrame:CGRectMake(15, 5, 50, 20)];
-    [sepImageView setFrame:CGRectMake(70, 10, 230, 11)];
+    [sectionImageView setFrame:CGRectMake(15, 10, 50, 17)];
+    [sepImageView setFrame:CGRectMake(70, 14, 230, 15)];
     
     [sectionView addSubview:sectionImageView];
     [sectionView addSubview:sepImageView];
@@ -421,7 +424,18 @@
         NSString * path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
         //2.指定下载到沙箱中的文件名称ContentList.xml
         path = [path stringByAppendingPathComponent:@"ContentList.xml"];
-        [netManager downloadByURL:url WithPath:path];
+        
+        //---------------------这里下载左侧视图xml文件---------------------//
+        [netManager downloadFileFrom:url intoPath:path];
+        ContentXMLPath = [NSString stringWithString:path];
+        
+        ContentViewController.ContentTopic = [netManager ParserContentListXMLWithPath:ContentXMLPath];
+        //**************下载目录图片到指定文件夹****************//
+        [netManager downloadThumbPackageImages:ContentViewController.ContentTopic.ThumbName WithPath:ContentViewController.ContentTopic.LocalFolderName And:ContentViewController.ContentTopic.ThumbName];
+        
+        //**************下载图片zip包到指定文件夹***************//
+        [netManager downloadImageZipIntoPath:ContentViewController.ContentTopic.LocalFolderName WithURL:ContentViewController.ContentTopic.TopicPath And:Nil];
+        
     }else{
 //        NSLog(@"点击了右边section = %d row = %d point.x = %f,point.y = %f",section,row,point.x,point.y);
         NSInteger indexInDockArray = row * 2 + 1 ;//在DockArray/Year201xData中的位置
@@ -432,8 +446,25 @@
         NSString * path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
         //2.指定下载到沙箱中的文件名称ContentList.xml
         path = [path stringByAppendingPathComponent:@"ContentList.xml"];
-        [netManager downloadByURL:url WithPath:path];
+       
+        //---------------------这里下载右侧视图xml文件---------------------//
+        [netManager downloadFileFrom:url intoPath:path];
+        //拼接下载路径
+        ContentXMLPath = [NSString stringWithString:path];
+        
+        ContentViewController.ContentTopic = [netManager ParserContentListXMLWithPath:ContentXMLPath];
+        
+        
+        //**************下载目录图片到指定文件夹****************//
+        [netManager downloadThumbPackageImages:ContentViewController.ContentTopic.ThumbName WithPath:ContentViewController.ContentTopic.LocalFolderName And:ContentViewController.ContentTopic.ThumbName];
+        
+        //**************下载图片zip包到指定文件夹***************//
+        [netManager downloadImageZipIntoPath:ContentViewController.ContentTopic.LocalFolderName WithURL:ContentViewController.ContentTopic.TopicPath And:Nil];
+        NSLog(@"FrontCoverZipURL = %@",ContentViewController.ContentTopic.FrontCoverZipURL);
+        NSLog(@"Topic1ZipURL = %@",[ContentViewController.ContentTopic.TopicPath objectAtIndex:0]);
     }
+    
+    
     [self presentViewController:ContentViewController animated:YES completion:Nil];
 }
 
@@ -441,9 +472,12 @@
 -(NSString *)getContentXMLPathWith:(NSInteger)section And:(NSInteger)indexInDockArray{
     CCMagazineDock * obj =[[DockArray objectAtIndex:section] objectAtIndex:indexInDockArray];
     NSString * str = _HOSTURL;
-    NSString * ContentXMLPath = [NSString stringWithFormat:@"%@%@",str,obj.Ppath];
-    return ContentXMLPath;
+    NSString * _ContentXMLPath = [NSString stringWithFormat:@"%@%@",str,obj.Ppath];
+//    NSLog(@"path = %@",_ContentXMLPath);
+    return _ContentXMLPath;
 
 }
+
+
 
 @end

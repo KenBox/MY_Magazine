@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Reachability.h"
-@class CCMagazineDock;
+@class CCMagazineDock,CCMagazineTopic;
 @interface CCNetworking : NSObject
 
 @property (nonatomic,strong) NSString * RequestXMLPath;
@@ -19,9 +19,13 @@
 
 -(NetworkStatus)checkNetwork;
 -(BOOL)checkListXMLexist;
--(BOOL)checkLocalImagesExist:(NSString *)imageName;
 -(void)downloadXMLList;
--(void)downloadByURL:(NSURL *)url WithPath:(NSString *)path;//根据url下载文件
+-(void)downloadFileFrom:(NSURL *)URL intoPath:(NSString * )path;//根据url下载文件
+-(void)downloadThumbPackageImages:(NSMutableArray *)URLArray WithPath:(NSString * )LocalPath And:(NSMutableArray *)ThumbName;
+-(void)downloadImageZipIntoPath:(NSString *)LocalPath WithURL:(NSMutableArray *)URLArray And:(NSMutableArray *)TopicZipURLArray;
+
+
 -(NSMutableArray *)useDOMXMLParser;
+-(CCMagazineTopic *)ParserContentListXMLWithPath:(NSString * )path;
 
 @end

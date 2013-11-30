@@ -10,8 +10,9 @@
 #import "DEMOMenuViewController.h"
 #import "DEMOFirstViewController.h"
 #import <QuartzCore/QuartzCore.h>
-#import "CCNetworking.h"
-
+//#import "CCNetworking.h"
+#import "ASIHTTPRequest.h"
+#import "ASIDownloadCache.h"
 @implementation CCAppDelegate
 @synthesize networkingMananger;
 
@@ -22,7 +23,8 @@
 //    //检查网络状况及List.xml是否存在，如果不存在则到服务器下载一个
 //    networkingMananger = [[CCNetworking alloc]init];
 //    [networkingMananger checkNetwork];
-//    
+    [ASIHTTPRequest setDefaultCache:[ASIDownloadCache sharedCache]];
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:[[DEMOFirstViewController alloc] init]];
@@ -32,13 +34,11 @@
     sideMenuViewController.backgroundImage = [UIImage imageNamed:@"bg_carpet"];
     sideMenuViewController.delegate = self;
     self.window.rootViewController = sideMenuViewController;
-    self.window.backgroundColor = [UIColor whiteColor];
+    self.window.backgroundColor = [UIColor clearColor];
     [self.window makeKeyAndVisible];
     
     //开场动画
-    UIImageView* campFireView = [[UIImageView alloc] initWithFrame:CGRectMake(60, 240, 200, 180)];
-    CGPoint screenCenter = CGPointMake([UIScreen mainScreen].bounds.size.width/2,[UIScreen mainScreen].bounds.size.height/2+45);
-    campFireView.center = screenCenter;
+    UIImageView* campFireView = [[UIImageView alloc] initWithFrame:CGRectMake(60, 200, 200, 180)];
     // load all the frames of our animation
     campFireView.animationImages = [NSArray arrayWithObjects:
                                     [UIImage imageNamed:@"loading_flip_book1"],
@@ -59,8 +59,12 @@
     
     
     fView =[[UIImageView alloc]initWithFrame:self.window.frame];//初始化fView
-    fView.image=[UIImage imageNamed:@"default.png"];//图片f.png 到fView
+    fView.image=[UIImage imageNamed:@"bg_carpet"];//图片f.png 到fView
     [fView addSubview:campFireView];
+    
+    UIImageView * HouseLogo = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"HouseLogo"]];
+    [HouseLogo setFrame:CGRectMake(40, 100, 240, 80)];
+    [fView addSubview:HouseLogo];
     zView=[[UIImageView alloc]initWithFrame:self.window.frame];//初始化zView
     zView.image=[UIImage imageNamed:@"Cover_126"];//图片z.png 到zView
     
@@ -68,7 +72,7 @@
     
     [rView addSubview:fView];//add 到rView
     [rView addSubview:zView];//add 到rView
-    
+
     [self.window addSubview:rView];//add 到window
     
     [self performSelector:@selector(TheAnimation) withObject:nil afterDelay:1];//2秒后执行TheAnimation

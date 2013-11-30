@@ -5,7 +5,9 @@
 //  Created by Ken on 13-11-23.
 //  Copyright (c) 2013年 Ken. All rights reserved.
 //
-
+/**
+ *  description:        用户评论页面
+ */
 #import "CCCommentViewController.h"
 
 @interface CCCommentViewController ()

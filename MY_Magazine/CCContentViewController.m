@@ -5,29 +5,34 @@
 //  Created by Ken on 13-11-22.
 //  Copyright (c) 2013年 Ken. All rights reserved.
 //
-
+/**
+ *  description:        期刊内容页面
+ */
 #import "CCContentViewController.h"
 #import "CCCommentViewController.h"
 #import "CCThumbViewController.h"
 #import "Utilities.h"
 #import "LeavesView.h"
-@interface CCContentViewController ()<UIActionSheetDelegate>
+#import "AllDefineHeader.h"
+@interface CCContentViewController ()<UIActionSheetDelegate,UIToolbarDelegate>
 
-@property (strong, nonatomic) UIToolbar * Toolbar;
-@property (strong, nonatomic) UIBarButtonItem *HomeBtn;
-@property (strong, nonatomic) UIBarButtonItem *CommentBtn;
-@property (strong, nonatomic) UIBarButtonItem *ShareBtn;
-@property (strong, nonatomic) UIBarButtonItem *ThumbBtn;
+@property (strong, nonatomic) IBOutlet UIToolbar *Toolbar;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *HomeBtn;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *CommentBtn;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *ShareBtn;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *ThumbBtn;
+
 @property (assign, nonatomic) BOOL isToolbarHidden;
 @property (strong, nonatomic) UIActionSheet * shareActionSheet;
-
+@property (strong, nonatomic) NSArray * BarItems;
 //leaves框架
 @property (readonly) NSArray *images;
 @end
 
 @implementation CCContentViewController
-@synthesize Toolbar,HomeBtn,CommentBtn,ShareBtn,ThumbBtn,isToolbarHidden,shareActionSheet,CommentViewController,ThumbViewController;
 
+@synthesize shareActionSheet,CommentViewController,ThumbViewController,ContentTopic;
+@synthesize BarItems,Toolbar,HomeBtn,CommentBtn,ShareBtn,ThumbBtn,isToolbarHidden;
 
 #pragma mark LeavesViewDataSource
 
@@ -47,34 +52,31 @@
 
 
 #pragma mark - Button Methods
-- (void)ThumbBtnPressed:(UIBarButtonItem *)sender {
+- (IBAction)ThumbBtnPressed:(UIBarButtonItem *)sender {
     NSLog(@"点击了目录");
     ThumbViewController = [[CCThumbViewController alloc]initWithNibName:@"CCThumbViewController" bundle:Nil];
     [self presentViewController:ThumbViewController animated:YES completion:Nil];
 }
-
-
-- (void)ShareBtnPressed:(UIBarButtonItem *)sender {
-    NSLog(@"点击了分享");
-    shareActionSheet = [[UIActionSheet alloc]initWithTitle:Nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"分享到新浪微博" otherButtonTitles:@"分享到腾讯微博", nil];
-    [shareActionSheet showInView:self.view];
+- (IBAction)HomeBtnPressed:(UIBarButtonItem *)sender {
+    NSLog(@"点击了Home");
+    [self dismissViewControllerAnimated:YES completion:Nil];
 }
-
-
-- (void)CommentBtnPressed:(UIBarButtonItem *)sender {
+- (IBAction)CommentBtnPressed:(UIBarButtonItem *)sender {
     NSLog(@"点击了评论");
     CommentViewController = [[CCCommentViewController alloc]initWithNibName:@"CCCommentViewController" bundle:Nil];
     [self presentViewController:CommentViewController animated:YES completion:Nil];
 }
+- (IBAction)ShareBtnPressed:(UIBarButtonItem *)sender {
+    NSLog(@"点击了分享");
+    shareActionSheet = [[UIActionSheet alloc]initWithTitle:Nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"分享到新浪微博" otherButtonTitles:@"分享到腾讯微博", nil];
+    [shareActionSheet showInView:self.view];
 
-- (void)HomeBtnPressed:(UIBarButtonItem *)sender {
-    NSLog(@"点击了Home");
-    [self dismissViewControllerAnimated:YES completion:Nil];
 }
 
 #pragma mark - Gesture Methods
 
 -(void)pageSelected:(UITapGestureRecognizer *)sender{
+    NSLog(@"tap.....");
     //增加隐藏toolbar动画
     CATransition *trans=[CATransition animation];
     trans.type=kCATransitionPush;
@@ -83,7 +85,6 @@
 
     if (isToolbarHidden) {
         isToolbarHidden = NO;
-//        [Toolbar isUserInteractionEnabled];
         trans.subtype=kCATransitionFromTop;
         [Toolbar.layer addAnimation:trans forKey:@"transition"];
         [Toolbar setHidden:isToolbarHidden];
@@ -102,11 +103,15 @@
     if (self) {
         // Custom initialization
         [self setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+        ContentTopic = [[CCMagazineTopic alloc]init];
 		_images = [[NSArray alloc] initWithObjects:
                    [UIImage imageNamed:@"Stars"],
                    [UIImage imageNamed:@"Balloon"],
                    [UIImage imageNamed:@"bg_carpet"],
                    nil];
+        if (!IS_4_INCH) {
+            [Toolbar setFrame:CGRectMake(0, APP_SCREEN_CONTENT_HEIGHT/2-44, APP_SCREEN_WIDTH, APP_SCREEN_HEIGHT/2)];
+        }
     }
     return self;
 }
@@ -114,46 +119,27 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [Toolbar setFrame:CGRectMake(0.0, self.view.frame.size.height - Toolbar.frame.size.height - 44.0, self.view.frame.size.width, 44.0)];
+    [Toolbar setBarStyle:UIBarStyleDefault];
+    Toolbar.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+    NSLog(@"currentDevice = %@",[UIDevice currentDevice].model);
+    [Toolbar setHidden:YES];
+    isToolbarHidden = YES;
 
-    
+    NSLog(@"width = %f,height = %f",APP_SCREEN_WIDTH,APP_SCREEN_HEIGHT);
+
     // Do any additional setup after loading the view from its nib.
-    Toolbar=[[UIToolbar alloc]initWithFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height-40, [UIScreen mainScreen].bounds.size.width, 40)];
-    [Toolbar sizeToFit];
-
-    //设置toolbar风格
-    [Toolbar setBarStyle:UIBarStyleBlackTranslucent];
-    
-    
-    UIBarButtonItem *baritem1=[[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"btn_home"] style:UIBarButtonItemStylePlain target:self action:@selector(HomeBtnPressed:)];
-    [baritem1 setWidth:66];
-    UIBarButtonItem *baritem2=[[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"btn_cmt"] style:UIBarButtonItemStylePlain target:self action:@selector(CommentBtnPressed:)];
-    [baritem2 setWidth:66];
-    UIBarButtonItem *baritem3=[[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"btn_share"] style:UIBarButtonItemStylePlain target:self action:@selector(ShareBtnPressed:)];
-    [baritem3 setWidth:66];
-    
-    UIBarButtonItem *baritem4=[[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"btn_catalog"] style:UIBarButtonItemStylePlain target:self action:@selector(ThumbBtnPressed:)];
-    [baritem4 setWidth:66];
-    
-    NSArray *items=@[baritem1,baritem2,baritem3,baritem4];
-    
-    [Toolbar setItems:items animated:YES];
-
-    
     //Tap手势显示及隐藏Toolbar
     UITapGestureRecognizer * tap1 = [[UITapGestureRecognizer alloc]initWithTarget:self
                                                                            action:@selector(pageSelected:)];
-
     [self.leavesView addGestureRecognizer:tap1];
-
     [self.view insertSubview:self.leavesView atIndex:0];
-    [self.view insertSubview:Toolbar aboveSubview:self.view];
+
 }
 
 
 
 -(void)viewWillAppear:(BOOL)animated{
-    [Toolbar setHidden:YES];
-    isToolbarHidden = YES;
 }
 
 - (void)didReceiveMemoryWarning
@@ -166,5 +152,6 @@
 -(BOOL)prefersStatusBarHidden{
     return YES;
 }
+
 
 @end

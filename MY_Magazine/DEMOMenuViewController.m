@@ -5,11 +5,15 @@
 //  Created by Roman Efimov on 10/10/13.
 //  Copyright (c) 2013 Roman Efimov. All rights reserved.
 //
-
+/**
+ *  description:        侧边目录页面
+ */
 #import "DEMOMenuViewController.h"
 #import "DEMOFirstViewController.h"
 #import "DEMOSecondViewController.h"
 #import "CCSuggestionViewController.h"
+#import "CCHelpViewController.h"
+
 @interface DEMOMenuViewController ()
 
 @property (strong, readwrite, nonatomic) UITableView *tableView;
@@ -46,31 +50,33 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     switch (indexPath.row) {
-            //操作帮助
+        //操作帮助
         case 0:
+            [self.sideMenuViewController setContentViewController:[[UINavigationController alloc] initWithRootViewController:[[CCHelpViewController alloc] init]]
+                                                         animated:YES];
 
             [self.sideMenuViewController hideMenuViewController];
             break;
-            //清理杂志
+        //清理杂志
         case 1:
             [self.sideMenuViewController hideMenuViewController];
             //这里写清理杂志代码
             
             
             break;
-            //关于我们
+        //关于我们
         case 2:
             [self.sideMenuViewController setContentViewController:[[UINavigationController alloc] initWithRootViewController:[[DEMOSecondViewController alloc] init]]
                                                          animated:YES];
             [self.sideMenuViewController hideMenuViewController];
             break;
-            //意见反馈
+        //意见反馈
         case 3:
             [self.sideMenuViewController setContentViewController:[[UINavigationController alloc] initWithRootViewController:[[CCSuggestionViewController alloc] init]]
                                                          animated:YES];
             [self.sideMenuViewController hideMenuViewController];
             break;
-            //退出设置
+        //退出设置
         case 4:
             self.sideMenuViewController.contentViewController = [[UINavigationController alloc] initWithRootViewController:[[DEMOFirstViewController alloc] init]];
             [self.sideMenuViewController hideMenuViewController];
@@ -114,9 +120,9 @@
     }
     
     NSArray *titles = @[@"操作帮助", @"清理杂志", @"关于我们", @"意见反馈", @"返回"];
-    NSArray *images = @[@"IconHome", @"IconCalendar", @"IconProfile", @"IconSettings", @"IconEmpty"];
+//    NSArray *images = @[@"IconHome", @"IconCalendar", @"IconProfile", @"IconSettings", @"IconEmpty"];
     cell.textLabel.text = titles[indexPath.row];
-    cell.imageView.image = [UIImage imageNamed:images[indexPath.row]];
+//    cell.imageView.image = [UIImage imageNamed:images[indexPath.row]];
     
     return cell;
 }

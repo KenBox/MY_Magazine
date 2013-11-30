@@ -5,6 +5,9 @@
 //  Created by Ken on 13-11-23.
 //  Copyright (c) 2013年 Ken. All rights reserved.
 //
+/**
+ *  description:        内容目录页面
+ */
 
 #import "CCThumbViewController.h"
 

@@ -4,7 +4,10 @@
 //
 //  Created by Roman Efimov on 10/10/13.
 //  Copyright (c) 2013 Roman Efimov. All rights reserved.
-//  <<<<<<<<<<<关于我们页面>>>>>>>>>>>>>>
+//
+/**
+ *  description:        关于我们界面
+ */
 
 #import "DEMOSecondViewController.h"
 
@@ -14,7 +17,6 @@
 {
     [super viewDidLoad];
 
-	self.title = @"About us";
     //导航栏设置
     UIButton * setupBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [setupBtn setImage:[UIImage imageNamed:@"btn_setting"] forState:UIControlStateNormal];
@@ -28,21 +30,9 @@
     self.navigationItem.titleView = bgImg;
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"bg_wood"] forBarMetrics:UIBarMetricsDefault];
     
-    //插入背景图片
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
-//    imageView.contentMode = UIViewContentModeScaleAspectFill;
-//    imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    imageView.image = [UIImage imageNamed:@"ver-0.jpg"];
-    //ScrollView设置
-    UIScrollView * scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 320, 504)];
-    scrollView.pagingEnabled = YES;
-    scrollView.contentSize = CGSizeMake(320,528);
-    scrollView.showsHorizontalScrollIndicator = NO;
-    scrollView.showsVerticalScrollIndicator = NO;
-    scrollView.scrollsToTop = NO;
-    scrollView.delegate = self;
-    [scrollView addSubview:imageView];
-    [self.view addSubview:scrollView];
+    //
+    
+    
 }
 
 - (void)showMenu

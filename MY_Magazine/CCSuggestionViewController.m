@@ -4,9 +4,12 @@
 //
 //  Created by Ken on 13-11-20.
 //  Copyright (c) 2013年 Ken. All rights reserved.
-//  意见反馈页面
-
+//
+/**
+ *  description:        意见反馈页面
+ */
 #import "CCSuggestionViewController.h"
+#import "RESideMenu.h"
 
 @interface CCSuggestionViewController ()
 
