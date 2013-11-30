@@ -32,7 +32,7 @@
 
 @implementation CCNetworking
 
-@synthesize RequestXMLPath,magazineDock,magazineDockArr,ListURL,LocalListPath;
+@synthesize RequestXMLPath,magazineDock,magazineDockArr,ListURL,LocalListPath,resourcePath;
 
 
 #pragma mark - 查看网络状况
@@ -149,7 +149,6 @@
             [self unzipImage:zipName WithZipDir:ZipDir];
         }
     }
-    
     NSLog(@">>>>>>>>>>>下载图片zip包完成>>>>>>>>>>>");
 }
 
@@ -160,7 +159,7 @@
  */
 -(void)unzipImage:(NSString * )FileName WithZipDir:(NSString *)ZipDir{
     ZipArchive * archive = [[ZipArchive alloc]init];
-
+    NSLog(@">>>>>>>>>>解压图片中>>>>>>>>>>>");
     BOOL result;
     
     if ([archive UnzipOpenFile:FileName]) {
@@ -345,14 +344,19 @@
             }
         }
     }
+    NSLog(@"resourcePath = %@",self.resourcePath);
     NSLog(@">>>>>>>>>>ContentListXML解析结束>>>>>>>>>>>>");
     return Content;
 }
 
-//拼接本地ThumbPackage文件夹名称
+#pragma mark - 获得了对应的resourcePath
+/**
+ *  description:            在这个方法内获得了当前xml对应的resourcePath
+ */
 -(NSString *)getLocalFolderName:(NSString *)CoverPath{
     NSArray * aaa = [CoverPath componentsSeparatedByString:@"/"];
     NSString * temp = [NSString stringWithString:[aaa objectAtIndex:2]];
+    resourcePath = [NSString stringWithFormat:@"%@/%@",KDocumentFolderPath,temp];
     return temp;
 }
 //拼接ThumbNameURL地址
@@ -370,7 +374,6 @@
     NSString * temp1 = [mutArr componentsJoinedByString:@"/"];
     NSMutableString * mutArr2 = [NSMutableString stringWithFormat:@"%@.zip",temp1];
     NSString * resault = [NSString stringWithString:mutArr2];
-//    NSLog(@"Resault = %@",resault);
     return resault;
 }
 //拼接FrontCover.zip地址

@@ -18,7 +18,7 @@
 @interface LeavesViewController : UIViewController
 
 // The LeavesView presented by the view controller.
-@property (readonly) LeavesView *leavesView;
+@property (nonatomic,strong) LeavesView *leavesView;
 
 @end
 

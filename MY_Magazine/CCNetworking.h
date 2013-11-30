@@ -16,6 +16,7 @@
 @property (nonatomic,strong) NSMutableArray * magazineDockArr;
 @property (nonatomic,retain) NSURL * ListURL;//存放List.xml服务器URL
 @property (nonatomic,retain) NSString * LocalListPath;//存放List.xml本地路径
+@property (nonatomic,strong) NSString * resourcePath;//存放解压后的文件路径
 
 -(NetworkStatus)checkNetwork;
 -(BOOL)checkListXMLexist;

@@ -26,12 +26,12 @@
 @property (strong, nonatomic) UIActionSheet * shareActionSheet;
 @property (strong, nonatomic) NSArray * BarItems;
 //leaves框架
-@property (readonly) NSArray *images;
+//@property (readonly) NSArray *images;
 @end
 
 @implementation CCContentViewController
 
-@synthesize shareActionSheet,CommentViewController,ThumbViewController,ContentTopic;
+@synthesize shareActionSheet,CommentViewController,ThumbViewController,ContentTopic,ContentViewImages;
 @synthesize BarItems,Toolbar,HomeBtn,CommentBtn,ShareBtn,ThumbBtn,isToolbarHidden;
 
 #pragma mark LeavesViewDataSource
@@ -99,40 +99,61 @@
 #pragma mark - LifeCycle Methods
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
+    
+    NSLog(@"ContentViewInit..........");
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
         [self setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
         ContentTopic = [[CCMagazineTopic alloc]init];
-		_images = [[NSArray alloc] initWithObjects:
-                   [UIImage imageNamed:@"Stars"],
-                   [UIImage imageNamed:@"Balloon"],
-                   [UIImage imageNamed:@"bg_carpet"],
-                   nil];
+        ContentViewImages = [[NSMutableArray alloc]init];
+//		_images = [[NSArray alloc] initWithObjects:
+//                   [UIImage imageNamed:@"Stars"],
+//                   [UIImage imageNamed:@"Balloon"],
+//                   [UIImage imageNamed:@"bg_carpet"],
+//                   nil];
+        _images = [[NSMutableArray alloc]initWithArray:self.ContentViewImages];
         if (!IS_4_INCH) {
             [Toolbar setFrame:CGRectMake(0, APP_SCREEN_CONTENT_HEIGHT/2-44, APP_SCREEN_WIDTH, APP_SCREEN_HEIGHT/2)];
         }
     }
     return self;
 }
-
+-(void)viewDidDisappear:(BOOL)animated{
+    
+}
 - (void)viewDidLoad
 {
+    NSLog(@"ContentView did load......");
+    NSLog(@"images = %@",self.images);
     [super viewDidLoad];
+    for (UIView * view in self.view.subviews) {
+        if ([self.view.subviews.class isKindOfClass:self.leavesView.class]) {
+            [view removeFromSuperview];
+        }
+    }
+    [self.leavesView reloadData];
+
+    [self.leavesView reloadInputViews];
+//    [self.images removeAllObjects];
+    [self.images addObject:self.ContentViewImages];
+ 
+    
     [Toolbar setFrame:CGRectMake(0.0, self.view.frame.size.height - Toolbar.frame.size.height - 44.0, self.view.frame.size.width, 44.0)];
     [Toolbar setBarStyle:UIBarStyleDefault];
     Toolbar.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
-    NSLog(@"currentDevice = %@",[UIDevice currentDevice].model);
+//    NSLog(@"currentDevice = %@",[UIDevice currentDevice].model);
     [Toolbar setHidden:YES];
     isToolbarHidden = YES;
 
-    NSLog(@"width = %f,height = %f",APP_SCREEN_WIDTH,APP_SCREEN_HEIGHT);
+//    NSLog(@"width = %f,height = %f",APP_SCREEN_WIDTH,APP_SCREEN_HEIGHT);
 
     // Do any additional setup after loading the view from its nib.
     //Tap手势显示及隐藏Toolbar
     UITapGestureRecognizer * tap1 = [[UITapGestureRecognizer alloc]initWithTarget:self
                                                                            action:@selector(pageSelected:)];
     [self.leavesView addGestureRecognizer:tap1];
+    [self.view addSubview:Toolbar];
     [self.view insertSubview:self.leavesView atIndex:0];
 
 }

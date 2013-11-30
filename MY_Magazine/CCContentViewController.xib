@@ -51,23 +51,8 @@
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
-        <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" id="ury-wt-Ga0">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-            <items/>
-        </toolbar>
-        <view contentMode="scaleToFill" id="sc0-gb-nOb">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="21"/>
-            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-        </view>
-        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bg_reader_logo.png" id="HLx-4n-gt6">
-            <rect key="frame" x="0.0" y="0.0" width="172" height="40"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-        </imageView>
     </objects>
     <resources>
-        <image name="bg_reader_logo.png" width="172" height="40"/>
         <image name="btn_catalog.png" width="25" height="23"/>
         <image name="btn_cmt.png" width="26" height="23"/>
         <image name="btn_home.png" width="25" height="23"/>
