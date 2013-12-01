@@ -31,7 +31,7 @@
 
 @implementation CCContentViewController
 
-@synthesize shareActionSheet,CommentViewController,ThumbViewController,imagesArray;
+@synthesize shareActionSheet,CommentViewController,ThumbViewController,imagesArray,ThumbImagesArray;
 @synthesize BarItems,Toolbar,HomeBtn,CommentBtn,ShareBtn,ThumbBtn,isToolbarHidden;
 
 #pragma mark LeavesViewDataSource
@@ -55,6 +55,7 @@
 - (IBAction)ThumbBtnPressed:(UIBarButtonItem *)sender {
     NSLog(@"点击了目录");
     ThumbViewController = [[CCThumbViewController alloc]initWithNibName:@"CCThumbViewController" bundle:Nil];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"thumbImages" object:ThumbImagesArray];
     [self presentViewController:ThumbViewController animated:YES completion:Nil];
 }
 - (IBAction)HomeBtnPressed:(UIBarButtonItem *)sender {
@@ -108,14 +109,33 @@
         // Custom initialization
         [self setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
         imagesArray = [[NSMutableArray alloc]init];
+        ThumbImagesArray = [[NSMutableArray alloc]init];
         _images = [[NSMutableArray alloc]init];
-        
+        //注册接收内容图片集合的通知
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(getInfo:) name:@"topic" object:Nil];
-
+        //注册接收目录页图片集合的通知
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(getThumbImages:) name:@"topic2" object:Nil];
+        //注册接收目录页返回的行数
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(getSelectRowFromThumbview:) name:@"selectRow" object:Nil];
     }
     return self;
 }
+//接收目录页传回来的页码
+-(void)getSelectRowFromThumbview:(NSNotification *)info{
+    NSInteger row = [[info object] integerValue];
+    [self.leavesView setCurrentPageIndex:row];
+}
 
+//接收通知,目录页的图片集合
+-(void)getThumbImages:(NSNotification *)info{
+    if (ThumbImagesArray) {
+        [ThumbImagesArray removeAllObjects];
+    }
+    for (UIImage * img in [info object]) {
+        [ThumbImagesArray addObject:img];
+    }
+}
+//接收通知，内容页显示的图片集合
 -(void)getInfo:(NSNotification *)info{
     NSLog(@"接收通知.....");
     if (imagesArray) {
@@ -136,6 +156,7 @@
     NSLog(@"ContentView did load......");
     [super viewDidLoad];
     
+//    [self.leavesView setCurrentPageIndex:2];
 //    for (UIView * view in self.view.subviews) {
 //        if ([self.view.subviews.class isKindOfClass:self.leavesView.class]) {
 //            [view removeFromSuperview];

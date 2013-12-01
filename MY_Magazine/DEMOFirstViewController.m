@@ -419,6 +419,7 @@
         NSString * leftXMLPath = [self getContentXMLPathWith:section And:indexInDockArray];
         CCMagazineTopic * leftTopic = [[CCMagazineTopic alloc ]initWithObject:[self updateContentViewControllerData:leftXMLPath]];
         [[NSNotificationCenter defaultCenter]postNotificationName:@"topic" object:leftTopic.ContectImages];
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"topic2" object:leftTopic.ThumbImages];
         NSLog(@"发送通知......");
     }else{
 //        NSLog(@"点击了右边section = %d row = %d point.x = %f,point.y = %f",section,row,point.x,point.y);
@@ -427,6 +428,7 @@
         NSString * rightXMLPath = [self getContentXMLPathWith:section And:indexInDockArray];
         CCMagazineTopic * rightTopic = [[CCMagazineTopic alloc ]initWithObject:[self updateContentViewControllerData:rightXMLPath]];
         [[NSNotificationCenter defaultCenter]postNotificationName:@"topic" object:rightTopic.ContectImages];
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"topic2" object:rightTopic.ThumbImages];
         NSLog(@"发送通知......");
     }
     
@@ -455,13 +457,20 @@
     Topic.resourcePath = netManager.resourcePath;
     NSLog(@"topic.path = %@",Topic.resourcePath);
     //**************下载目录图片到指定文件夹****************//
-    [netManager downloadThumbPackageImages:Topic.ThumbName WithPath:Topic.LocalFolderName And:Topic.ThumbName];
+    [netManager downloadThumbPackageImages:Topic.ThumbName
+                                  WithPath:Topic.LocalFolderName
+                                       And:Topic.ThumbName];
     //**************下载图片zip包到指定文件夹***************//
-    [netManager downloadImageZipIntoPath:Topic.LocalFolderName WithURL:Topic.TopicPath And:Nil];
+    [netManager downloadImageZipIntoPath:Topic.LocalFolderName
+                                 WithURL:Topic.TopicPath
+                                     And:Nil];
     //解析下载并解压完毕后设置资源路径获取图片数据
-    NSMutableArray * imgArr = [[NSMutableArray alloc]initWithArray:[self updateResource:Topic.resourcePath WithThumbName:Topic.ThumbName]];
+    NSMutableArray * imgArr = [[NSMutableArray alloc]initWithArray:
+                               [self updateResource:Topic.resourcePath WithThumbName:Topic.ThumbName]];
+    NSMutableArray * ThumbImages = [[NSMutableArray alloc]initWithArray:
+                                    [self updateThumbImages:Topic.resourcePath WithThumbName:Topic.ThumbName]];
     Topic.ContectImages = [[NSMutableArray alloc]initWithArray:imgArr];
-    
+    Topic.ThumbImages = [[NSMutableArray alloc]initWithArray:ThumbImages];
     NSLog(@">>>>>>>>>>>>加载内容页数据完成>>>>>>>>>>>>>");
     return Topic;
 }
@@ -474,12 +483,23 @@
     return _ContentXMLPath;
 
 }
-//将resource文件夹中的图片存放到视图对象中
+//将resource文件夹中的图片存放到集合中
 -(NSMutableArray *)updateResource:(NSString *)resourcePath WithThumbName:(NSMutableArray *)ThumbName{
     NSMutableArray * mutArr = [[NSMutableArray alloc]init];
     for (NSString * obj in ThumbName) {
         NSArray * arr = [obj componentsSeparatedByString:@"/"];
         NSString * str = [NSString stringWithFormat:@"%@/resource/%@",resourcePath,[arr lastObject]];
+        UIImage * imageData = [UIImage imageWithContentsOfFile:str];
+        [mutArr addObject:imageData];
+    }
+    return mutArr;
+}
+//将期刊索引图片存放到集合中
+-(NSMutableArray *)updateThumbImages:(NSString *)resourcePath WithThumbName:(NSMutableArray *)ThumbName{
+    NSMutableArray * mutArr = [[NSMutableArray alloc]init];
+    for (NSString * obj in ThumbName) {
+        NSArray * arr = [obj componentsSeparatedByString:@"/"];
+        NSString * str = [NSString stringWithFormat:@"%@/%@",resourcePath,[arr lastObject]];
         UIImage * imageData = [UIImage imageWithContentsOfFile:str];
         [mutArr addObject:imageData];
     }

@@ -114,6 +114,8 @@
         //判断文件路径上是否已经存在
         if (![FileOperation fileExistsAtPath:imagePath]) {
             [self downloadFileFrom:imageURL intoPath:imagePath];
+        }else{
+            NSLog(@"文件已经存在");
         }
     }
     NSLog(@">>>>>>>>>>>下载目录页图片完成>>>>>>>>>>>");
@@ -145,6 +147,8 @@
         if (![FileOperation fileExistsAtPath:zipName]) {
             [self downloadFileFrom:ZipURL intoPath:zipName];
             [self unzipImage:zipName WithZipDir:ZipDir];
+        }else{
+            NSLog(@"文件已经存在");
         }
     }
     NSLog(@">>>>>>>>>>>下载图片zip包完成>>>>>>>>>>>");
@@ -308,7 +312,7 @@
 /**
  *  description:            解析期刊内容页数据
  *  @param path:            用户所点击的期刊对应XML的URL
- *  @return:                返回值为期刊内容页Data
+ *  @return:                返回一个期刊内容页数据对象
  */
 -(CCMagazineTopic *)ParserContentListXMLWithPath:(NSString * )path{
     NSLog(@">>>>>>>>>>ContentListXML解析开始>>>>>>>>>>>>>");

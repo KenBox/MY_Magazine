@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface CCThumbViewController : UIViewController
-
+@property (nonatomic,strong) NSMutableArray * imagesArr;
+@property (nonatomic,strong) UITableView * myTable;
 @end

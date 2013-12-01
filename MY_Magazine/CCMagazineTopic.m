@@ -30,6 +30,7 @@
     if(self){
         CoverPath = topic.CoverPath;
         ContectImages = [[NSMutableArray alloc]initWithArray:topic.ContectImages];
+        ThumbImages = [[NSMutableArray alloc]initWithArray:topic.ThumbImages];
     }
     return self;
 }
