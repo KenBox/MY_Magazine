@@ -125,6 +125,8 @@
 		BEBE912C184063DD00A01A76 /* CCCommentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BEBE912A184063DD00A01A76 /* CCCommentViewController.xib */; };
 		BEBE913818406D6E00A01A76 /* common_back_button.png in Resources */ = {isa = PBXBuildFile; fileRef = BEBE913618406D6E00A01A76 /* common_back_button.png */; };
 		BEBE913918406D6E00A01A76 /* common_back_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEBE913718406D6E00A01A76 /* common_back_button@2x.png */; };
+		BECEA4B1184C3A9400BE3FD4 /* DDActionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = BECEA4B0184C3A9400BE3FD4 /* DDActionHeaderView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		BECEA4B4184C4C6500BE3FD4 /* HMSideMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = BECEA4B3184C4C6500BE3FD4 /* HMSideMenu.m */; };
 		BEEC981D18487DC500C531F7 /* CCxmlParser.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEC981C18487DC500C531F7 /* CCxmlParser.m */; };
 		BEF367F518419896006D0FBF /* LeavesCache.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF367F018419896006D0FBF /* LeavesCache.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		BEF367F618419896006D0FBF /* LeavesView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF367F218419896006D0FBF /* LeavesView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -326,6 +328,10 @@
 		BEBE912A184063DD00A01A76 /* CCCommentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CCCommentViewController.xib; sourceTree = "<group>"; };
 		BEBE913618406D6E00A01A76 /* common_back_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = common_back_button.png; sourceTree = "<group>"; };
 		BEBE913718406D6E00A01A76 /* common_back_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "common_back_button@2x.png"; sourceTree = "<group>"; };
+		BECEA4AF184C3A9400BE3FD4 /* DDActionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDActionHeaderView.h; sourceTree = "<group>"; };
+		BECEA4B0184C3A9400BE3FD4 /* DDActionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDActionHeaderView.m; sourceTree = "<group>"; };
+		BECEA4B2184C4C6500BE3FD4 /* HMSideMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMSideMenu.h; sourceTree = "<group>"; };
+		BECEA4B3184C4C6500BE3FD4 /* HMSideMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMSideMenu.m; sourceTree = "<group>"; };
 		BEEC981518487BFC00C531F7 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		BEEC981B18487DC500C531F7 /* CCxmlParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCxmlParser.h; sourceTree = "<group>"; };
 		BEEC981C18487DC500C531F7 /* CCxmlParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCxmlParser.m; sourceTree = "<group>"; };
@@ -698,6 +704,10 @@
 		BE8AFEEF183C61BD00323213 /* Others */ = {
 			isa = PBXGroup;
 			children = (
+				BECEA4B2184C4C6500BE3FD4 /* HMSideMenu.h */,
+				BECEA4B3184C4C6500BE3FD4 /* HMSideMenu.m */,
+				BECEA4AF184C3A9400BE3FD4 /* DDActionHeaderView.h */,
+				BECEA4B0184C3A9400BE3FD4 /* DDActionHeaderView.m */,
 				BE9A9C591848D3F6007AD28A /* ZipArchive */,
 				BE49D1F31844B5D4009037E2 /* ASIHTTPRequest */,
 				BEF367EE1841987F006D0FBF /* Leaves */,
@@ -834,6 +844,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				"zh-Hans",
 			);
 			mainGroup = BE8AFEAD183C612C00323213;
 			productRefGroup = BE8AFEB7183C612C00323213 /* Products */;
@@ -958,6 +969,7 @@
 				BE9A9C691848D479007AD28A /* ZipArchive.m in Sources */,
 				BE49D23E1844B624009037E2 /* ASIS3BucketRequest.m in Sources */,
 				BE49D2321844B624009037E2 /* ASINetworkQueue.m in Sources */,
+				BECEA4B4184C4C6500BE3FD4 /* HMSideMenu.m in Sources */,
 				BE49D22E1844B624009037E2 /* ASIDownloadCache.m in Sources */,
 				BE9A9C671848D479007AD28A /* unzip.c in Sources */,
 				BE49D1EF18448C81009037E2 /* CCMagazineDock.m in Sources */,
@@ -976,6 +988,7 @@
 				BE5A76E518407118006CA6A8 /* CCThumbViewController.m in Sources */,
 				BE49D2391844B624009037E2 /* ASICloudFilesObjectRequest.m in Sources */,
 				BEA8DF70183C695300809C98 /* UIViewController+RESideMenu.m in Sources */,
+				BECEA4B1184C3A9400BE3FD4 /* DDActionHeaderView.m in Sources */,
 				BEF367F618419896006D0FBF /* LeavesView.m in Sources */,
 				BE49D24C1844BB08009037E2 /* CCNetworking.m in Sources */,
 				BE49D2351844B624009037E2 /* ASICloudFilesContainer.m in Sources */,
@@ -1059,7 +1072,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
@@ -1092,7 +1105,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1123,6 +1136,7 @@
 					/Users/Ken/Desktop,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1152,6 +1166,7 @@
 					/Users/Ken/Desktop,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

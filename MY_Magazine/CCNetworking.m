@@ -111,6 +111,7 @@
         NSArray * arr = [thumbName componentsSeparatedByString:@"/"];
         NSString * res = [NSString stringWithString:[arr lastObject]];
         NSString * imagePath = [imageDir stringByAppendingString:[NSString stringWithFormat:@"/%@",res]];
+        
         //判断文件路径上是否已经存在
         if (![FileOperation fileExistsAtPath:imagePath]) {
             [self downloadFileFrom:imageURL intoPath:imagePath];
@@ -180,10 +181,10 @@
 /**
  *  description: 判断图片本地路径是否存在，不存在则下载图片
  *  @param 参数一: 图片在服务器上的URL
- *  @param 参数二: 图片名
- *  @paran 参数三: 图片存在Documents文件夹中的路径
+ *  @paran 参数二: 图片存在Documents文件夹中的路径
  */
 -(void)downloadFileFrom:(NSURL *)URL intoPath:(NSString * )path{
+    
     ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:URL];
     [request setDownloadDestinationPath:path];
     NSLog(@"文件下载中...");
@@ -207,6 +208,23 @@
         default:
             break;
     }
+}
+
+/**
+ *  description: 判断图片本地路径是否存在，不存在则下载图片
+ *  @param 参数一: 图片在服务器上的URL
+ *  @paran 参数二: 图片存在Documents文件夹中的路径
+ *  @param 参数三: 本地Documents文件夹中的下级文件夹路径
+ */
+-(void)downloadFileFrom:(NSURL *)URL intoPath:(NSString * )path CreatFolderName:(NSString *)FolderName{
+    //此处首先指定了图片存取路径（默认写到应用程序沙盒 中）
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
+    //并给文件起个文件名
+    NSString *DownloadDir = [[paths objectAtIndex:0] stringByAppendingPathComponent:FolderName];
+    DownloadDir = [DownloadDir stringByAppendingString:@"/ContentList.xml"];
+    //创建文件夹路径
+    [[NSFileManager defaultManager] createDirectoryAtPath:DownloadDir withIntermediateDirectories:YES attributes:nil error:nil];
+    [self downloadFileFrom:URL intoPath:DownloadDir];
 }
 
 #pragma mark - 书架页面XML解析

@@ -59,7 +59,7 @@
 }
 
 - (CGImageRef)cachedImageForPageIndex:(NSUInteger)pageIndex {
-	NSNumber *pageIndexNumber = [NSNumber numberWithInt:pageIndex];
+	NSNumber *pageIndexNumber = [NSNumber numberWithUnsignedInteger:pageIndex];
 	UIImage *pageImage;
 	@synchronized (self.pageCache) {
 		pageImage = [self.pageCache objectForKey:pageIndexNumber];
@@ -84,7 +84,7 @@
 
 - (void)precacheImageForPageIndex:(NSUInteger)pageIndex {
 	[self performSelectorInBackground:@selector(precacheImageForPageIndexNumber:)
-						   withObject:[NSNumber numberWithInt:pageIndex]];
+						   withObject:[NSNumber numberWithUnsignedInteger:pageIndex]];
 }
 
 - (void)minimizeToPageIndex:(NSUInteger)pageIndex {

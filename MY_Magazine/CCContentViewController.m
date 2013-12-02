@@ -11,12 +11,14 @@
 #import "CCContentViewController.h"
 #import "CCCommentViewController.h"
 #import "CCThumbViewController.h"
+
+#import "HMSideMenu.h"
 #import "Utilities.h"
 #import "LeavesView.h"
 #import "AllDefineHeader.h"
 @interface CCContentViewController ()<UIActionSheetDelegate,UIToolbarDelegate>
 
-@property (strong, nonatomic) IBOutlet UIToolbar *Toolbar;
+//@property (strong, nonatomic) IBOutlet UIToolbar *Toolbar;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *HomeBtn;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *CommentBtn;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *ShareBtn;
@@ -31,9 +33,8 @@
 
 @implementation CCContentViewController
 
-@synthesize shareActionSheet,CommentViewController,ThumbViewController,imagesArray,ThumbImagesArray;
+@synthesize shareActionSheet,CommentViewController,ThumbViewController,imagesArray,ThumbImagesArray,sideMenu;
 @synthesize BarItems,Toolbar,HomeBtn,CommentBtn,ShareBtn,ThumbBtn,isToolbarHidden;
-
 #pragma mark LeavesViewDataSource
 
 - (NSUInteger)numberOfPagesInLeavesView:(LeavesView*)leavesView {
@@ -78,26 +79,26 @@
 
 #pragma mark - Gesture Methods
 
--(void)pageSelected:(UITapGestureRecognizer *)sender{
-    NSLog(@"tap.....");
-    //增加隐藏toolbar动画
-    CATransition *trans=[CATransition animation];
-    trans.type=kCATransitionPush;
-    
-    trans.duration=0.5;
-
-    if (isToolbarHidden) {
-        isToolbarHidden = NO;
-        trans.subtype=kCATransitionFromTop;
-        [Toolbar.layer addAnimation:trans forKey:@"transition"];
-        [Toolbar setHidden:isToolbarHidden];
-    }else if(!isToolbarHidden){
-        isToolbarHidden = YES;
-        trans.subtype=kCATransitionFromBottom;
-        [Toolbar.layer addAnimation:trans forKey:@"transition"];
-        [Toolbar setHidden:isToolbarHidden];
-    }
-}
+//-(void)pageSelected:(UITapGestureRecognizer *)sender{
+//    NSLog(@"tap.....");
+//    //增加隐藏toolbar动画
+//    CATransition *trans=[CATransition animation];
+//    trans.type=kCATransitionPush;
+//    
+//    trans.duration=0.5;
+//
+//    if (isToolbarHidden) {
+//        isToolbarHidden = NO;
+//        trans.subtype=kCATransitionFromTop;
+//        [Toolbar.layer addAnimation:trans forKey:@"transition"];
+//        [Toolbar setHidden:isToolbarHidden];
+//    }else if(!isToolbarHidden){
+//        isToolbarHidden = YES;
+//        trans.subtype=kCATransitionFromBottom;
+//        [Toolbar.layer addAnimation:trans forKey:@"transition"];
+//        [Toolbar setHidden:isToolbarHidden];
+//    }
+//}
 
 #pragma mark - LifeCycle Methods
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -146,10 +147,20 @@
         [imagesArray addObject:img];
         [_images addObject:img];
     }
+    [self reloadInputViews];
 }
 -(void)viewDidDisappear:(BOOL)animated{
     
 }
+- (void)toggleMenu:(id)sender {
+    if (self.sideMenu.isOpen)
+        [self.sideMenu close];
+    else
+        [self.sideMenu open];
+}
+
+
+
 - (void)viewDidLoad
 {
     
@@ -163,7 +174,55 @@
 //        }
 //    }
 //    [self.leavesView reloadData];
-
+    
+    CGRect ItemFrame = CGRectMake(0, 0, 66, 40);
+    UIColor * bgcolor = [UIColor colorWithRed:0.220 green:0.177 blue:0.167 alpha:0.500];
+    UIView *HomeItem = [[UIView alloc] initWithFrame:ItemFrame];
+    [HomeItem setBackgroundColor:bgcolor];
+    [HomeItem.layer setCornerRadius:8];
+    [HomeItem setMenuActionWithBlock:^{
+        [self HomeBtnPressed:Nil];
+    }];
+    UIImageView *HomeIcon = [[UIImageView alloc] initWithFrame:CGRectMake(19, 6, 28, 28)];
+    [HomeIcon setImage:[UIImage imageNamed:@"btn_home.png"]];
+    [HomeItem addSubview:HomeIcon];
+    
+    UIView *CommentItem = [[UIView alloc] initWithFrame:ItemFrame];
+    [CommentItem setBackgroundColor:bgcolor];
+    [CommentItem.layer setCornerRadius:8];
+    [CommentItem setMenuActionWithBlock:^{
+        [self CommentBtnPressed:Nil];
+    }];
+    UIImageView *CommentIcon = [[UIImageView alloc] initWithFrame:CGRectMake(19, 6, 28 , 28)];
+    [CommentIcon setImage:[UIImage imageNamed:@"btn_cmt.png"]];
+    [CommentItem addSubview:CommentIcon];
+    
+    UIView *ShareItem = [[UIView alloc] initWithFrame:ItemFrame];
+    [ShareItem setBackgroundColor:bgcolor];
+    [ShareItem.layer setCornerRadius:8];
+    [ShareItem setMenuActionWithBlock:^{
+        [self ShareBtnPressed:Nil];
+        
+    }];
+    UIImageView *ShareIcon = [[UIImageView alloc] initWithFrame:CGRectMake(19, 6, 28, 28)];
+    [ShareIcon setImage:[UIImage imageNamed:@"btn_share.png"]];
+    [ShareItem addSubview:ShareIcon];
+    
+    
+    UIView *ThumbItem = [[UIView alloc] initWithFrame:ItemFrame];
+    [ThumbItem setBackgroundColor:bgcolor];
+    [ThumbItem.layer setCornerRadius:8];
+    [ThumbItem setMenuActionWithBlock:^{
+        [self ThumbBtnPressed:Nil];
+    }];
+    UIImageView *ThumbIcon = [[UIImageView alloc] initWithFrame:CGRectMake(21, 8, 24, 24)];
+    [ThumbIcon setImage:[UIImage imageNamed:@"btn_catalog.png"]];
+    [ThumbItem addSubview:ThumbIcon];
+    
+    self.sideMenu = [[HMSideMenu alloc] initWithItems:@[HomeItem, CommentItem, ShareItem, ThumbItem]];
+    [self.sideMenu setItemSpacing:5.0f];
+    [self.sideMenu setMenuPosition:HMSideMenuPositionBottom];
+    [self.view addSubview:self.sideMenu];
 
   
 
@@ -181,7 +240,7 @@
     // Do any additional setup after loading the view from its nib.
     //Tap手势显示及隐藏Toolbar
     UITapGestureRecognizer * tap1 = [[UITapGestureRecognizer alloc]initWithTarget:self
-                                                                           action:@selector(pageSelected:)];
+                                                                           action:@selector(toggleMenu:)];
     [self.leavesView addGestureRecognizer:tap1];
     [self.view addSubview:Toolbar];
     [self.view insertSubview:self.leavesView atIndex:0];

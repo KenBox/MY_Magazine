@@ -11,12 +11,15 @@
 #import "DEMOFirstViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "ASIHTTPRequest.h"
+//#import <ShareSDK/ShareSDK.h>
+
 @implementation CCAppDelegate
 @synthesize networkingMananger;
 
 #pragma mark - Networking#pragma mark - LifeCycle
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+//    [ShareSDK registerApp:@"api20"];     //参数为ShareSDK官网中添加应用后得到的AppKey
 
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];

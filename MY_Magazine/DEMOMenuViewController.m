@@ -13,8 +13,8 @@
 #import "DEMOSecondViewController.h"
 #import "CCSuggestionViewController.h"
 #import "CCHelpViewController.h"
-
-@interface DEMOMenuViewController ()
+#import "GSAlert.h"
+@interface DEMOMenuViewController ()<UIAlertViewDelegate>
 
 @property (strong, readwrite, nonatomic) UITableView *tableView;
 
@@ -59,7 +59,8 @@
             break;
         //清理杂志
         case 1:
-            [self.sideMenuViewController hideMenuViewController];
+            [self confirmToRemoveCache];
+//            [self.sideMenuViewController hideMenuViewController];
             //这里写清理杂志代码
             
             
@@ -131,5 +132,25 @@
 {
     return UIStatusBarStyleDefault;
 }
+
+-(void)confirmToRemoveCache{
+    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"清理缓存" message:@"您确定要这么做吗?" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定"    , nil];
+    [alert show];
+}
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex==1) {
+        //创建文件管理器
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        NSString * path = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+        [fileManager removeItemAtPath:path error:Nil];
+        
+        //创建文件夹路径
+        [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
+        [GSAlert showAlertWithTitle:@"清理缓存完毕"];
+
+    }
+}
+
 
 @end

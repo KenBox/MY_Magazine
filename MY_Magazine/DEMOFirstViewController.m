@@ -16,7 +16,8 @@
 //#define _HOSTURL @"http://192.168.1.4:8080/naill/upload/"
 @interface DEMOFirstViewController ()
 @property (nonatomic,retain) CCNetworking * netManager;
-@property (nonatomic,retain) NSMutableArray * ArrayForSectionHeader;//封装了2011-2015年的SectionHeader图片
+@property (nonatomic,retain) NSMutableDictionary * DictForSectionHeader;//封装了2011-2015年的SectionHeader图片
+@property (nonatomic,retain) NSMutableArray * ArrayForSectionHeader;
 @property (nonatomic,retain) NSMutableArray * DockArray;
 @property (nonatomic,retain) NSMutableArray * year2012Data;
 @property (nonatomic,retain) NSMutableArray * year2013Data;
@@ -28,7 +29,7 @@
 @end
 
 @implementation DEMOFirstViewController
-@synthesize ContentViewController,ArrayForSectionHeader,DockArray,netManager;
+@synthesize ContentViewController,ArrayForSectionHeader,DictForSectionHeader,DockArray,netManager;
 @synthesize year2011Data,year2012Data,year2013Data,year2014Data,year2015Data,ContentXMLPath;
 
 
@@ -95,9 +96,7 @@
         [resaultArr addObject:arr];
     }
     
-//    NSLog(@"DockArray count = %lu",(unsigned long)[DockArray count]);
-    NSArray * arr = [resaultArr objectAtIndex:0];
-    NSLog(@"arr count = %lu",(unsigned long)[arr count]);
+
     NSLog(@">>>>>>>>>>>Analyse Src End>>>>>>>>>>>");
     return resaultArr;
 }
@@ -185,10 +184,12 @@
     [self.tableView setAllowsSelection:NO];
     [self.tableView.tableHeaderView setBackgroundColor:[UIColor clearColor]];
     //SectionHeader Data
-    ArrayForSectionHeader = [NSMutableArray arrayWithCapacity:[DockArray count]];
-    for (unsigned long int i = [DockArray count] ; i>0; i--) {
-        NSString * str = [NSString stringWithFormat:@"bg_bookself_year_201%lu",i+1];
-        [ArrayForSectionHeader addObject:str];
+//    ArrayForSectionHeader = [NSMutableArray arrayWithCapacity:[DockArray count]];
+    DictForSectionHeader = [[NSMutableDictionary alloc]init];
+    for (unsigned long int i = [[DockArray firstObject] count] ; i>0; i--) {
+        NSString * imageName = [NSString stringWithFormat:@"bg_bookself_year_201%lu",i+1];
+        NSString * str = [NSString stringWithFormat:@"201%lu",i+1];
+        [DictForSectionHeader setObject:[UIImage imageNamed:imageName] forKey:str];
     }
 
     //添加设置按钮的图片及点击事件
@@ -269,7 +270,6 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    NSLog(@"SectionNumber = %lu",(unsigned long)[DockArray count]);
     return [DockArray count];
 }
 
@@ -283,7 +283,6 @@
     }else if([arr count]%2 == 1){
         RowNumber = [arr count]/2 + 1;
     }
-    NSLog(@"RowNumber = %ld",(long)RowNumber);
     return RowNumber;
 }
 
@@ -387,10 +386,10 @@
     [sectionView addSubview:background];
     [sectionView setAutoresizesSubviews:YES];
     UIImageView * sepImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"bg_bookself_sep"]];
-//    UIImage * sectionImage = [UIImage imageNamed:@"bg_bookself_year_2011"];
-    NSString * str = [ArrayForSectionHeader objectAtIndex:section];
-    UIImage * sectionImage1 = [UIImage imageNamed:str];
-    UIImageView * sectionImageView = [[UIImageView alloc]initWithImage:sectionImage1];
+
+    CCMagazineDock * obj = [[DockArray objectAtIndex:section] firstObject];
+    NSString * sectionKey = [[obj.Ppath componentsSeparatedByString:@"/"]firstObject];
+    UIImageView * sectionImageView = [[UIImageView alloc]initWithImage:[DictForSectionHeader objectForKey:sectionKey]];
     
     [sectionImageView setFrame:CGRectMake(15, 10, 50, 17)];
     [sepImageView setFrame:CGRectMake(70, 14, 230, 15)];
@@ -426,9 +425,12 @@
         NSInteger indexInDockArray = row * 2 + 1 ;//在DockArray/Year201xData中的位置
         //生成ContentXML下载路径
         NSString * rightXMLPath = [self getContentXMLPathWith:section And:indexInDockArray];
+        
         CCMagazineTopic * rightTopic = [[CCMagazineTopic alloc ]initWithObject:[self updateContentViewControllerData:rightXMLPath]];
         [[NSNotificationCenter defaultCenter]postNotificationName:@"topic" object:rightTopic.ContectImages];
         [[NSNotificationCenter defaultCenter]postNotificationName:@"topic2" object:rightTopic.ThumbImages];
+        
+        
         NSLog(@"发送通知......");
     }
     
@@ -438,48 +440,62 @@
 }
 
 
-
 //根据所下载的xml文件更新下一级视图所需加载的资源
 -(CCMagazineTopic *)updateContentViewControllerData:(NSString *)_xmlPath{
     CCMagazineTopic * Topic = [[CCMagazineTopic alloc]init];
     NSLog(@">>>>>>>>>>>加载内容页数据中>>>>>>>>>>>>>");
     NSURL * url = [NSURL URLWithString:_xmlPath];
+    NSArray * arr = [_xmlPath componentsSeparatedByString:@"/"];
+    NSString * str = [NSString stringWithString:[arr lastObject]];
+    NSArray * subarr = [str componentsSeparatedByString:@"."];
+    NSString * substr = [NSString stringWithString:[subarr firstObject]];
+    NSLog(@"str = %@",substr);
+    Topic.LocalFolderName = substr;
     //1.得到沙箱中的Documents目录路径
     NSString * path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    //2.指定下载到沙箱中的文件名称ContentList.xml
-    path = [path stringByAppendingPathComponent:@"ContentList.xml"];
-    
-    //---------------------这里下载视图xml文件---------------------//
-    [netManager downloadFileFrom:url intoPath:path];
+    //2.指定下载到沙箱中的文件名称/201210_1/ContentList.xml
+
+    Topic.downloadXMLPath = [path stringByAppendingString:[NSString stringWithFormat:@"/%@/ContentList.xml",substr]];
+
+    //************下载ContentList.xml到指定文件夹**********//
+    [netManager downloadFileFrom:url intoPath:Topic.downloadXMLPath CreatFolderName:Topic.LocalFolderName];
+
     //拼接下载路径
-    ContentXMLPath = [NSString stringWithString:path];
-    Topic = [netManager ParserContentListXMLWithPath:ContentXMLPath];
+//    ContentXMLPath = [NSString stringWithString:path];
+    Topic = [netManager ParserContentListXMLWithPath:Topic.downloadXMLPath];
+    
+
     Topic.resourcePath = netManager.resourcePath;
-    NSLog(@"topic.path = %@",Topic.resourcePath);
-    //**************下载目录图片到指定文件夹****************//
-    [netManager downloadThumbPackageImages:Topic.ThumbName
-                                  WithPath:Topic.LocalFolderName
-                                       And:Topic.ThumbName];
+
     //**************下载图片zip包到指定文件夹***************//
     [netManager downloadImageZipIntoPath:Topic.LocalFolderName
                                  WithURL:Topic.TopicPath
                                      And:Nil];
-    //解析下载并解压完毕后设置资源路径获取图片数据
-    NSMutableArray * imgArr = [[NSMutableArray alloc]initWithArray:
-                               [self updateResource:Topic.resourcePath WithThumbName:Topic.ThumbName]];
+    
+
+    
+    //**************下载目录图片到指定文件夹****************//
+    [netManager downloadThumbPackageImages:Topic.ThumbName
+                                  WithPath:Topic.LocalFolderName
+                                       And:Topic.ThumbName];
     NSMutableArray * ThumbImages = [[NSMutableArray alloc]initWithArray:
                                     [self updateThumbImages:Topic.resourcePath WithThumbName:Topic.ThumbName]];
-    Topic.ContectImages = [[NSMutableArray alloc]initWithArray:imgArr];
     Topic.ThumbImages = [[NSMutableArray alloc]initWithArray:ThumbImages];
+
+        //解析下载并解压完毕后设置资源路径获取图片数据
+    NSMutableArray * imgArr = [[NSMutableArray alloc]initWithArray:
+                               [self updateResource:Topic.resourcePath WithThumbName:Topic.ThumbName]];
+    Topic.ContectImages = [[NSMutableArray alloc]initWithArray:imgArr];
     NSLog(@">>>>>>>>>>>>加载内容页数据完成>>>>>>>>>>>>>");
     return Topic;
 }
 
-//拼接xml下载路径
+//拼接ContentList.xml下载路径
 -(NSString *)getContentXMLPathWith:(NSInteger)section And:(NSInteger)indexInDockArray{
     CCMagazineDock * obj =[[DockArray objectAtIndex:section] objectAtIndex:indexInDockArray];
     NSString * str = _HOSTURL;
     NSString * _ContentXMLPath = [NSString stringWithFormat:@"%@%@",str,obj.Ppath];
+//    NSLog(@"ContentXMLPath = %@",_ContentXMLPath);
     return _ContentXMLPath;
 
 }

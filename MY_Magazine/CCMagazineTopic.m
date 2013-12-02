@@ -10,13 +10,14 @@
 
 @implementation CCMagazineTopic
 @synthesize CoverPath,CoverThumbName,ThumbName,TopicPath;
-@synthesize FrontCoverZipURL,ThumbImages,ContectImages;
+@synthesize FrontCoverZipURL,ThumbImages,ContectImages,downloadXMLPath;
 
 - (id)init
 {
     self = [super init];
     if (self) {
         CoverPath = @"";
+        downloadXMLPath = @"";
         ThumbName = [[NSMutableArray alloc]init];
         TopicPath = [[NSMutableArray alloc]init];
         ThumbImages = [[NSMutableArray alloc]init];

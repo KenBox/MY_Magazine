@@ -47,7 +47,7 @@
     [super viewDidLoad];
     //添加TableView
     self.view.autoresizesSubviews = YES;
-    CGRect tableFrame = CGRectMake(0, 80, APP_SCREEN_WIDTH, APP_SCREEN_CONTENT_HEIGHT-80);
+    CGRect tableFrame = CGRectMake(0, 60, APP_SCREEN_WIDTH, APP_SCREEN_CONTENT_HEIGHT-60);
 
     myTable = [[UITableView alloc]initWithFrame:tableFrame style:UITableViewStylePlain];
     [myTable setBackgroundColor:[UIColor clearColor]];

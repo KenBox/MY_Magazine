@@ -24,7 +24,7 @@
 -(void)downloadFileFrom:(NSURL *)URL intoPath:(NSString * )path;//根据url下载文件
 -(void)downloadThumbPackageImages:(NSMutableArray *)URLArray WithPath:(NSString * )LocalPath And:(NSMutableArray *)ThumbName;
 -(void)downloadImageZipIntoPath:(NSString *)LocalPath WithURL:(NSMutableArray *)URLArray And:(NSMutableArray *)TopicZipURLArray;
-
+-(void)downloadFileFrom:(NSURL *)URL intoPath:(NSString * )path CreatFolderName:(NSString *)FolderName;
 
 -(NSMutableArray *)useDOMXMLParser;
 -(CCMagazineTopic *)ParserContentListXMLWithPath:(NSString * )path;
