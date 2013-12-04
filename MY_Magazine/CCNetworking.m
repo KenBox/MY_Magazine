@@ -17,12 +17,14 @@
 #import "GSBaseResource.h"
 #import "ZipArchive.h"
 
-#define _HOSTURL @"http://218.4.19.242:8089/naill/upload/"
+#define _HOSTURL @"http://218.4.19.242:8089/naill/upload/"//上线服务器
 #define _LISTURL @"http://218.4.19.242:8089/naill/upload/List.xml"
 
-//#define _HOSTURL @"http://192.168.1.4:8080/naill/upload/"
-//#define _LISTURL @"http://192.168.1.4:8080/naill/upload/List.xml"
+//#define _HOSTURL @"http://192.168.2.133:8080/naill/upload/"
+//#define _LISTURL @"http://192.168.2.133:8080/naill/upload/List.xml"
 
+//#define _HOSTURL @"http://42.121.0.245:8080/naill/upload/"//陈建测试服
+//#define _LISTURL @"http://42.121.0.245:8080/naill/upload/List.xml"
 
 @interface CCNetworking ()
 

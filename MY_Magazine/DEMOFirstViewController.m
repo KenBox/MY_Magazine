@@ -11,13 +11,15 @@
 #import "CCMagazineDock.h"
 #import "CCMagazineTopic.h"
 #import "CCNetworking.h"
+#import "AllDefineHeader.h"
+#import "CCCornerImageView.h"
 
 #define _HOSTURL @"http://218.4.19.242:8089/naill/upload/"
-//#define _HOSTURL @"http://192.168.1.4:8080/naill/upload/"
-@interface DEMOFirstViewController ()
+//#define _HOSTURL @"http://192.168.2.133:8080/naill/upload/"
+//#define _HOSTURL @"http://42.121.0.245:8080/naill/upload/"
+@interface DEMOFirstViewController ()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic,retain) CCNetworking * netManager;
 @property (nonatomic,retain) NSMutableDictionary * DictForSectionHeader;//封装了2011-2015年的SectionHeader图片
-@property (nonatomic,retain) NSMutableArray * ArrayForSectionHeader;
 @property (nonatomic,retain) NSMutableArray * DockArray;
 @property (nonatomic,retain) NSMutableArray * year2012Data;
 @property (nonatomic,retain) NSMutableArray * year2013Data;
@@ -26,15 +28,17 @@
 @property (nonatomic,retain) NSMutableArray * year2011Data;
 
 @property (nonatomic,retain) NSString * ContentXMLPath;//这个属性存储了内容页的XML本地路径
+@property (nonatomic,retain) UIImageView * cornerImageView;
 @end
 
 @implementation DEMOFirstViewController
-@synthesize ContentViewController,ArrayForSectionHeader,DictForSectionHeader,DockArray,netManager;
+@synthesize ContentViewController,DictForSectionHeader,DockArray,netManager;
 @synthesize year2011Data,year2012Data,year2013Data,year2014Data,year2015Data,ContentXMLPath;
 
+@synthesize tableView;
 
 #pragma mark - 按年份封装xml数据
-//重新封装数据，一年的数据为一个Section，请配合加载图片至ArrayForSectionHeader集合中
+//重新封装数据，一年的数据为一个Section，请配合加载图片至DictForSectionHeader集合中
 -(NSMutableArray *)analyseSrc:(NSArray *)array{
     NSLog(@">>>>>>>>>>>Analyse Src>>>>>>>>>>>");
     NSMutableArray * resaultArr = [[NSMutableArray alloc]initWithCapacity:0];
@@ -108,7 +112,10 @@
         NSArray * pathArray = [path componentsSeparatedByString:@"/"];
         NSString * res1 = [pathArray objectAtIndex:2];
         NSArray * temp = [res1 componentsSeparatedByString:@"_"];
-        NSString * res = [temp componentsJoinedByString:@"月 Vol:"];
+        NSString * str1 = [[temp firstObject] substringToIndex:4];
+        NSString * str2 = [[temp firstObject] substringFromIndex:4];
+        NSString * str3 = [temp lastObject];
+        NSString * res = [NSString stringWithFormat:@"%@年%@月第%@期",str1,str2,str3];
 //        NSLog(@"res = %@",res);
         obj.MonthVersion = [NSString stringWithString:res];
 //        NSLog(@"%@",obj.MonthVersion);
@@ -155,6 +162,10 @@
     self = [super init];
     if (self) {
         NSLog(@">>>>>>>>FirstViewInit>>>>>>>>>>");
+        tableView = [[UITableView alloc]init];
+        [tableView setFrame:CGRectMake(0, 0, 320, [UIScreen mainScreen].bounds.size.height - 64)];
+        [tableView setDelegate:self];
+        [tableView setDataSource:self];
         netManager = [[CCNetworking alloc]init];
         DockArray = [[NSMutableArray alloc]init];
         //每年的数据
@@ -164,6 +175,9 @@
         year2012Data = [[NSMutableArray alloc]init];
         year2015Data = [[NSMutableArray alloc]init];
         ContentXMLPath = [[NSString alloc]init];
+        
+        
+
     }
     return self;
 }
@@ -172,24 +186,24 @@
 {
     NSLog(@">>>>>>>>>FirstView did load>>>>>>>>>>");
     [super viewDidLoad];
-    [self updateData];
-    NSLog(@"dockArray count = %lu",(unsigned long)[DockArray count]);
     
+    [self updateData];
+
     [self.tableView setBackgroundColor:[UIColor clearColor]];
     [self.view setBackgroundColor:[UIColor clearColor]];
     self.view.layer.borderWidth = 0.5;
     self.view.layer.borderColor = [UIColor colorWithWhite:0.750 alpha:1.000].CGColor;
-    
+    [self.view addSubview:tableView];
     //取消TableView的点击效果
     [self.tableView setAllowsSelection:NO];
     [self.tableView.tableHeaderView setBackgroundColor:[UIColor clearColor]];
     //SectionHeader Data
-//    ArrayForSectionHeader = [NSMutableArray arrayWithCapacity:[DockArray count]];
     DictForSectionHeader = [[NSMutableDictionary alloc]init];
-    for (unsigned long int i = [[DockArray firstObject] count] ; i>0; i--) {
-        NSString * imageName = [NSString stringWithFormat:@"bg_bookself_year_201%lu",i+1];
-        NSString * str = [NSString stringWithFormat:@"201%lu",i+1];
-        [DictForSectionHeader setObject:[UIImage imageNamed:imageName] forKey:str];
+    for (int i = 0; i < 5; i++) {
+        NSString * imageName = [NSString stringWithFormat:@"bg_bookself_year_201%d",(i+1)];
+        NSString * str = [NSString stringWithFormat:@"201%d",(i+1)];
+        UIImage * image = [UIImage imageNamed:imageName];
+        [DictForSectionHeader setObject:image forKey:str];
     }
 
     //添加设置按钮的图片及点击事件
@@ -205,7 +219,8 @@
     [bgImg setImage:[UIImage imageNamed:@"navbar_logo"]];
     self.navigationItem.titleView = bgImg;
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"bg_wood"] forBarMetrics:UIBarMetricsDefault];
-    
+
+
 }
 
 - (void)showMenu
@@ -219,39 +234,18 @@
     return UIStatusBarStyleDefault;
 }
 
-
 #pragma mark - 下拉更新table数据
--(void) doRefresh {
-    double delayInSeconds = 2.0;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        self.loading = NO;
-        //更新表格界面中的 DataSource 数据
-        NSLog(@">>>>>>>>>>>>>>>>>>>>>刷新数据中>>>>>>>>>>>>>>>>>>>>>>>");
-        [self updateData];
-        [self.tableView reloadData];
-    });
-}
-
-#pragma mark -
-#pragma mark UITableView Delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    switch (indexPath.row) {
-        case 0:
-            
-            break;
-        case 1:
-            
-            break;
-            
-        default:
-            break;
-    }
-}
+//-(void) doRefresh {
+//    double delayInSeconds = 2.0;
+//    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+//    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+//        self.loading = NO;
+//        //更新表格界面中的 DataSource 数据
+//        NSLog(@">>>>>>>>>>>>>>>>>>>>>刷新数据中>>>>>>>>>>>>>>>>>>>>>>>");
+//        [self updateData];
+//        [self.tableView reloadData];
+//    });
+//}
 
 #pragma mark -
 #pragma mark UITableView Datasource
@@ -294,7 +288,9 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     //每次取出队列都需要清空子视图
     for (UIView* view in [cell.contentView subviews]) {
-        [view removeFromSuperview];
+//        if (![view isKindOfClass:[CCCornerImageView class]]) {
+            [view removeFromSuperview];
+//        }
     }
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
@@ -319,10 +315,11 @@
         //左侧视窗
         CGRect leftFrame = CGRectMake(cell.bounds.origin.x+30, cell.bounds.origin.y+20, 108, 172);
         UIImageView * left = [[UIImageView alloc]initWithFrame:leftFrame];
-        [left setAutoresizesSubviews:YES];
-        [left setContentMode:UIViewContentModeScaleToFill];
-        [left setOpaque:YES];
-        [left setClipsToBounds:YES];
+        [left.layer setShadowOffset:CGSizeMake(1, 1)];
+
+        [left.layer setShadowRadius:5];
+        [left.layer setShadowOpacity:1];
+        [left.layer setShadowColor:[UIColor blackColor].CGColor];
         [left setImage:leftimg];
         [left setUserInteractionEnabled:YES];
         [left addGestureRecognizer:tap1];
@@ -332,12 +329,18 @@
         CGRect leftLabelFrame = CGRectMake(cell.bounds.origin.x+30, cell.bounds.origin.y+10+202, 128, 20);
         UILabel * leftLabel = [[UILabel alloc]initWithFrame:leftLabelFrame];
         //获得月号及期刊号
-        NSString * month = [NSString stringWithString:dock.MonthVersion];
-        NSString * subStr = [month substringFromIndex:4];
-        leftLabel.text = [NSString stringWithFormat:@"%@",subStr];//显示期刊号的字符串
+//        NSString * month = [NSString stringWithString:dock.MonthVersion];
+//        NSString * subStr = [month substringFromIndex:4];
+//        leftLabel.text = [NSString stringWithFormat:@"%@",subStr];//显示期刊号的字符串
+        leftLabel.text = [NSString stringWithString:dock.MonthVersion];
+        leftLabel.font = [UIFont fontWithName:@"Helvetica" size:15];
+//        [leftLabel.layer setShadowOffset:CGSizeMake(1, 1)];
+//        [leftLabel.layer setShadowRadius:5];
+//        [leftLabel.layer setShadowOpacity:1];
+//        [leftLabel.layer setShadowColor:[UIColor blackColor].CGColor];
         [leftLabel setBackgroundColor:[UIColor clearColor]];
         
-        [cell.contentView addSubview:left];
+        [cell.contentView insertSubview:left atIndex:0];
         [cell.contentView addSubview:leftLabel];
         //根据每年数据需要创建右侧视图
         //当indexPath.row * 2+1 < 总行号时，创建右侧imageView和期刊号Label视图
@@ -352,26 +355,40 @@
             UIImage * rightimg2 = [UIImage imageWithData:imgdata2];
             
             //右侧视窗
+
+            
             CGRect rightFrame = CGRectMake(cell.bounds.size.width-10-128, cell.bounds.origin.y+20, 108, 172);
             UIImageView * right = [[UIImageView alloc]initWithFrame:rightFrame];
+
+            [right.layer setShadowOffset:CGSizeMake(1, 1)];
+            [right.layer setShadowRadius:5];
+            [right.layer setShadowOpacity:1];
+            [right.layer setShadowColor:[UIColor blackColor].CGColor];
             //    [right setImage:[UIImage imageNamed:@"Cover_126"]];
-            [right setAutoresizesSubviews:YES];
+//            [right setAutoresizesSubviews:YES];
             [right setImage:rightimg2];
             [right setUserInteractionEnabled:YES];
             [right addGestureRecognizer:tap2];
+            
             //右侧label
             CGRect rightLabelFrame = CGRectMake(cell.bounds.size.width-10-128,cell.bounds.origin.y+10+202, 128, 20);
             UILabel * rightLabel = [[UILabel alloc]initWithFrame:rightLabelFrame];
-            NSString * month = [NSString stringWithString:dock2.MonthVersion];
-            NSString * subStr = [month substringFromIndex:4];
-            rightLabel.text = [NSString stringWithFormat:@"%@",subStr];//显示期刊号的字符串
+            rightLabel.font = [UIFont fontWithName:@"Helvetica" size:15];
+            rightLabel.text = [NSString stringWithString:dock2.MonthVersion];
+//            [rightLabel.layer setShadowOffset:CGSizeMake(1, 1)];
+//            [rightLabel.layer setShadowRadius:5];
+//            [rightLabel.layer setShadowOpacity:1];
+//            [rightLabel.layer setShadowColor:[UIColor blackColor].CGColor];
+//            NSString * subStr = [month substringFromIndex:4];
+//            rightLabel.text = [NSString stringWithFormat:@"%@",subStr];//显示期刊号的字符串
             [rightLabel setBackgroundColor:[UIColor clearColor]];
             
-            [cell.contentView addSubview:right];
+//            [cell.contentView addSubview:right];
+            [cell.contentView insertSubview:right atIndex:0];
             [cell.contentView addSubview:rightLabel];
         }
     }
-
+    
     return cell;
 }
 
@@ -382,7 +399,7 @@
     UIView * sectionView = [[UIView alloc]init];
     
     UIImageView * background = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"bg_carpet"]];
-    [background setFrame:CGRectMake(0, 0, 320, 40)];
+    [background setFrame:CGRectMake(0, 0, 320, 30)];
     [sectionView addSubview:background];
     [sectionView setAutoresizesSubviews:YES];
     UIImageView * sepImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"bg_bookself_sep"]];
@@ -392,7 +409,7 @@
     UIImageView * sectionImageView = [[UIImageView alloc]initWithImage:[DictForSectionHeader objectForKey:sectionKey]];
     
     [sectionImageView setFrame:CGRectMake(15, 10, 50, 17)];
-    [sepImageView setFrame:CGRectMake(70, 14, 230, 15)];
+    [sepImageView setFrame:CGRectMake(70, 13, 230, 13.1)];
     
     [sectionView addSubview:sectionImageView];
     [sectionView addSubview:sepImageView];
@@ -403,53 +420,26 @@
 #pragma mark - Gesture Methods
 //Tap手势跳转至期刊内容页
 -(void)pageSelected:(UITapGestureRecognizer*)gesture{
-    CGPoint point = [gesture locationInView:self.tableView];
-    NSIndexPath *selectedIndexPath = [self.tableView indexPathForRowAtPoint:point];
-    NSInteger row = selectedIndexPath.row;
-    NSInteger section = selectedIndexPath.section;
-    
     ContentViewController = [[CCContentViewController alloc]initWithNibName:@"CCContentViewController" bundle:Nil];
     
-    //通过CGPoint.x坐标分辨点击的期刊在左侧还是右侧
-    if (point.x<160) {
-//        NSLog(@"点击了左边section = %d row = %d point.x = %f,point.y = %f",section,row,point.x,point.y);
-        NSInteger indexInDockArray = row * 2;//在DockArray/Year201xData中的位置,用来获得内容页面的xml地址
-        //生成ContentXML下载路径
-        NSString * leftXMLPath = [self getContentXMLPathWith:section And:indexInDockArray];
-        CCMagazineTopic * leftTopic = [[CCMagazineTopic alloc ]initWithObject:[self updateContentViewControllerData:leftXMLPath]];
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"topic" object:leftTopic.ContectImages];
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"topic2" object:leftTopic.ThumbImages];
-        NSLog(@"发送通知......");
-    }else{
-//        NSLog(@"点击了右边section = %d row = %d point.x = %f,point.y = %f",section,row,point.x,point.y);
-        NSInteger indexInDockArray = row * 2 + 1 ;//在DockArray/Year201xData中的位置
-        //生成ContentXML下载路径
-        NSString * rightXMLPath = [self getContentXMLPathWith:section And:indexInDockArray];
-        
-        CCMagazineTopic * rightTopic = [[CCMagazineTopic alloc ]initWithObject:[self updateContentViewControllerData:rightXMLPath]];
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"topic" object:rightTopic.ContectImages];
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"topic2" object:rightTopic.ThumbImages];
-        
-        
-        NSLog(@"发送通知......");
-    }
+    [self showOnWindow:gesture];
+
     
+ 
     
-    
-    [self presentViewController:ContentViewController animated:YES completion:Nil];
 }
 
-
+#pragma mark - SelfMethods
 //根据所下载的xml文件更新下一级视图所需加载的资源
 -(CCMagazineTopic *)updateContentViewControllerData:(NSString *)_xmlPath{
     CCMagazineTopic * Topic = [[CCMagazineTopic alloc]init];
+    
     NSLog(@">>>>>>>>>>>加载内容页数据中>>>>>>>>>>>>>");
     NSURL * url = [NSURL URLWithString:_xmlPath];
     NSArray * arr = [_xmlPath componentsSeparatedByString:@"/"];
     NSString * str = [NSString stringWithString:[arr lastObject]];
     NSArray * subarr = [str componentsSeparatedByString:@"."];
     NSString * substr = [NSString stringWithString:[subarr firstObject]];
-    NSLog(@"str = %@",substr);
     Topic.LocalFolderName = substr;
     //1.得到沙箱中的Documents目录路径
     NSString * path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
@@ -457,6 +447,7 @@
 
     Topic.downloadXMLPath = [path stringByAppendingString:[NSString stringWithFormat:@"/%@/ContentList.xml",substr]];
 
+    
     //************下载ContentList.xml到指定文件夹**********//
     [netManager downloadFileFrom:url intoPath:Topic.downloadXMLPath CreatFolderName:Topic.LocalFolderName];
 
@@ -487,6 +478,7 @@
                                [self updateResource:Topic.resourcePath WithThumbName:Topic.ThumbName]];
     Topic.ContectImages = [[NSMutableArray alloc]initWithArray:imgArr];
     NSLog(@">>>>>>>>>>>>加载内容页数据完成>>>>>>>>>>>>>");
+
     return Topic;
 }
 
@@ -521,5 +513,64 @@
     }
     return mutArr;
 }
+
+#pragma mark - activity Methods
+- (void)showOnWindow:(id)sender {
+	// The hud will dispable all input on the window
+	HUD = [[MBProgressHUD alloc] initWithView:self.view.window];
+	[self.view.window addSubview:HUD];
+	
+	HUD.delegate = self;
+	HUD.labelText = @"Loading";
+	
+	[HUD showWhileExecuting:@selector(myTask:) onTarget:self withObject:(UIGestureRecognizer *)sender animated:YES];
+}
+
+
+- (void)myTask:(UIGestureRecognizer *)gesture {
+	// Do something usefull in here instead of sleeping ...
+//	sleep(3);
+    CGPoint point = [gesture locationInView:self.tableView];
+    NSIndexPath *selectedIndexPath = [self.tableView indexPathForRowAtPoint:point];
+    NSInteger row = selectedIndexPath.row;
+    NSInteger section = selectedIndexPath.section;
+    UITableViewCell * selectedCell = [self.tableView cellForRowAtIndexPath:selectedIndexPath];
+    
+    
+    //通过CGPoint.x坐标分辨点击的期刊在左侧还是右侧cell.bounds.origin.x+30
+    if (point.x<160) {
+        CCCornerImageView * leftCorner = [[CCCornerImageView alloc]initWithFrame:CGRectMake(selectedCell.bounds.origin.x+116, 18, 30, 30)];
+        [selectedCell.contentView insertSubview:leftCorner aboveSubview:selectedCell.contentView];
+        
+        //        NSLog(@"点击了左边section = %d row = %d point.x = %f,point.y = %f",section,row,point.x,point.y);
+        NSInteger indexInDockArray = row * 2;//在DockArray/Year201xData中的位置,用来获得内容页面的xml地址
+        //生成ContentXML下载路径
+        NSString * leftXMLPath = [self getContentXMLPathWith:section And:indexInDockArray];
+        CCMagazineTopic * leftTopic = [[CCMagazineTopic alloc ]initWithObject:[self updateContentViewControllerData:leftXMLPath]];
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"topic" object:leftTopic.ContectImages];
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"topic2" object:leftTopic.ThumbImages];
+        //        NSLog(@"发送通知......");
+    }else{
+        
+        CCCornerImageView * rightCorner = [[CCCornerImageView alloc]initWithFrame:CGRectMake(selectedCell.bounds.size.width-10-42, 18, 30, 30)];
+        [selectedCell.contentView insertSubview:rightCorner aboveSubview:selectedCell.contentView];
+        
+        //        NSLog(@"点击了右边section = %d row = %d point.x = %f,point.y = %f",section,row,point.x,point.y);
+        NSInteger indexInDockArray = row * 2 + 1 ;//在DockArray/Year201xData中的位置
+        //生成ContentXML下载路径
+        NSString * rightXMLPath = [self getContentXMLPathWith:section And:indexInDockArray];
+        CCMagazineTopic * rightTopic = [[CCMagazineTopic alloc ]initWithObject:[self updateContentViewControllerData:rightXMLPath]];
+        
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"topic" object:rightTopic.ContectImages];
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"topic2" object:rightTopic.ThumbImages];
+        
+        
+        //        NSLog(@"发送通知......");
+    }
+    
+    [self presentViewController:ContentViewController animated:YES completion:Nil];
+
+}
+
 
 @end

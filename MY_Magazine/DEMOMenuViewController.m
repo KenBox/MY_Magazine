@@ -144,7 +144,12 @@
         NSFileManager *fileManager = [NSFileManager defaultManager];
         NSString * path = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
         [fileManager removeItemAtPath:path error:Nil];
-        
+        //遍历文件夹
+//        NSDirectoryEnumerator *dirEnumerater = [fileManager enumeratorAtPath:path];
+//        NSString *filePath = nil;
+//        while(nil != (filePath = [dirEnumerater nextObject])) {
+//            [fileManager removeItemAtPath:filePath error:Nil];
+//        }
         //创建文件夹路径
         [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
         [GSAlert showAlertWithTitle:@"清理缓存完毕"];

@@ -16,15 +16,13 @@
 #import "Utilities.h"
 #import "LeavesView.h"
 #import "AllDefineHeader.h"
-@interface CCContentViewController ()<UIActionSheetDelegate,UIToolbarDelegate>
+@interface CCContentViewController ()<UIActionSheetDelegate>
 
-//@property (strong, nonatomic) IBOutlet UIToolbar *Toolbar;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *HomeBtn;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *CommentBtn;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *ShareBtn;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *ThumbBtn;
 
-@property (assign, nonatomic) BOOL isToolbarHidden;
 @property (strong, nonatomic) UIActionSheet * shareActionSheet;
 @property (strong, nonatomic) NSArray * BarItems;
 //leaves框架
@@ -34,7 +32,7 @@
 @implementation CCContentViewController
 
 @synthesize shareActionSheet,CommentViewController,ThumbViewController,imagesArray,ThumbImagesArray,sideMenu;
-@synthesize BarItems,Toolbar,HomeBtn,CommentBtn,ShareBtn,ThumbBtn,isToolbarHidden;
+@synthesize BarItems,HomeBtn,CommentBtn,ShareBtn,ThumbBtn;
 #pragma mark LeavesViewDataSource
 
 - (NSUInteger)numberOfPagesInLeavesView:(LeavesView*)leavesView {
@@ -53,24 +51,24 @@
 
 
 #pragma mark - Button Methods
-- (IBAction)ThumbBtnPressed:(UIBarButtonItem *)sender {
+- (void)ThumbBtnPressed:(UIBarButtonItem *)sender {
     NSLog(@"点击了目录");
     ThumbViewController = [[CCThumbViewController alloc]initWithNibName:@"CCThumbViewController" bundle:Nil];
     [[NSNotificationCenter defaultCenter]postNotificationName:@"thumbImages" object:ThumbImagesArray];
     [self presentViewController:ThumbViewController animated:YES completion:Nil];
 }
-- (IBAction)HomeBtnPressed:(UIBarButtonItem *)sender {
+- (void)HomeBtnPressed:(UIBarButtonItem *)sender {
     NSLog(@"点击了Home");
     [self dismissViewControllerAnimated:YES completion:Nil];
 //    [self.leavesView removeFromSuperview];
 
 }
-- (IBAction)CommentBtnPressed:(UIBarButtonItem *)sender {
+- (void)CommentBtnPressed:(UIBarButtonItem *)sender {
     NSLog(@"点击了评论");
     CommentViewController = [[CCCommentViewController alloc]initWithNibName:@"CCCommentViewController" bundle:Nil];
     [self presentViewController:CommentViewController animated:YES completion:Nil];
 }
-- (IBAction)ShareBtnPressed:(UIBarButtonItem *)sender {
+- (void)ShareBtnPressed:(UIBarButtonItem *)sender {
     NSLog(@"点击了分享");
     shareActionSheet = [[UIActionSheet alloc]initWithTitle:Nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"分享到新浪微博" otherButtonTitles:@"分享到腾讯微博", nil];
     [shareActionSheet showInView:self.view];
@@ -129,6 +127,7 @@
 
 //接收通知,目录页的图片集合
 -(void)getThumbImages:(NSNotification *)info{
+    NSLog(@"接收通知....");
     if (ThumbImagesArray) {
         [ThumbImagesArray removeAllObjects];
     }
@@ -138,7 +137,7 @@
 }
 //接收通知，内容页显示的图片集合
 -(void)getInfo:(NSNotification *)info{
-    NSLog(@"接收通知.....");
+//    NSLog(@"接收通知.....");
     if (imagesArray) {
         [imagesArray removeAllObjects];
         [_images removeAllObjects];
@@ -147,7 +146,8 @@
         [imagesArray addObject:img];
         [_images addObject:img];
     }
-    [self reloadInputViews];
+//    [self reloadInputViews];
+    [self.leavesView reloadData];
 }
 -(void)viewDidDisappear:(BOOL)animated{
     
@@ -167,16 +167,8 @@
     NSLog(@"ContentView did load......");
     [super viewDidLoad];
     
-//    [self.leavesView setCurrentPageIndex:2];
-//    for (UIView * view in self.view.subviews) {
-//        if ([self.view.subviews.class isKindOfClass:self.leavesView.class]) {
-//            [view removeFromSuperview];
-//        }
-//    }
-//    [self.leavesView reloadData];
-    
     CGRect ItemFrame = CGRectMake(0, 0, 66, 40);
-    UIColor * bgcolor = [UIColor colorWithRed:0.220 green:0.177 blue:0.167 alpha:0.500];
+    UIColor * bgcolor = [UIColor colorWithRed:0.220 green:0.185 blue:0.126 alpha:0.500];
     UIView *HomeItem = [[UIView alloc] initWithFrame:ItemFrame];
     [HomeItem setBackgroundColor:bgcolor];
     [HomeItem.layer setCornerRadius:8];
@@ -224,32 +216,15 @@
     [self.sideMenu setMenuPosition:HMSideMenuPositionBottom];
     [self.view addSubview:self.sideMenu];
 
-  
-
- 
-    
-    [Toolbar setFrame:CGRectMake(0.0, self.view.frame.size.height - Toolbar.frame.size.height - 44.0, self.view.frame.size.width, 44.0)];
-    [Toolbar setBarStyle:UIBarStyleBlackTranslucent];
-    Toolbar.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
-//    NSLog(@"currentDevice = %@",[UIDevice currentDevice].model);
-    [Toolbar setHidden:YES];
-    isToolbarHidden = YES;
-
-//    NSLog(@"width = %f,height = %f",APP_SCREEN_WIDTH,APP_SCREEN_HEIGHT);
 
     // Do any additional setup after loading the view from its nib.
     //Tap手势显示及隐藏Toolbar
     UITapGestureRecognizer * tap1 = [[UITapGestureRecognizer alloc]initWithTarget:self
                                                                            action:@selector(toggleMenu:)];
     [self.leavesView addGestureRecognizer:tap1];
-    [self.view addSubview:Toolbar];
     [self.view insertSubview:self.leavesView atIndex:0];
 }
 
-
-
--(void)viewWillAppear:(BOOL)animated{
-}
 
 - (void)didReceiveMemoryWarning
 {
@@ -258,9 +233,11 @@
 }
 
 //设置隐藏状态栏
--(BOOL)prefersStatusBarHidden{
-    return YES;
+//-(BOOL)prefersStatusBarHidden{
+//    return YES;
+//}
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleDefault;
 }
-
 
 @end

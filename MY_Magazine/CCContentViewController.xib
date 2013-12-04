@@ -7,11 +7,6 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CCContentViewController">
             <connections>
-                <outlet property="CommentBtn" destination="gmH-Ja-s2k" id="oQa-gU-hfe"/>
-                <outlet property="HomeBtn" destination="b4Y-oL-eZ7" id="KNB-EF-qCr"/>
-                <outlet property="ShareBtn" destination="b2g-GU-WtT" id="p5Q-tJ-emJ"/>
-                <outlet property="ThumbBtn" destination="ua1-ka-xRs" id="USa-ON-7wF"/>
-                <outlet property="Toolbar" destination="Jeb-eJ-xby" id="b84-eK-fu8"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>
         </placeholder>
@@ -19,43 +14,9 @@
         <view contentMode="scaleToFill" id="1">
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-            <subviews>
-                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="Jeb-eJ-xby">
-                    <rect key="frame" x="0.0" y="524" width="320" height="44"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                    <items>
-                        <barButtonItem image="btn_home.png" width="64" id="b4Y-oL-eZ7">
-                            <connections>
-                                <action selector="HomeBtnPressed:" destination="-1" id="hFI-cQ-gpj"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem image="btn_cmt.png" width="64" id="gmH-Ja-s2k">
-                            <connections>
-                                <action selector="CommentBtnPressed:" destination="-1" id="zpO-XM-P9r"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem image="btn_share.png" width="64" id="b2g-GU-WtT">
-                            <connections>
-                                <action selector="ShareBtnPressed:" destination="-1" id="uMB-T2-RFE"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem image="btn_catalog.png" width="64" id="ua1-ka-xRs">
-                            <connections>
-                                <action selector="ThumbBtnPressed:" destination="-1" id="nIN-Kz-aMA"/>
-                            </connections>
-                        </barButtonItem>
-                    </items>
-                </toolbar>
-            </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
     </objects>
-    <resources>
-        <image name="btn_catalog.png" width="25" height="23"/>
-        <image name="btn_cmt.png" width="26" height="23"/>
-        <image name="btn_home.png" width="25" height="23"/>
-        <image name="btn_share.png" width="25" height="23"/>
-    </resources>
 </document>

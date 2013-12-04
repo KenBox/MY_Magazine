@@ -17,7 +17,6 @@
 @property (nonatomic,strong) CCThumbViewController * ThumbViewController;
 @property (nonatomic,strong) CCMagazineTopic * ContentTopic;
 
-@property (strong, nonatomic) IBOutlet UIToolbar *Toolbar;
 
 
 @property (nonatomic,strong) NSMutableArray * imagesArray;//存放了ContentView需要显示的UIImage集合
